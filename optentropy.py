@@ -1,6 +1,4 @@
 ###imports
-import torch
-from torch.autograd import Variable
 import scipy.interpolate as sci
 from sklearn.neighbors import KernelDensity
 from main import *
