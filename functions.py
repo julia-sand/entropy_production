@@ -6,6 +6,7 @@ girsanov theorem
 
 from scipy.ndimage import median_filter,generic_filter
 import scipy.ndimage as sc
+import scipy.interpolate as sci
 
 from main import *  
 from datafetch import *
