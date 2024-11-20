@@ -10,29 +10,39 @@ from main import *
 n = int(sys.argv[5]) #number of samples for the optimal transport problem
 
 # Create some large histograms from initial and final data
-xs = npr.choice(np.linspace(xmin,xmax,n*100), size = (n,1), p = p_initial(np.linspace(xmin,xmax,n*100))/ sum(p_initial(np.linspace(xmin,xmax,n*100))))
-xt = npr.choice(np.linspace(xmin,xmax,n*100), size = (n,1), p = p_final(np.linspace(xmin,xmax,n*100))/ sum(p_final(np.linspace(xmin,xmax,n*100))))
+xs = npr.choice(np.linspace(xmin,xmax,n), size = n, p = p_initial(np.linspace(xmin,xmax,n))/ sum(p_initial(np.linspace(xmin,xmax,n))))
+xt = npr.choice(np.linspace(xmin,xmax,n), size = n, p = p_final(np.linspace(xmin,xmax,n))/ sum(p_final(np.linspace(xmin,xmax,n))))
 
 
 # loss matrix
-M = ot.dist(xs, xt)
-M /= M.max()
+#M = ot.dist(xs, xt)
+#M /= M.max()
 
 
-outs = ot.solve(M, reg=1, reg_type="entropy")
+#outs = ot.solve(M, reg=1, reg_type="entropy")
 
-w2_dist = outs.value_linear
-G0 = outs.plan
 
-G0_out = np.zeros_like(G0)
-G0_out[np.arange(len(G0)), G0.argmax(1)] = 1
+#solve OT problem using Python OT
+G0_data = ot.emd2_1d(xs.reshape((n, 1)), xt.reshape((n, 1)),log=True)
 
-xs = xs.flatten()
-xt = xt.flatten()
+#save the assignment and W2 distance
+#G0 = G0_data[1]["G"]
+w2_dist = G0_data[0]
+idx = np.argmax(G0_data[1]["G"],axis=1)
+
+
+
+print("OT done")
+
+#G0_out = np.zeros_like(G0)
+#G0_out[np.arange(len(G0)), G0.argmax(1)] = 1
+
+#xs = xs.flatten()
+#xt = xt.flatten()
 
 
 #find lagrangian trajectories and burgers velocities
-def get_rho_lambda(i,G0,xt):
+def get_rho_lambda(i,idx,xt):
 
   '''input:
   - i: index of the initial coordinate
@@ -42,36 +52,25 @@ def get_rho_lambda(i,G0,xt):
   - l_map: approximation of the dynamic lagrangian map between the two distributions as a function of time
   - dsigma_x: dsigma (burger's velocity) evaluated at time (index) and x (l_map)
   '''
-
-  idx_j = 0
-
-  #get matching coordinate
-  for j in range(0,n):
-    if G0[i,j] > 0:
-      idx_j = j
-      break
-
+  
+  idx_j = idx[i]
+  
   #get initial and final points
   xinit = xs[i]
   xfinal = xt[idx_j]
 
   #make (discrete) lagrangian maps
-  l_map = np.ones(t_steps)
-  for t in range(0,t_steps):
-    tcurr = t2_vec[t]
-    l_map[t] = ((Tf - tcurr)/Tf)*xinit + (tcurr/Tf)*xfinal
+  l_map = np.fromiter((((Tf - tcurr)/Tf)*xinit + (tcurr/Tf)*xfinal for tcurr in t2_vec), float) 
+  
 
   #get burgers velocity (dsigma)
-  dsigma_x = np.ones(t_steps)
-  for x in enumerate(l_map):
-    #evaluate sigma at x
-    dsigma_x[x[0]] = (1/Tf)*(xfinal - xinit)
+  dsigma_x = np.ones(t_steps)*(1/Tf)*(xfinal - xinit)
 
   return l_map,dsigma_x
 
 results = np.zeros((n,2,len(t2_vec)))
 for x in enumerate(xs):
-  lmap,dsig = get_rho_lambda(x[0],G0_out,xt)
+  lmap,dsig = get_rho_lambda(x[0],idx,xt)
 
   #put into numpy array
   results[x[0],0,:] = lmap.reshape((1,1,9))
