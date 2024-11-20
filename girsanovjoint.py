@@ -11,10 +11,14 @@ import matplotlib.gridspec as gridspec
 from main import *
 from datafetch import *
 
+import sys
+
+mc_samples = int(sys.argv[5])
+
 #set up the spacial coordinates
-mc_samples = 300 #number of sample trajectories
-p_samples = 40
-q_samples = 40
+#mc_samples = 10000 #number of sample trajectories
+p_samples = 51
+q_samples = 51
 
 #initialise p,q axes
 p_init = np.linspace(-8,8,p_samples)
@@ -121,5 +125,4 @@ fig_joint_distributions_meshgrid.subplots_adjust(
     hspace=0.65# The height of the padding between subplots, as a fraction of the average Axes height.
 )
 
-plt.savefig("test.pdf",bbox_inches="tight"))
-
+plt.savefig("test.pdf",bbox_inches="tight")

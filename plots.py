@@ -86,10 +86,8 @@ def joint_distributions_scatter(fig,gs,
 
   ax_pmarginal.text(-2.85,0.5,label_titles[plot_index],fontsize = fontsizetitles,zorder = 200)
 
-  #compute joint distribution
-  idx = np.argwhere(~np.isnan(joint_out))
-  #print("number of sample points", len(idx))
-
+  #compute joint distribution and set nans to zero
+  joint_out[np.isnan(joint_out)] = 0
 
   pmarginal = np.nansum(joint_out.reshape((P.shape[1],P.shape[0])),axis=0)
   pnorm = np.trapz(pmarginal,P[0])
@@ -102,7 +100,7 @@ def joint_distributions_scatter(fig,gs,
 
   qmarginal = np.nansum(joint_out.reshape((P.shape[1],P.shape[0])),axis=1)#[np.nansum(joint_out[i::samples]) for i in range(0,samples)]
   #qorder = np.argsort(q_init)
-  qnorm = np.trapz(qmarginal,Q[0])
+  qnorm = np.trapz(qmarginal,Q.T[0])
 
   ax_qmarginal.plot(functions.distribution(time),functions.q_axis(time),
                     color="orange",lw=lw)
@@ -118,11 +116,11 @@ def joint_distributions_scatter(fig,gs,
   ax_qmarginal.set_xlim((-0.05,0.6))
 
   #plot scatter graphs
-  zout = joint_out[idx]
+  zout = joint_out
 
   order = np.argsort(zout.flatten())
-  pout = P.flatten()[idx].flatten()
-  qout = Q.flatten()[idx].flatten()
+  pout = P.flatten().flatten()
+  qout = Q.flatten().flatten()
   ax.scatter(pout[order],qout[order],c=zout.flatten()[order]
              ,cmap="Blues",norm="log",vmin=0.001,vmax=vmax)
 
