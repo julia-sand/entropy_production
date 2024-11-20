@@ -8,6 +8,7 @@ import matplotlib.lines as mlines
 
 
 from main import *
+import functions
 
 #fontsizes
 fontsize = 22
@@ -103,7 +104,7 @@ def joint_distributions_scatter(fig,gs,
   #qorder = np.argsort(q_init)
   qnorm = np.trapz(qmarginal,Q[0])
 
-  ax_qmarginal.plot(distribution(time),q_axis(time),color="orange")
+  ax_qmarginal.plot(functions.distribution(time),functions.q_axis(time),color="orange")
   ax_qmarginal.plot(qmarginal/qnorm
                     ,Q[0],color=c1,lw=lw)
 
