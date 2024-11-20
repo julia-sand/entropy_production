@@ -95,7 +95,7 @@ def joint_distributions_scatter(fig,gs,
   pnorm = np.trapz(pmarginal,P[0])
   #mom_mean_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_mean.values
   #mom_var_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_var.values
-  #ax_pmarginal.plot(P[0], stats.norm.pdf(P[0], mom_mean_temp,np.sqrt(mom_var_temp)),color="orange")
+  #ax_pmarginal.plot(P[0], stats.norm.pdf(P[0], mom_mean_temp,np.sqrt(mom_var_temp)),color="orange",linestyle="dashed",lw=lw)
   ax_pmarginal.plot(P[0],pmarginal/pnorm
                     ,color=c1,lw=lw)
 
@@ -104,7 +104,8 @@ def joint_distributions_scatter(fig,gs,
   #qorder = np.argsort(q_init)
   qnorm = np.trapz(qmarginal,Q[0])
 
-  ax_qmarginal.plot(functions.distribution(time),functions.q_axis(time),color="orange")
+  ax_qmarginal.plot(functions.distribution(time),functions.q_axis(time),
+                    color="orange",lw=lw)
   ax_qmarginal.plot(qmarginal/qnorm
                     ,Q.T[0],color=c1,lw=lw)
 
