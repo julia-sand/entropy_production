@@ -84,7 +84,7 @@ def joint_distributions_scatter(fig,gs,
   #print("number of sample points", len(idx))
 
 
-  pmarginal = np.nansum(joint_out.reshape((p_samples,q_samples)),axis=0)
+  pmarginal = np.nansum(joint_out.reshape((P.shape[1],P.shape[0])),axis=0)
   porder = np.argsort(p_init)
   pnorm = np.trapz(pmarginal[porder],p_init[porder])
   #mom_mean_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_mean.values
@@ -94,7 +94,7 @@ def joint_distributions_scatter(fig,gs,
                     ,color=c1,lw=lw)
 
 
-  qmarginal = np.nansum(joint_out.reshape((p_samples,q_samples)),axis=1)#[np.nansum(joint_out[i::samples]) for i in range(0,samples)]
+  qmarginal = np.nansum(joint_out.reshape((P.shape[1],P.shape[0])),axis=1)#[np.nansum(joint_out[i::samples]) for i in range(0,samples)]
   qorder = np.argsort(q_init)
   qnorm = np.trapz(qmarginal[qorder],q_init[qorder])
 
