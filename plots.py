@@ -21,11 +21,6 @@ lw = 3
 #panel labels:
 label_titles = ["(a)","(b)","(c)","(d)","(e)","(f)"]
 
-#what times to plot
-plot_times = np.flip([0,1,2,3,4,5])/(5/T)
-
-plot_titles = [f"$t = {plot_times[j]}$" for j in range(0,len(plot_times))]
-plot_titles = np.flip(plot_titles)
 
 # Plotting the distributions -initialise the figure object & creates the gridspec
 #fig_joint_distributions_meshgrid = plt.figure(figsize=(15,10))
