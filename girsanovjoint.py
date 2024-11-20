@@ -30,7 +30,7 @@ df_girspdf_ep = pd.DataFrame()
 plot_index = 5
 
 #what times to plot
-plot_times = np.flip([0,1,2,3,4,5])/(5/T)
+plot_times = np.array([2,1.5,1.0,0.5,0.25,0])#np.flip([0,1,2,3,4,5])/(5/T)
 
 plot_titles = [f"$t = {plot_times[j]}$" for j in range(0,len(plot_times))]
 plot_titles = np.flip(plot_titles)
