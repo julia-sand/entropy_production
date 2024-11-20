@@ -12,7 +12,7 @@ epsilon = float(sys.argv[1])
 T = float(sys.argv[2])
 h_step = float(sys.argv[3]) #size of time mesh
 g = float(sys.argv[4])
-n = int(sys.argv[5]) #number of samples for the optimal transport problem
+#n = int(sys.argv[5]) #number of samples for the optimal transport problem
 
 ### params
 Tf = (epsilon**2)*T  #final time for t2
@@ -39,7 +39,7 @@ denom = 1
 xmin = -5
 xmax = 5
 
-q = np.linspace(xmin,xmax,n) #fixed axes of points
+#q = np.linspace(xmin,xmax,n) #fixed axes of points
 #qnorm = np.linspace(-15,15,50000) #used for computing the normalisation
 #qchoice = np.linspace(xmin,xmax,n*100) #points to choose from for histograms
 

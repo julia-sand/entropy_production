@@ -17,5 +17,5 @@ for t0 in times_t0:
   df.loc[df[df.t==t2].index,"UDdrift"] = drift_vals
 
 #save the dataframe as a csv
-df.to_csv("results_all.csv")
+df.to_csv("results.csv")
 
