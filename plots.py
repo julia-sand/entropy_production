@@ -44,7 +44,7 @@ def format_dist_axes(ax):
   #ax.tick_params(labeltop='off', labelright='off')
 
   ax.set_ylim((-0.01,0.8))
-  ax.set_xlim((xlimmin,xlimmax))
+  #ax.set_xlim((xlimmin,xlimmax))
   ax.spines['bottom'].set_zorder(1000)
 
 
