@@ -85,22 +85,21 @@ def joint_distributions_scatter(fig,gs,
 
 
   pmarginal = np.nansum(joint_out.reshape((P.shape[1],P.shape[0])),axis=0)
-  porder = np.argsort(p_init)
-  pnorm = np.trapz(pmarginal[porder],p_init[porder])
+  pnorm = np.trapz(pmarginal,P[0])
   #mom_mean_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_mean.values
   #mom_var_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_var.values
-  #ax_pmarginal.plot(p_init, stats.norm.pdf(p_init, mom_mean_temp,np.sqrt(mom_var_temp)),color="orange")
-  ax_pmarginal.plot(p_init[porder],pmarginal[porder]/pnorm
+  #ax_pmarginal.plot(P[0], stats.norm.pdf(P[0], mom_mean_temp,np.sqrt(mom_var_temp)),color="orange")
+  ax_pmarginal.plot(P[0],pmarginal/pnorm
                     ,color=c1,lw=lw)
 
 
   qmarginal = np.nansum(joint_out.reshape((P.shape[1],P.shape[0])),axis=1)#[np.nansum(joint_out[i::samples]) for i in range(0,samples)]
-  qorder = np.argsort(q_init)
-  qnorm = np.trapz(qmarginal[qorder],q_init[qorder])
+  #qorder = np.argsort(q_init)
+  qnorm = np.trapz(qmarginal,Q[0])
 
   ax_qmarginal.plot(distribution(time),q_axis(time),color="orange")
-  ax_qmarginal.plot(qmarginal[qorder]/qnorm
-                    ,q_init[qorder],color=c1,lw=lw)
+  ax_qmarginal.plot(qmarginal/qnorm
+                    ,Q[0],color=c1,lw=lw)
 
   format_dist_axes(ax_pmarginal)
 
@@ -121,8 +120,8 @@ def joint_distributions_scatter(fig,gs,
 
 
 
-  ax.contour(np.meshgrid(q_axis(time),q_axis(time)),
-             joint_distribution_perturbative(q_axis(time),time))
+  #ax.contour(np.meshgrid(functions.q_axis(time),functions.q_axis(time)),
+  #           joint_distribution_perturbative(functions.q_axis(time),time))
 
   ###TICKS
   ax_pmarginal.yaxis.tick_right()
