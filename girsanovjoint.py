@@ -7,6 +7,7 @@ Creates a plot similar to that in Fig 4 of https://arxiv.org/abs/2411.08518 for 
 import functions
 import plots
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 from main import *
 from datafetch import *
 
