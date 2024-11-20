@@ -1,3 +1,9 @@
+"""
+This file stores all the functions for the calculation of the distribution and drift, and the interpolation functions used for the evolution of
+girsanov theorem
+"""
+
+
 from scipy.ndimage import median_filter,generic_filter
 import scipy.ndimage as sc
 
