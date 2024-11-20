@@ -17,6 +17,12 @@ fontsizetitles = 22
 #linewidth
 lw = 3
 
+#colors
+c2 = "#a6cee3" #lightblue
+c3 = "#33a02c" #dark green
+c1 = "#1f78b4" #darkblue
+c4 = "#b2df8a" #light green
+
 #set up plots
 #panel labels:
 label_titles = ["(a)","(b)","(c)","(d)","(e)","(f)"]
