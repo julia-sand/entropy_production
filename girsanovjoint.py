@@ -121,5 +121,5 @@ fig_joint_distributions_meshgrid.subplots_adjust(
     hspace=0.65# The height of the padding between subplots, as a fraction of the average Axes height.
 )
 
-plt.savefig("test.pdf")
+plt.savefig("test.pdf",bbox_inches="tight"))
 
