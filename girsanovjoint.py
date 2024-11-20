@@ -107,7 +107,7 @@ for k in enumerate(plot_times):
                               df_girspdf_ep[df_girspdf_ep["t"] == k[1]].ptx.to_numpy(),
                               Q,P,
                               k[1],vmax)
-;
+
 
 #adjust spacing
 fig_joint_distributions_meshgrid.subplots_adjust(
