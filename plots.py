@@ -106,7 +106,7 @@ def joint_distributions_scatter(fig,gs,
 
   ax_qmarginal.plot(functions.distribution(time),functions.q_axis(time),color="orange")
   ax_qmarginal.plot(qmarginal/qnorm
-                    ,Q[0],color=c1,lw=lw)
+                    ,Q.T[0],color=c1,lw=lw)
 
   format_dist_axes(ax_pmarginal)
 
