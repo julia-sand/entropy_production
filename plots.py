@@ -42,7 +42,8 @@ def format_dist_axes(ax):
 
 
 #function for plotting
-def joint_distributions_scatter(fig,plot_index,
+def joint_distributions_scatter(fig,gs,
+                                plot_index,
                                 joint_out,
                                 Q,P,
                                 time,vmax):
@@ -71,7 +72,7 @@ def joint_distributions_scatter(fig,plot_index,
   plot_title_value = round(time/T,2)
 
   #get plot location
-  ax = fig.add_subplot(gs_joint_distributions[x_ind,y_ind])
+  ax = fig.add_subplot(gs[x_ind,y_ind])
 
   ax_pmarginal = ax.inset_axes([0, 1.05, 1, 0.6])
   ax_qmarginal = ax.inset_axes([1.1, 0, 0.6, 1])
