@@ -65,3 +65,22 @@ def p_final(q):
   return p_final_unnormalised(q)/pf_norm
 
 
+#underdamped boundary conditions
+def ud_pinitial(p_samples,q_samples):
+  """this is the initial distribution in the underdamped case
+  p_samples = momenta
+  q_samples = positions
+  """
+
+  return p_initial(q_samples)*np.exp(-(p_samples**2)/2)/np.sqrt(2*np.pi)
+
+def ud_pfinal(p_samples,q_samples):
+  """this is the final distribution in the underdamped case
+  p_samples = momenta
+  q_samples = positions
+  """
+  return p_final(q_samples)*np.exp(-(p_samples**2)/2)/np.sqrt(2*np.pi)
+  #np.exp(-(((q_samples**2-1)**2)/4 + 0.5*p_samples**2))/(pf_norm*np.sqrt(2*np.pi))
+
+
+
