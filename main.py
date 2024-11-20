@@ -1,3 +1,7 @@
+"""
+This file holds all the shared parameters for the whole program."""
+
+
 ### import all the parameters here
 
 import pandas as pd
