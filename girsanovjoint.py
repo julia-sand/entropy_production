@@ -49,7 +49,6 @@ for t in plot_times:
   girsanov = np.zeros((mc_samples,p_samples,q_samples))
 
   #initialise drift
-  #currdrift = underdamped_drift_interp(t,q_evo_UD_prev)
 
   for i in range(0,start_index):
 
@@ -58,7 +57,7 @@ for t in plot_times:
 
     innovation = npr.randn(mc_samples,p_samples,q_samples)
 
-    currdrift = underdamped_drift_interp(curr_time,q_evo_UD_prev,g)
+    currdrift = functions.underdamped_drift_interp(curr_time,q_evo_UD_prev,g)
 
     #underdamped dynamics
     #backward (T-t0) evolution in t0
@@ -79,7 +78,7 @@ for t in plot_times:
 
 
 
-  joint_out = np.nanmean(np.multiply(ud_pinitial(p_evo_UD_prev,q_evo_UD_prev),np.exp(-girsanov)),axis=0)
+  joint_out = np.nanmean(np.multiply(functions.ud_pinitial(p_evo_UD_prev,q_evo_UD_prev),np.exp(-girsanov)),axis=0)
 
   #save the data
   data= [t*np.ones(p_samples*q_samples),
@@ -108,7 +107,7 @@ fig_joint_distributions_meshgrid = plt.figure(figsize=(15,10))
 gs_joint_distributions = fig_joint_distributions_meshgrid.add_gridspec(2, 3, width_ratios=[1, 1, 1], height_ratios=[1, 1])
 
 for k in enumerate(plot_times):
-  joint_distributions_scatter(fig_joint_distributions_meshgrid, 5-k[0],
+  plots.joint_distributions_scatter(fig_joint_distributions_meshgrid, 5-k[0],
                               df_girspdf_ep[df_girspdf_ep["t"] == k[1]].ptx.to_numpy(),
                               Q,P,
                               k[1],vmax)
