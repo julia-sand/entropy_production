@@ -75,7 +75,7 @@ def kappa(t0): #mu dot 1
 #function to get underdamped distribution
 def distribution(t0 ):
   #t2 = round(t0*(epsilon**2),dps)
-  dist = df[df.t0==t].UDpdf.to_numpy()
+  dist = df[df.t0==t0].UDpdf.to_numpy()
   return dist
 
 #function to get underdamped drift
