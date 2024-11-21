@@ -8,6 +8,12 @@ from datafetch import *
 #get dataframe
 #df = pd.read_csv("results.csv",index_col=0)
 
+#add t0 col
+df["t0"] = np.round(df.t/(epsilon**2) ,dps)
+
+#fill infs with zeros
+df.replace([np.inf,-np.inf,np.nan], 0, inplace=True)
+
 
 #add two new columns
 
@@ -23,9 +29,6 @@ for t0 in times_t0:
   df.loc[df[df.t0==t0].index,"UDpdf"] = new_vals
   df.loc[df[df.t0==t0].index,"UDdrift"] = drift_vals
 
-#add t0 column
-#df["t0"] = np.round(df.t/(epsilon**2) ,dps)
-
 #save the dataframe as a csv
-df.to_csv("results.csv",index=False)
+df.to_csv("results.csv",sep = " ", index=False)
 
