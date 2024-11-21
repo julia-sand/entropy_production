@@ -12,11 +12,11 @@ from main import *
 from datafetch import *
 
 import sys
+import csv
 
-mc_samples = int(sys.argv[5])
+mc_samples = int(sys.argv[5]) #number of sample trajectories
 
 #set up the spacial coordinates
-#mc_samples = 10000 #number of sample trajectories
 p_samples = 51
 q_samples = 51
 
@@ -27,8 +27,7 @@ q_init = np.linspace(-8,8,q_samples)
 #make a mesh grid
 P,Q = np.meshgrid(p_init,q_init)
 
-df_girspdf_ep = pd.DataFrame()
-
+#df_girspdf_ep = pd.DataFrame()
 
 ###BACKWARDS EVOLUTIONS
 
@@ -40,6 +39,12 @@ plot_times = np.array([2,1.5,1.0,0.5,0.25,0])#np.flip([0,1,2,3,4,5])/(5/T)
 
 plot_titles = [f"$t = {plot_times[j]}$" for j in range(0,len(plot_times))]
 plot_titles = np.flip(plot_titles)
+
+#write header to file
+header=["t","P","Q","ptx"]
+with open("ep_girsanovjoint.csv","w") as file: 
+   writer = csv.writer(file,delimiter=" ", lineterminator="\n")
+   writer.writerow(header)
 
 for t in plot_times:
   print(t)
@@ -71,10 +76,10 @@ for t in plot_times:
     p_evo_UD_prev = p_evo_UD_prev + (epsilon*currdrift)*h0_step - np.sqrt(2*h0_step)*innovation
 
     #remove escaped particles
-    q_evo_UD_prev[q_evo_UD_prev>30] = np.nan
-    q_evo_UD_prev[q_evo_UD_prev<-30] = np.nan
-    p_evo_UD_prev[p_evo_UD_prev>30] = np.nan
-    p_evo_UD_prev[p_evo_UD_prev<-30] = np.nan
+    #q_evo_UD_prev[q_evo_UD_prev>30] = np.nan
+    #q_evo_UD_prev[q_evo_UD_prev<-30] = np.nan
+    #p_evo_UD_prev[p_evo_UD_prev>30] = np.nan
+    #p_evo_UD_prev[p_evo_UD_prev<-30] = np.nan
     #q_evo_UD_prev = q_evo_UD_new
     #p_evo_UD_prev = p_evo_UD_new
 
@@ -86,27 +91,24 @@ for t in plot_times:
 
   joint_out = np.nanmean(np.multiply(functions.ud_pinitial(p_evo_UD_prev,q_evo_UD_prev),np.exp(-girsanov)),axis=0)
 
-  #save the data
-  data= [t*np.ones(p_samples*q_samples),
-         P.flatten(),
-         Q.flatten(),
-         joint_out.flatten()]
-  columns=["t","P","Q","ptx"]
+  data = np.column_stack((t*np.ones(p_samples*q_samples),
+                           P.flatten(),
+                           Q.flatten(),
+                           joint_out.flatten()))
+  np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0)
 
-  #append new
-  df_temp = pd.DataFrame(dict(zip(columns, data)))
-
-  df_girspdf_ep = pd.concat([df_girspdf_ep,df_temp])
+  #append to the csv
+  with open("ep_girsanovjoint.csv","a") as file:
+    np.savetxt(file,data)
 
   plot_index -= 1
   ####
 
 
-df_girspdf_ep.to_csv("temp.csv", index=False)
+df_girspdf_ep = pd.read_csv("ep_girsanovjoint.csv", header = 0)
 
 #make the plot
 vmax = np.max(df_girspdf_ep.ptx)
-
 
 # Plotting the distributions -initialise the figure object & creates the gridspec
 fig_joint_distributions_meshgrid = plt.figure(figsize=(15,10))
