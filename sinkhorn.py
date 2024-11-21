@@ -1,8 +1,10 @@
-import torch
+#import torch
 import ot
 import scipy.interpolate as sci
 from sklearn.neighbors import KernelDensity
 #from geomloss import SamplesLoss # See also ImagesLoss, VolumesLoss
+
+import csv
 
 #get the parameters
 from main import *
@@ -19,9 +21,6 @@ xt = npr.choice(np.linspace(xmin,xmax,n), size = n, p = p_final(np.linspace(xmin
 #M /= M.max()
 
 
-#outs = ot.solve(M, reg=1, reg_type="entropy")
-
-
 #solve OT problem using Python OT
 G0_data = ot.emd2_1d(xs.reshape((n, 1)), xt.reshape((n, 1)),log=True)
 
@@ -33,12 +32,6 @@ idx = np.argmax(G0_data[1]["G"],axis=1)
 
 
 print("OT done")
-
-#G0_out = np.zeros_like(G0)
-#G0_out[np.arange(len(G0)), G0.argmax(1)] = 1
-
-#xs = xs.flatten()
-#xt = xt.flatten()
 
 
 #find lagrangian trajectories and burgers velocities
@@ -52,34 +45,40 @@ def get_rho_lambda(i,idx,xt):
   - l_map: approximation of the dynamic lagrangian map between the two distributions as a function of time
   - dsigma_x: dsigma (burger's velocity) evaluated at time (index) and x (l_map)
   '''
-  
+
   idx_j = idx[i]
-  
+
   #get initial and final points
   xinit = xs[i]
   xfinal = xt[idx_j]
 
   #make (discrete) lagrangian maps
-  l_map = np.fromiter((((Tf - tcurr)/Tf)*xinit + (tcurr/Tf)*xfinal for tcurr in t2_vec), float) 
-  
+  l_map = np.fromiter((((Tf - tcurr)/Tf)*xinit + (tcurr/Tf)*xfinal for tcurr in t2_vec), float)
 
   #get burgers velocity (dsigma)
   dsigma_x = np.ones(t_steps)*(1/Tf)*(xfinal - xinit)
 
   return l_map,dsigma_x
 
-results = np.zeros((n,2,len(t2_vec)))
+results = np.zeros((n,2,t_steps))
+
 for x in enumerate(xs):
   lmap,dsig = get_rho_lambda(x[0],idx,xt)
 
   #put into numpy array
-  results[x[0],0,:] = lmap.reshape((1,1,9))
-  results[x[0],1,:] = dsig.reshape((1,1,9))
+  results[x[0],0,:] = lmap.reshape((1,1,t_steps))
+  results[x[0],1,:] = dsig.reshape((1,1,t_steps))
 
 #get a new equally spaced x for saving the results and integrating
 N = 5000
 x_axis = np.linspace(xmin,xmax,N)
-df = pd.DataFrame()
+#df = pd.DataFrame()
+
+header=["t","x","dsigma","logptx","ptx"]
+with open("results.csv","wb") as file: 
+   writer = csv.writer(file,delimiter=",", lineterminator="\n")
+   writer.writerow(header)
+
 
 for t2 in enumerate(t2_vec):
   xz = results[:,0,t2[0]]
@@ -100,21 +99,21 @@ for t2 in enumerate(t2_vec):
 
   #make new df with these
   data= [t2[1]*np.ones(N), x_axis, interp_dsigma(x_axis), logrho_temp, dens]
-  columns=["t","x","dsigma","logptx","ptx"]
+  np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0) 
 
-  #append new
-  df2append = pd.DataFrame(dict(zip(columns, data)))
-  df = pd.concat([df,df2append])
+  #append to the csv
+  with open("results.csv","wb") as file:
+     np.savetxt(file,data,delimiter=",")
 
 #sort by
-df.sort_values(["t","x"],inplace=True)
+#df.sort_values(["t","x"],inplace=True)
 
-df = df.reset_index(drop=True)
+#df = df.reset_index(drop=True)
 
-df.replace([np.inf,-np.inf,np.nan], 0, inplace=True)
+#df.replace([np.inf,-np.inf,np.nan], 0, inplace=True)
 
 #save the dataframe as a csv
-df.to_csv("results.csv",index=False)
+#df.to_csv("results.csv",index=False)
 
 #write out the parameters
 filename = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
