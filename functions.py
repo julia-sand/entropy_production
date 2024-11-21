@@ -37,19 +37,19 @@ def zchop(a,tol):
 
 #get qaxis
 def q_axis(t0):
-  t2 = round(t0*(epsilon**2),dps)
-  return df[df.t == t2].x.to_numpy()
+  #t2 = round(t0*(epsilon**2),dps)
+  return df[df.t0 == t0].x.to_numpy()
 
 #function to get rho at time t0.
 def rho(t0):
-  t2 = round(t0*(epsilon**2),dps)
-  rho_temp = df[df.t==t2].ptx.to_numpy()
+  #t2 = round(t0*(epsilon**2),dps)
+  rho_temp = df[df.t0==t0].ptx.to_numpy()
   return zchop(rho_temp,tol)
 
 
 #get all xcoords where there is probability mass
 def get_rhomask(t0):
-  return np.where(rho(t0 )>0)
+  return np.where(rho(t0)>0)
 
 def od_bound(T,g):
   return (1/(1+g))*(w2_dist/(T*(epsilon**2)))
@@ -58,30 +58,30 @@ def od_bound(T,g):
 #derivative functions
 def dsigma(t0 ):
 
-  t2 = round(t0*(epsilon**2),dps)
-  sigtemp = df[df.t==t2].dsigma.to_numpy()
+  #t2 = round(t0*(epsilon**2),dps)
+  sigtemp = df[df.t0==t0].dsigma.to_numpy()
 
   return -sigtemp
   #-generic_filter(sigtemp,sc.median,100,mode="nearest")
 
 
 #used to compute cumulants and other functions
-def kappa(t0 ): #mu dot 1
-  integral = rho(t0 ) * dsigma(t0 )
-  return -np.trapz(integral,q_axis(t0 ))
+def kappa(t0): #mu dot 1
+  integral = rho(t0) * dsigma(t0)
+  return -np.trapz(integral,q_axis(t0))
 
 
 
 #function to get underdamped distribution
 def distribution(t0 ):
-  t2 = round(t0*(epsilon**2),dps)
-  dist = df[df.t==t2].UDpdf.to_numpy()
+  #t2 = round(t0*(epsilon**2),dps)
+  dist = df[df.t0==t].UDpdf.to_numpy()
   return dist
 
 #function to get underdamped drift
 def optimal_drift(t0 ):
   t2 = round(t0*(epsilon**2),dps)
-  drift_temp = df[df.t==t2].UDdrift.to_numpy()
+  drift_temp = df[df.t0 ==t0].UDdrift.to_numpy()
   return drift_temp
 
 def A_minus_B(T,g):
@@ -154,8 +154,8 @@ def dfun(vals,qs):
 
 def dlogrho(t0 ):
 
-  t2 = round(t0*(epsilon**2),dps)
-  logrho = df[df.t==t2].logptx.to_numpy()
+  #t2 = round(t0*(epsilon**2),dps)
+  logrho = df[df.t0 ==t0].logptx.to_numpy()
 
   #get rid of nans
   #interpolate only on non-zero vals of rho
