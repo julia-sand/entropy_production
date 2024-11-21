@@ -22,6 +22,9 @@ for t0 in times_t0:
   df.loc[df[df.t0==t0].index,"UDpdf"] = new_vals
   df.loc[df[df.t0==t0].index,"UDdrift"] = drift_vals
 
+#add t0 column
+df["t0"] = np.round(df.t/(epsilon**2) ,dps)
+
 #save the dataframe as a csv
 df.to_csv("results.csv",index=False)
 
