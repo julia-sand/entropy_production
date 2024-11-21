@@ -8,6 +8,11 @@ from datafetch import *
 #get dataframe
 #df = pd.read_csv("results.csv",index_col=0)
 
+#add two new columns
+
+df["UDpdf"] = np.ones((len(df))
+df["UDdrift"] = np.ones((len(df)) 
+
 ##add distributions as function to get sigma
 for t0 in times_t0:
   #t2 = round(t0*(epsilon**2),dps)
