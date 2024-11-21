@@ -16,11 +16,6 @@ xs = npr.choice(np.linspace(xmin,xmax,n), size = n, p = p_initial(np.linspace(xm
 xt = npr.choice(np.linspace(xmin,xmax,n), size = n, p = p_final(np.linspace(xmin,xmax,n))/ sum(p_final(np.linspace(xmin,xmax,n))))
 
 
-# loss matrix
-#M = ot.dist(xs, xt)
-#M /= M.max()
-
-
 #solve OT problem using Python OT
 G0_data = ot.emd2_1d(xs.reshape((n, 1)), xt.reshape((n, 1)),log=True)
 
@@ -28,7 +23,6 @@ G0_data = ot.emd2_1d(xs.reshape((n, 1)), xt.reshape((n, 1)),log=True)
 #G0 = G0_data[1]["G"]
 w2_dist = G0_data[0]
 idx = np.argmax(G0_data[1]["G"],axis=1)
-
 
 
 print("OT done")
@@ -70,13 +64,14 @@ for x in enumerate(xs):
   results[x[0],1,:] = dsig.reshape((1,1,t_steps))
 
 #get a new equally spaced x for saving the results and integrating
-N = 5000
+#N = 5000
+N=5
 x_axis = np.linspace(xmin,xmax,N)
 #df = pd.DataFrame()
 
 header=["t","x","dsigma","logptx","ptx"]
-with open("results.csv","wb") as file: 
-   writer = csv.writer(file,delimiter=",", lineterminator="\n")
+with open("results.csv","w") as file: 
+   writer = csv.writer(file,delimiter=" ", lineterminator="\n")
    writer.writerow(header)
 
 
@@ -98,12 +93,12 @@ for t2 in enumerate(t2_vec):
   interp_dsigma = sci.interp1d(xz_sort,dsigmax[sort_idx], kind='cubic', bounds_error=False, fill_value=(dsigmax[0], dsigmax[-1]), assume_sorted=True)
 
   #make new df with these
-  data= [t2[1]*np.ones(N), x_axis, interp_dsigma(x_axis), logrho_temp, dens]
-  np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0) 
+  data = np.column_stack((t2[1]*np.ones(N), x_axis, interp_dsigma(x_axis), logrho_temp, dens))
+  np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0)
 
   #append to the csv
-  with open("results.csv","wb") as file:
-     np.savetxt(file,data,delimiter=",")
+  with open("results.csv","a") as file:
+    np.savetxt(file,data)
 
 #sort by
 #df.sort_values(["t","x"],inplace=True)
