@@ -65,7 +65,7 @@ for x in enumerate(xs):
 
 #get a new equally spaced x for saving the results and integrating
 #N = 5000
-N=5
+N=5000
 x_axis = np.linspace(xmin,xmax,N)
 #df = pd.DataFrame()
 
