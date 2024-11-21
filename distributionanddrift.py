@@ -8,6 +8,10 @@ from datafetch import *
 #get dataframe
 #df = pd.read_csv("results.csv",index_col=0)
 
+#add t0 col
+df["t0"] = np.round(df["t0"]/(epsilon**2),dps)
+
+
 #add two new columns
 
 df["UDpdf"] = np.ones(len(df))
