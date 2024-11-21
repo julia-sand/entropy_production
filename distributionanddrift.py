@@ -10,8 +10,8 @@ from datafetch import *
 
 #add two new columns
 
-df["UDpdf"] = np.ones((len(df))
-df["UDdrift"] = np.ones((len(df)) 
+df["UDpdf"] = np.ones(len(df))
+df["UDdrift"] = np.ones(len(df)) 
 
 ##add distributions as function to get sigma
 for t0 in times_t0:
