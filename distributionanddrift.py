@@ -15,6 +15,7 @@ df["UDdrift"] = np.ones(len(df))
 
 ##add distributions as function to get sigma
 for t0 in times_t0:
+  print(t0)
   #t2 = round(t0*(epsilon**2),dps)
   new_vals = functions.calculate_distribution(t0,g)
   drift_vals = functions.calculate_optimal_drift(t0,g)
