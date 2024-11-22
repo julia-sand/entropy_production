@@ -4,7 +4,7 @@ girsanov theorem
 """
 
 
-from scipy.ndimage import median_filter,generic_filter
+#from scipy.ndimage import median_filter,generic_filter
 import scipy.ndimage as sc
 import scipy.interpolate as sci
 
@@ -80,7 +80,7 @@ def distribution(t0 ):
 
 #function to get underdamped drift
 def optimal_drift(t0 ):
-  t2 = round(t0*(epsilon**2),dps)
+  #t2 = round(t0*(epsilon**2),dps)
   drift_temp = df[df.t0 ==t0].UDdrift.to_numpy()
   return drift_temp
 
@@ -330,6 +330,24 @@ def calculate_distribution(t0,g):
   #norm_factor = np.trapz(np.abs(rvals),q_axis(t0))
 
   return rvals #/ norm_factor
+
+
+
+#function to get underdamped distribution
+def distribution(t0 ):
+  #t2 = round(t0*(epsilon**2),dps)
+  dist = df[df.t0==t0].UDpdf.to_numpy()
+  return dist
+
+#function to get underdamped drift
+def optimal_drift(t0 ):
+  #t2 = round(t0*(epsilon**2),dps)
+  drift_temp = df[df.t0 ==t0].UDdrift.to_numpy()
+  return drift_temp
+
+
+
+
 
 #function for interpolated dsigma
 def dsigma_interp(t0,q):
