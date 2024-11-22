@@ -126,21 +126,21 @@ def a_dot(t0,g):
 #mean and variances
 def mean_t0(t0):
 
-  t2 = round(t0*(epsilon**2),dps)
+  #t2 = round(t0*(epsilon**2),dps)
   #get q-axis
-  q = df[df.t == t2].x.to_numpy()
+  q = df[df.t0 == t0].x.to_numpy()
   #get rho
-  rho_temp = df[df.t == t2].ptx.to_numpy()
+  rho_temp = df[df.t0 == t0].ptx.to_numpy()
   
   return np.trapz(q*rho_temp,q)
 
 def var_t0(t0):
 
-  t2 = round(t0*(epsilon**2),dps)
+  #t2 = round(t0*(epsilon**2),dps)
   #get q-axis
-  q = df[df.t == t2].x.to_numpy()
+  q = df[df.t0 == t0].x.to_numpy()
   #get rho
-  rho_temp = df[df.t == t2].ptx.to_numpy()
+  rho_temp = df[df.t0 == t0].ptx.to_numpy()
   
   return np.trapz((q**2)*rho_temp,q)
 
@@ -168,24 +168,23 @@ def dlogrho(t0 ):
   filter_dlogrho = dlogrho#generic_filter(dlogrho,sc.median,filter_delta,mode="nearest")
 
   #put back into right place
-  dlogout = np.zeros(len(q_axis(t0)))
+  dlogout = np.zeros_like(logrho)
   dlogout[idx] = filter_dlogrho
 
   return dlogout
 
 def drho(t0):
-  rho_vals = rho(t0)
 
   #interpolate only on non-zero vals of rho
   idx = get_rhomask(t0)
-  rho_vals_temp = rho_vals[idx]
+  rho_vals_temp = rho(t0)[idx]
   q_axis_temp = q_axis(t0)[idx]
 
   drho = np.gradient(rho_vals_temp,q_axis_temp)
 
   #set values outside of range to zero to prevent extrapolation error
-  drho_vals = np.zeros(len(q_axis(t0)))
-  drho_vals[idx] = drho#generic_filter(drho,sc.median,filter_delta,mode="constant")
+  drho_vals = np.zeros_len(q_axis(t0))
+  drho_vals[idx] = drho #generic_filter(drho,sc.median,filter_delta,mode="constant")
 
   return drho_vals
 
