@@ -92,7 +92,7 @@ def format_drift(ax):
   ax.tick_params(axis='x', labelsize=fontsizeticks)
   ax.tick_params(axis='y', labelsize=fontsizeticks)
 
-  ax.set_ylim((-30,30))
+  #ax.set_ylim((-30,30))
   ax.set_xlim((xlimmin,xlimmax))
   ax.set_xlabel(r"$\mathrm{q}$",fontsize= fontsize,labelpad=7)
 
