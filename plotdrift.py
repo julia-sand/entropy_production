@@ -195,7 +195,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
     ax.set_yticklabels([])
 
   if locy ==-1 and gs == gs1:
-    ax.fill_between(functions.q_axis(tcurr),p_final(functions.q_axis(tcurr)) = c2,alpha = shadingalpha)
+    ax.fill_between(functions.q_axis(tcurr),p_final(functions.q_axis(tcurr)),color = c2,alpha = shadingalpha)
 
 #set up the gridspec
 
