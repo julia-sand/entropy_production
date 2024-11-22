@@ -84,8 +84,8 @@ def plot_pdf_nucleation(tcurr,title,labels,loc):
   plt.subplot(loc)
   plt.title(title, loc = "center", fontsize=fontsizetitles)
 
-  plt.plot(q_axis(tcurr),distribution(tcurr),color=c1,lw=lw,  label =r"$T=5$",zorder = 10000)
-  plt.plot(q_axis(tcurr),rho(tcurr),color="orange",lw=lw)
+  plt.plot(functions.q_axis(tcurr),functions.distribution(tcurr),color=c1,lw=lw,  label =r"$T=5$",zorder = 10000)
+  plt.plot(functions.q_axis(tcurr),functions.rho(tcurr),color="orange",lw=lw)
 
   ax = plt.gca()
   format_dist_axes(ax)
@@ -95,7 +95,7 @@ def plot_pdf_nucleation(tcurr,title,labels,loc):
 
 plt.figure(figsize=(8,6.5))
 plot_pdf_nucleation(0,"$\mathrm{t} = 0$",None,231)
-plt.fill_between(q_axis(0),p_initial(q_axis(0)),alpha = 0.5)
+plt.fill_between(functions.q_axis(0),functions.p_initial(functions.q_axis(0)),alpha = 0.5)
 plt.gca().set_xticklabels([])
 plt.gca().set_ylabel(r"$\rho_t(q)$",fontsize=fontsizetitles)
 plot_pdf_nucleation(0.2*T,"$\mathrm{t} = 0.2\,\mathrm{t}_f$",None,232)
@@ -111,7 +111,7 @@ plot_pdf_nucleation(0.8*T,"$\mathrm{t} = 0.8\,\mathrm{t}_f$",None,235)
 plt.gca().set_yticklabels([])
 plt.gca().set_xlabel(r"$q$",fontsize=fontsizetitles)
 plot_pdf_nucleation(T,"$\mathrm{t} = \mathrm{t}_f$",None,236)
-plt.fill_between(q_axis(T),p_final(q_axis(T)),alpha = 0.5)
+plt.fill_between(functions.q_axis(T),functions.p_final(functions.q_axis(T)),alpha = 0.5)
 plt.gca().set_xlabel(r"$q$",fontsize=fontsizetitles)
 plt.legend(labels = ["Underdamped","Overdamped"],
            prop={"size":fontsizeticks},
