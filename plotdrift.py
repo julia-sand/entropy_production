@@ -127,13 +127,13 @@ def cleaner(arr,t0):
 
   #masks nans and infs and returns a pair for plotting
   #copy q axis
-  plotq = np.copy(q_axis)
+  plotq = np.copy(functions.q_axis(t0))
 
   masknan = functions.get_rhomask(t0)
 
   #this function removes nan's and the end points which come from the truncation of the gradients
-  #arr = arr[np.min(masknan)+20:np.max(masknan)-20]
-  #plotq = plotq[np.min(masknan)+20:np.max(masknan)-20]
+  arr = arr[np.min(masknan)+20:np.max(masknan)-20]
+  plotq = plotq[np.min(masknan)+20:np.max(masknan)-20]
 
   return plotq, arr
   #generic_filter(arr,sc.median,1,mode="constant")
@@ -167,20 +167,20 @@ def plot_pair(tcurr,title,labels,gs,locy):
   ax.tick_params(axis='y', labelsize=fontsizeticks)
 
   drift0 = plt.subplot(gs[1, locy])
-  #plot_data = functions.optimal_drift(tcurr)#cleaner(optimal_drift(tcurr),tcurr)
+  plot_data = cleaner(functions.optimal_drift(tcurr),tcurr)
 
   #this just removes the areas of low statistics rho < tol
-  qseries = functions.q_axis(tcurr)
-  yseries = functions.optimal_drift(tcurr)
-  #sigma_data = #cleaner(dsigma(tcurr),tcurr)
-  sigmaseries = -functions.dsigma(tcurr)
+  qseries =  plot_data[0]
+  yseries = plot_data[1]
+  sigma_data = cleaner(functions.dsigma(tcurr),tcurr)
+  sigmaseries = -sigma_data[1]#-functions.dsigma(tcurr)
 
   ax0 = plt.gca()
   format_drift(ax0)
   ax0.text(s = labels[1],fontsize = fontsizetitles,x = disttitlex, y =25, zorder = titlezorder)
 
-  series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",alpha=0.5,zorder = 100)
-  series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped",alpha=0.5)
+  series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
+  series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
   #series1c, = ax0.plot(qseries,generic_filter(yseries,sc.mean,100,mode="nearest"),color = c1,lw=lw,label = r"Underdamped",zorder = 10000)
   #series1d, = ax0.plot(qseries,generic_filter(sigmaseries,sc.mean,100,mode="nearest"),color = c3,lw=lw,label = r"Underdamped",zorder = 10000)
 
