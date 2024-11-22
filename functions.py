@@ -150,7 +150,7 @@ def dfun(vals,qs):
 
   dfun = np.gradient(vals,qs)
 
-  return generic_filter(dfun,sc.median,filter_delta,mode = "nearest")
+  return np.gradient(vals,qs)#generic_filter(dfun,sc.median,filter_delta,mode = "nearest")
 
 def dlogrho(t0 ):
 
@@ -165,7 +165,7 @@ def dlogrho(t0 ):
 
   #differentiate and filter without edges
   dlogrho = np.gradient(logrho_temp,q_axis_temp)
-  filter_dlogrho = generic_filter(dlogrho,
+  filter_dlogrho = dlogrho#generic_filter(dlogrho,
                  sc.median,filter_delta,mode="nearest")
 
   #put back into right place
@@ -186,7 +186,7 @@ def drho(t0):
 
   #set values outside of range to zero to prevent extrapolation error
   drho_vals = np.zeros(len(q_axis(t0)))
-  drho_vals[idx] = generic_filter(drho,sc.median,filter_delta,mode="constant")
+  drho_vals[idx] = drho#generic_filter(drho,sc.median,filter_delta,mode="constant")
 
   return drho_vals
 
@@ -219,20 +219,20 @@ def rho_ddsigma_alpha_rho(t0):
   q_temp = q_axis(t0)[idx]
   ddlogrho = np.gradient(ddrhotemp,q_temp)
 
-  ddlogrho = generic_filter(ddlogrho,sc.mean,filter_delta,mode="nearest")
+  ddlogrho = ddlogrho#generic_filter(ddlogrho,sc.mean,filter_delta,mode="nearest")
 
   #get ddsigma
   dsigtemp = dsigma(t0)
   dsig_vals = dsigtemp[idx]
   ddsigtemp = np.gradient(dsig_vals,q_temp)
 
-  temp_out = alpha*ddlogrho + generic_filter(ddsigtemp,sc.mean,filter_delta,mode="nearest")
+  temp_out = alpha*ddlogrho + ddsigtemp#generic_filter(ddsigtemp,sc.mean,filter_delta,mode="nearest")
 
   temp_vals_out = np.zeros(len(q_axis(t0)))
   temp_vals_out[idx] = temp_out
 
   output_vals = temp_vals_out*rho(t0)
-  return generic_filter(output_vals,sc.mean,size=filter_delta,mode="constant")
+  return output_vals#generic_filter(output_vals,sc.mean,size=filter_delta,mode="constant")
 
 def script_k(t0):#varsigma dot/2
   temp_vals = q_axis(t0)*rho_dsigma_alpha_rho(t0)
