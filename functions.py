@@ -165,8 +165,7 @@ def dlogrho(t0 ):
 
   #differentiate and filter without edges
   dlogrho = np.gradient(logrho_temp,q_axis_temp)
-  filter_dlogrho = dlogrho#generic_filter(dlogrho,
-                 sc.median,filter_delta,mode="nearest")
+  filter_dlogrho = dlogrho#generic_filter(dlogrho,sc.median,filter_delta,mode="nearest")
 
   #put back into right place
   dlogout = np.zeros(len(q_axis(t0)))
