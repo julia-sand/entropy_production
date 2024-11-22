@@ -2,7 +2,7 @@ from main import *
 import functions
 
 
-import matplotlib.pylot as plt
+import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 #from matplotlib import cm
 import matplotlib.patches as mpatches
