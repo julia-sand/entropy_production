@@ -4,6 +4,67 @@ import matplotlib.pyplot as plt
 from main import *
 import functions
 
+##PLOT SETUP
+#fontsizes
+fontsize = 22
+fontsizeticks = 16
+fontsizetitles = 22
+
+#xlims
+xlimmax = 3
+xlimmin = -3
+
+ti = np.min(times_t0)
+tf = np.max(times_t0)
+
+tlim = (ti,tf)
+
+titlepad = 5
+titlex = 0.07
+titley = 0.88
+
+# Plotting the graphs
+#COLORS
+c2 = "#a6cee3" #lightblue
+c3 = "#33a02c" #dark green
+c1 = "#1f78b4" #darkblue
+c4 = "#b2df8a" #light green
+
+#linewidth
+lw = 3
+
+#axes formatting
+def format_dist_axes(ax):
+
+  #ax.patch.set_alpha(0)
+  #ax.yaxis.tick_right()
+  ax.tick_params(axis='x', labelsize=fontsizeticks)
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  #ax.tick_params(labeltop='off', labelright='off')
+
+  ax.set_ylim((-0.01,0.8))
+  ax.set_xlim((xlimmin,xlimmax))
+  ax.spines['bottom'].set_zorder(1000)
+
+def format_axes(ax,fontsize):
+
+  ax.set_xlim(tlim)
+  ax.set_xlabel(r"$\mathrm{t}$",fontsize = fontsizetitles)
+
+  #ax.set_xticklabels(labels = [0,1,2,3,4,5],fontsize=10)
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  ax.tick_params(axis='x', labelsize=fontsizeticks)
+  return ax
+
+#format axes
+def format_log_axes(ax):
+  ax.set_xscale('log')
+  ax.invert_xaxis()
+  #ax.set_ylim((4.6,5.3))
+  ax.set_xlim((0.13,(8e-7)))
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  #ax.tick_params(axis='x', labelsize=fontsizeticks)
+  #ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
 
 def plot_pdf_nucleation(tcurr,title,labels,loc):
   '''This functions plots a distribution and labels it
