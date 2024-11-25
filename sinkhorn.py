@@ -1,6 +1,6 @@
 #import torch
 import ot
-import scipy.interpolate as sci
+#import scipy.interpolate as sci
 from sklearn.neighbors import KernelDensity
 #from geomloss import SamplesLoss # See also ImagesLoss, VolumesLoss
 
@@ -90,10 +90,12 @@ for t2 in enumerate(t2_vec):
   dens = np.exp(logrho_temp)
 
   #interpolation of sigma
-  interp_dsigma = sci.interp1d(xz_sort,dsigmax[sort_idx], kind='cubic', bounds_error=False, fill_value=(dsigmax[0], dsigmax[-1]), assume_sorted=True)
+  #interp_dsigma = sci.interp1d(xz_sort,dsigmax[sort_idx], kind='cubic', bounds_error=False, fill_value=(dsigmax[0], dsigmax[-1]), assume_sorted=True)
 
   #make new df with these
-  data = np.column_stack((t2[1]*np.ones(N), x_axis, interp_dsigma(x_axis), logrho_temp, dens))
+  data = np.column_stack((t2[1]*np.ones(N), x_axis, 
+                          np.interp(x_axis,xz_sort,dsigmax[sort_idx]),#interp_dsigma(x_axis), 
+                          logrho_temp, dens))
   np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0)
 
   #append to the csv
