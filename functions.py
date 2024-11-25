@@ -184,7 +184,7 @@ def drho(t0):
   drho = np.gradient(rho_vals_temp,q_axis_temp)
 
   #set values outside of range to zero to prevent extrapolation error
-  drho_vals = np.zeros_len(q_axis(t0))
+  drho_vals = np.zeros_like(q_axis(t0))
   drho_vals[idx] = drho #generic_filter(drho,sc.median,filter_delta,mode="constant")
 
   return drho_vals
