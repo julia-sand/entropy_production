@@ -8,7 +8,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.patches as mpatches
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.lines as mlines
-#from datafetch import *
+
 
 ##make the plots
 
@@ -55,13 +55,6 @@ lw = 3
 
 #fontsizes
 xmax = 5
-fontsize = 22
-fontsizeticks = 18
-fontsizetitles = 22
-
-#Cumulant plots parameters
-#df = pd.read_csv("kl_gauss_T2_v8.csv")
-
 fontsize = 22
 fontsizeticks = 18
 fontsizetitles = 22
@@ -181,8 +174,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
   series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
   series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
-  #series1c, = ax0.plot(qseries,generic_filter(yseries,sc.mean,100,mode="nearest"),color = c1,lw=lw,label = r"Underdamped",zorder = 10000)
-  #series1d, = ax0.plot(qseries,generic_filter(sigmaseries,sc.mean,100,mode="nearest"),color = c3,lw=lw,label = r"Underdamped",zorder = 10000)
+
 
   if locy ==0:
     ax.set_ylabel(r'$\mathrm{f}_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= 7)

@@ -12,8 +12,8 @@ from main import *
 n = int(sys.argv[5]) #number of samples for the optimal transport problem
 
 # Create some large histograms from initial and final data
-xs = npr.choice(np.linspace(xmin,xmax,n), size = n, p = p_initial(np.linspace(xmin,xmax,n))/ sum(p_initial(np.linspace(xmin,xmax,n))))
-xt = npr.choice(np.linspace(xmin,xmax,n), size = n, p = p_final(np.linspace(xmin,xmax,n))/ sum(p_final(np.linspace(xmin,xmax,n))))
+xs = npr.choice(np.linspace(-10,10,n), size = n, p = p_initial(np.linspace(-10,10,n))/ sum(p_initial(np.linspace(-10,10,n))))
+xt = npr.choice(np.linspace(-10,10,n), size = n, p = p_final(np.linspace(-10,10,n))/ sum(p_final(np.linspace(-10,10,n))))
 
 
 #solve OT problem using Python OT
@@ -69,7 +69,7 @@ N=5000
 x_axis = np.linspace(xmin,xmax,N)
 #df = pd.DataFrame()
 
-header=["t","x","dsigma","logptx","ptx"]
+header=["t2","x","dsigma","logptx","ptx"]
 with open("results.csv","w") as file: 
    writer = csv.writer(file,delimiter=" ", lineterminator="\n")
    writer.writerow(header)

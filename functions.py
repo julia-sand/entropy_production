@@ -11,6 +11,7 @@ import scipy.interpolate as sci
 from main import *  
 from datafetch import *
 
+
 def omega_fun(g):
   return np.sqrt((1+g)/g)
 
