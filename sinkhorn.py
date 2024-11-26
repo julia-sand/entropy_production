@@ -25,7 +25,7 @@ w2_dist = G0_data[0]
 idx = np.argmax(G0_data[1]["G"],axis=1)
 
 
-print("OT done")
+#print("OT done")
 
 
 #find lagrangian trajectories and burgers velocities
@@ -65,8 +65,7 @@ for x in enumerate(xs):
 
 #get a new equally spaced x for saving the results and integrating
 #N = 5000
-N=5000
-x_axis = np.linspace(xmin,xmax,N)
+#x_axis = np.linspace(xmin,xmax,N)
 #df = pd.DataFrame()
 
 header=["t2","x","dsigma","logptx","ptx"]
@@ -86,15 +85,15 @@ for t2 in enumerate(t2_vec):
   kde = KernelDensity(kernel='epanechnikov', bandwidth=0.15).fit(xz.reshape(-1, 1))
 
   #estimated pdf
-  logrho_temp = kde.score_samples(x_axis.reshape(-1, 1))
+  logrho_temp = kde.score_samples(q_axis.reshape(-1, 1))
   dens = np.exp(logrho_temp)
 
   #interpolation of sigma
   #interp_dsigma = sci.interp1d(xz_sort,dsigmax[sort_idx], kind='cubic', bounds_error=False, fill_value=(dsigmax[0], dsigmax[-1]), assume_sorted=True)
 
   #make new df with these
-  data = np.column_stack((t2[1]*np.ones(N), x_axis, 
-                          np.interp(x_axis,xz_sort,dsigmax[sort_idx]),#interp_dsigma(x_axis), 
+  data = np.column_stack((t2[1]*np.ones(N), q_axis, 
+                          np.interp(q_axis,xz_sort,dsigmax[sort_idx]),#interp_dsigma(x_axis), 
                           logrho_temp, dens))
   np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0)
 

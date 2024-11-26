@@ -198,16 +198,16 @@ gs0 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=g
 gs1 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.1, wspace=0.05)
 
 plot_pair(0,"$\mathrm{t} = 0$",["(a)","(f)"],gs0,0)
-plot_pair(0.25*T,"$\mathrm{t} = 0.25\ \mathrm{t}_f$",["(b)","(g)"],gs0,1)
-plot_pair(0.5*T,"$\mathrm{t} = 0.5\ \mathrm{t}_f$",["(c)","(h)"],gs0,2)
-plot_pair(0.6*T,"$\mathrm{t} = 0.6\ \mathrm{t}_f$",["(d)","(i)"],gs0,3)
-plot_pair(0.7*T,"$\mathrm{t} = 0.7\ \mathrm{t}_f$",["(e)","(j)"],gs0,-1)
+plot_pair(0.25,"$\mathrm{t} = 0.25\ \mathrm{t}_f$",["(b)","(g)"],gs0,1)
+plot_pair(0.5,"$\mathrm{t} = 0.5\ \mathrm{t}_f$",["(c)","(h)"],gs0,2)
+plot_pair(0.75,"$\mathrm{t} = 0.6\ \mathrm{t}_f$",["(d)","(i)"],gs0,3)
+plot_pair(1,"$\mathrm{t} = 0.7\ \mathrm{t}_f$",["(e)","(j)"],gs0,-1)
 
-plot_pair(0.8*T,"$\mathrm{t} = 0.8\ \mathrm{t}_f$",["(k)","(p)"],gs1,0)
-plot_pair(0.85*T,"$\mathrm{t} = 0.85\ \mathrm{t}_f$",["(l)","(q)"],gs1,1)
-plot_pair(0.9*T,"$\mathrm{t} = 0.9\ \mathrm{t}_f$",["(m)","(r)"],gs1,2)
-plot_pair(0.95*T,"$\mathrm{t} = 0.95\ \mathrm{t}_f$",["(n)","(s)"],gs1,3)
-plot_pair(T,"$\mathrm{t} = \mathrm{t}_f$",["(o)","(t)"],gs1,-1)
+plot_pair(1.25,"$\mathrm{t} = 0.8\ \mathrm{t}_f$",["(k)","(p)"],gs1,0)
+plot_pair(1.5,"$\mathrm{t} = 0.85\ \mathrm{t}_f$",["(l)","(q)"],gs1,1)
+plot_pair(1.75,"$\mathrm{t} = 0.9\ \mathrm{t}_f$",["(m)","(r)"],gs1,2)
+plot_pair(2,"$\mathrm{t} = 0.95\ \mathrm{t}_f$",["(n)","(s)"],gs1,3)
+plot_pair(2,"$\mathrm{t} = \mathrm{t}_f$",["(o)","(t)"],gs1,-1)
 
 #make legend
 l0 = mlines.Line2D([], [], color=c1, lw = lw)
