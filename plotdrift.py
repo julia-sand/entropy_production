@@ -77,7 +77,7 @@ def format_drift(ax):
 
   #ax.yaxis.tick_right()
   ax.tick_params(axis='x', labelsize=fontsizeticks)
-  #ax.tick_params(axis='y', labelsize=fontsizeticks)
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
 
   #ax.set_ylim((-30,30))
   ax.set_xlim((xlimmin,xlimmax))
@@ -92,7 +92,7 @@ def format_dist_axes(ax):
   ax.tick_params(axis='y', labelsize=fontsizeticks)
   #ax.tick_params(labeltop='off', labelright='off')
 
-  #ax.set_ylim((-0.01,0.65))
+  ax.set_ylim((-0.01,0.65))
   ax.set_xlim((xlimmin,xlimmax))
   ax.spines['bottom'].set_zorder(1000)
 
