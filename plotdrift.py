@@ -176,9 +176,9 @@ def plot_pair(tcurr,title,labels,gs,locy):
     if gs == gs0:
       #for edges
       ax.fill_between(q_axis,p_initial(q_axis),color = c2,alpha = shadingalpha)
-  else:
-    ax0.set_yticklabels([])
-    ax.set_yticklabels([])
+  #else:
+  #  ax0.set_yticklabels([])
+  #  ax.set_yticklabels([])
 
   if locy ==-1 and gs == gs1:
     ax.fill_between(q_axis,p_final(q_axis),color = c2,alpha = shadingalpha)
