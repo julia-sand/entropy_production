@@ -30,6 +30,7 @@ idx = np.argmax(G0_data[1]["G"],axis=1)
 
 
 #find lagrangian trajectories and burgers velocities
+@jit(nopython=True)
 def get_rho_lambda(i,idx,xt):
 
   '''input:
@@ -57,7 +58,7 @@ def get_rho_lambda(i,idx,xt):
 
 results = np.zeros((n,2,t_steps))
 
-@jit(nopython=True) 
+
 for x in enumerate(xs):
   lmap,dsig = get_rho_lambda(x[0],idx,xt)
 
