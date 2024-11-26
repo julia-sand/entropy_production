@@ -4,6 +4,7 @@ import ot
 from sklearn.neighbors import KernelDensity
 #from geomloss import SamplesLoss # See also ImagesLoss, VolumesLoss
 
+from numba import jit
 import csv
 
 #get the parameters
@@ -56,6 +57,7 @@ def get_rho_lambda(i,idx,xt):
 
 results = np.zeros((n,2,t_steps))
 
+@jit(nopython=True) 
 for x in enumerate(xs):
   lmap,dsig = get_rho_lambda(x[0],idx,xt)
 
@@ -73,7 +75,7 @@ with open("results.csv","w") as file:
    writer = csv.writer(file,delimiter=" ", lineterminator="\n")
    writer.writerow(header)
 
-
+@jit(nopython=True) 
 for t2 in enumerate(t2_vec):
   xz = results[:,0,t2[0]]
   dsigmax = results[:,1,t2[0]]
