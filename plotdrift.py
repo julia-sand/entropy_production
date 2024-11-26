@@ -188,8 +188,8 @@ def plot_pair(tcurr,title,labels,gs,locy):
 fig = plt.figure(figsize = (18,24)) #figsize = (width,height)
 
 gs = gridspec.GridSpec(2, 1, height_ratios=[1,1],hspace=0.2)
-gs0 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[0], hspace=0.1, wspace=0.05)
-gs1 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.1, wspace=0.05)
+gs0 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[0], hspace=0.1, wspace=0.2)
+gs1 = gridspec.GridSpecFromSubplotSpec(2, 4, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.1, wspace=0.2)
 
 plot_pair(0,"$\mathrm{t} = 0$",["(a)","(f)"],gs0,0)
 plot_pair(0.25,"$\mathrm{t} = 1/8\ \mathrm{t}_f$",["(b)","(g)"],gs0,1)
@@ -207,7 +207,7 @@ plot_pair(2.,"$\mathrm{t} = \mathrm{t}_f$",["(n)","(s)"],gs1,3)
 l0 = mlines.Line2D([], [], color=c1, lw = lw)
 l1 = mlines.Line2D([], [], color=c3, lw = lw)
 p0 = mpatches.Patch(color = c2, alpha=shadingalpha)
-plt.tight_layout()
+
 
 plt.legend([l0,l1,p0],["Underdamped","Overdamped","Assigned Boundary Conditions"],
               prop = {"size": fontsizeticks },
