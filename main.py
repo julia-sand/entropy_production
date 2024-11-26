@@ -31,8 +31,10 @@ times_t0 = np.round(t2_vec/(epsilon**2),4)
 
 alpha = 0
 
-#size of xaxis for calculations
+#xaxis for calculations
 N = 6000
+xmin = -3
+xmax = 3
 q_axis = np.linspace(xmin,xmax,N)
 
 #tolerance to zero
@@ -44,8 +46,7 @@ filter_delta = 20
 #set up the boundary conditions
 peak_center = 1
 denom = 1
-xmin = -3
-xmax = 3
+
 
 #q = np.linspace(xmin,xmax,n) #fixed axes of points
 #qnorm = np.linspace(-15,15,50000) #used for computing the normalisation
