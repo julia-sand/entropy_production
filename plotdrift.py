@@ -201,7 +201,7 @@ plot_pair(1.25,"$\mathrm{t} = 5/8\ \mathrm{t}_f$",["(k)","(p)"],gs1,0)
 plot_pair(1.5,"$\mathrm{t} = 3/4\ \mathrm{t}_f$",["(l)","(q)"],gs1,1)
 plot_pair(1.75,"$\mathrm{t} = 7/8 \mathrm{t}_f$",["(m)","(r)"],gs1,2)
 plot_pair(2.,"$\mathrm{t} = \mathrm{t}_f$",["(n)","(s)"],gs1,3)
-plot_pair(T,"$\mathrm{t} = \mathrm{t}_f$",["(o)","(t)"],gs1,-1)
+#plot_pair(T,"$\mathrm{t} = \mathrm{t}_f$",["(o)","(t)"],gs1,-1)
 
 #make legend
 l0 = mlines.Line2D([], [], color=c1, lw = lw)
