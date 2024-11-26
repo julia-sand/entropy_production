@@ -119,8 +119,8 @@ def cleaner(arr,t0):
   masknan = functions.get_rhomask(t0)
 
   #this function removes nan's and the end points which come from the truncation of the gradients
-  arr = arr[np.min(masknan)+10:np.max(masknan)-10]
-  plotq = q_axis[np.min(masknan)+10:np.max(masknan)-10]
+  arr = arr[np.min(masknan)+20:np.max(masknan)-20]
+  plotq = q_axis[np.min(masknan)+20:np.max(masknan)-20]
 
   return plotq, arr
   #generic_filter(arr,sc.median,1,mode="constant")
