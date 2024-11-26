@@ -17,11 +17,6 @@ titlex = 0.15
 titley = 0.85
 titlezorder = 1000
 titles = ["(a)","(b)","(c)","(d)","(e)","(f)","(g)","(h)","(i)","(j)","(k)","(l)","(m)","(n)","(o)","(p)","(q)"]
-time_titles = ["$\mathrm{t} = 0$","$\mathrm{t} = 0.25\mathrm{t}_f$",
-               "$\mathrm{t} = 0.4\mathrm{t}_f$","$\mathrm{t} = 0.5\mathrm{t}_f$",
-               "$\mathrm{t} = 0.6\mathrm{t}_f$","$\mathrm{t} = 0.7\mathrm{t}_f$",
-               "$\mathrm{t} = 0.8\mathrm{t}_f$","$\mathrm{t} = 0.95\mathrm{t}_f$",
-               "$\mathrm{t} = \mathrm{t}_f$"]
 
 #dist title location
 disttitlex = -2.8
