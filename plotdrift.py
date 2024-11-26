@@ -207,13 +207,13 @@ plot_pair(T,"$\mathrm{t} = \mathrm{t}_f$",["(o)","(t)"],gs1,-1)
 l0 = mlines.Line2D([], [], color=c1, lw = lw)
 l1 = mlines.Line2D([], [], color=c3, lw = lw)
 p0 = mpatches.Patch(color = c2, alpha=shadingalpha)
+plt.tight_layout()
 
 plt.legend([l0,l1,p0],["Underdamped","Overdamped","Assigned Boundary Conditions"],
               prop = {"size": fontsizeticks },
               ncol = 3,
               bbox_to_anchor=(0.4, -0.1),
               frameon = False)
-
 
 #plt.savefig("ep_land_drift_v1.eps")
 plt.savefig("ep_land_drift_v1.pdf")
