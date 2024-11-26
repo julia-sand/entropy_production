@@ -120,7 +120,7 @@ def cleaner(arr,t0):
 
   #masks nans and infs and returns a pair for plotting
   #copy q axis
-  plotq = np.copy(functions.q_axis(t0))
+  plotq = np.copy(q_axis)
 
   masknan = functions.get_rhomask(t0)
 
@@ -149,8 +149,8 @@ def plot_pair(tcurr,title,labels,gs,locy):
   plt.subplot(gs[0,locy])
   plt.title(title, loc = "center", fontsize=fontsizetitles)
 
-  plt.plot(functions.q_axis(tcurr),functions.rho(tcurr),color=c3,lw=4)
-  plt.plot(functions.q_axis(tcurr),functions.distribution(tcurr),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
+  plt.plot(q_axis,functions.rho(tcurr),color=c3,lw=4)
+  plt.plot(q_axis,functions.distribution(tcurr),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
 
   ax = plt.gca()
   format_dist_axes(ax)
@@ -181,13 +181,13 @@ def plot_pair(tcurr,title,labels,gs,locy):
     ax0.set_ylabel(r'$-\partial U_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= -5)
     if gs == gs0:
       #for edges
-      ax.fill_between(functions.q_axis(tcurr),p_initial(functions.q_axis(tcurr)),color = c2,alpha = shadingalpha)
+      ax.fill_between(q_axis,p_initial(q_axis),color = c2,alpha = shadingalpha)
   else:
     ax0.set_yticklabels([])
     ax.set_yticklabels([])
 
   if locy ==-1 and gs == gs1:
-    ax.fill_between(functions.q_axis(tcurr),p_final(functions.q_axis(tcurr)),color = c2,alpha = shadingalpha)
+    ax.fill_between(q_axis,p_final(q_axis),color = c2,alpha = shadingalpha)
 
 #set up the gridspec
 
@@ -198,15 +198,15 @@ gs0 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=g
 gs1 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.1, wspace=0.05)
 
 plot_pair(0,"$\mathrm{t} = 0$",["(a)","(f)"],gs0,0)
-plot_pair(0.25*T,"$\mathrm{t} = 0.25\ \mathrm{t}_f$",["(b)","(g)"],gs0,1)
-plot_pair(0.5*T,"$\mathrm{t} = 0.5\ \mathrm{t}_f$",["(c)","(h)"],gs0,2)
-plot_pair(0.6*T,"$\mathrm{t} = 0.6\ \mathrm{t}_f$",["(d)","(i)"],gs0,3)
-plot_pair(0.7*T,"$\mathrm{t} = 0.7\ \mathrm{t}_f$",["(e)","(j)"],gs0,-1)
+plot_pair(0.25,"$\mathrm{t} = 1/8\ \mathrm{t}_f$",["(b)","(g)"],gs0,1)
+plot_pair(0.5,"$\mathrm{t} = 1/4\ \mathrm{t}_f$",["(c)","(h)"],gs0,2)
+plot_pair(0.75,"$\mathrm{t} = 3/8\ \mathrm{t}_f$",["(d)","(i)"],gs0,3)
+plot_pair(1,"$\mathrm{t} = 1/2\ \mathrm{t}_f$",["(e)","(j)"],gs0,-1)
 
-plot_pair(0.8*T,"$\mathrm{t} = 0.8\ \mathrm{t}_f$",["(k)","(p)"],gs1,0)
-plot_pair(0.85*T,"$\mathrm{t} = 0.85\ \mathrm{t}_f$",["(l)","(q)"],gs1,1)
-plot_pair(0.9*T,"$\mathrm{t} = 0.9\ \mathrm{t}_f$",["(m)","(r)"],gs1,2)
-plot_pair(0.95*T,"$\mathrm{t} = 0.95\ \mathrm{t}_f$",["(n)","(s)"],gs1,3)
+plot_pair(1.25,"$\mathrm{t} = 5/8\ \mathrm{t}_f$",["(k)","(p)"],gs1,0)
+plot_pair(1.5,"$\mathrm{t} = 3/4\ \mathrm{t}_f$",["(l)","(q)"],gs1,1)
+plot_pair(1.75,"$\mathrm{t} = 7/8 \mathrm{t}_f$",["(m)","(r)"],gs1,2)
+plot_pair(2.,"$\mathrm{t} = \mathrm{t}_f$",["(n)","(s)"],gs1,3)
 plot_pair(T,"$\mathrm{t} = \mathrm{t}_f$",["(o)","(t)"],gs1,-1)
 
 #make legend
