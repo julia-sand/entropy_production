@@ -135,8 +135,8 @@ fontsizeticks = 22
 fontsizetitles = 28
 
 #set ylim for plot
-ymin = -30
-ymax = 30
+#ymin = -30
+#ymax = 30
 
 def plot_pair(tcurr,title,labels,gs,locy):
   # t0 distribution
@@ -164,7 +164,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
   ax0 = plt.gca()
   format_drift(ax0)
-  ax0.text(s = labels[1],fontsize = fontsizetitles,x = disttitlex, y =25, zorder = titlezorder)
+  ax0.text(s = labels[1],fontsize = fontsizetitles,x = 0.1, y =0.95, zorder = titlezorder,transform=ax.transAxes)
 
   series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
   series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")

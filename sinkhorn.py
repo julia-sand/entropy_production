@@ -30,7 +30,7 @@ idx = np.argmax(G0_data[1]["G"],axis=1)
 
 
 #find lagrangian trajectories and burgers velocities
-@jit(nopython=True)
+#@jit(nopython=True)
 def get_rho_lambda(i,idx,xt):
 
   '''input:
@@ -58,7 +58,6 @@ def get_rho_lambda(i,idx,xt):
 
 results = np.zeros((n,2,t_steps))
 
-
 for x in enumerate(xs):
   lmap,dsig = get_rho_lambda(x[0],idx,xt)
 
@@ -76,7 +75,7 @@ with open("results.csv","w") as file:
    writer = csv.writer(file,delimiter=" ", lineterminator="\n")
    writer.writerow(header)
 
-@jit(nopython=True) 
+#@jit(nopython=True) 
 for t2 in enumerate(t2_vec):
   xz = results[:,0,t2[0]]
   dsigmax = results[:,1,t2[0]]
