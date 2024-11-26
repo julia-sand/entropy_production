@@ -223,7 +223,7 @@ def rho_ddsigma_alpha_rho(t0):
   #get ddsigma
   dsigtemp = dsigma(t0)
   dsig_vals = dsigtemp[idx]
-  ddsigtemp = np.gradient(dsig_vals,q_temp)
+  ddsigtemp = np.gradient(dsig_vals,q_axis[idx])
 
   temp_out = alpha*ddlogrho + ddsigtemp#generic_filter(ddsigtemp,sc.mean,filter_delta,mode="nearest")
 
