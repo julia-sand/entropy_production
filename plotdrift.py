@@ -69,7 +69,7 @@ def format_axes(ax,fontsize):
   ax.set_xlabel(r"$\mathrm{t}$",fontsize = fontsizetitles)
 
   #ax.set_xticklabels(labels = [0,1,2,3,4,5],fontsize=10)
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  #ax.tick_params(axis='y', labelsize=fontsizeticks)
   ax.tick_params(axis='x', labelsize=fontsizeticks)
   return ax
 
@@ -77,7 +77,7 @@ def format_drift(ax):
 
   #ax.yaxis.tick_right()
   ax.tick_params(axis='x', labelsize=fontsizeticks)
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  #ax.tick_params(axis='y', labelsize=fontsizeticks)
 
   #ax.set_ylim((-30,30))
   ax.set_xlim((xlimmin,xlimmax))
@@ -119,8 +119,8 @@ def cleaner(arr,t0):
   masknan = functions.get_rhomask(t0)
 
   #this function removes nan's and the end points which come from the truncation of the gradients
-  arr = arr#[np.min(masknan)+20:np.max(masknan)-20]
-  plotq = q_axis#[np.min(masknan)+20:np.max(masknan)-20]
+  arr = arr[np.min(masknan)+10:np.max(masknan)-10]
+  plotq = q_axis[np.min(masknan)+10:np.max(masknan)-10]
 
   return plotq, arr
   #generic_filter(arr,sc.median,1,mode="constant")
