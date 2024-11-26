@@ -37,9 +37,9 @@ def zchop(a,tol):
   return a
 
 #get qaxis
-def q_axis(t0):
+#def q_axis(t0):
   #t2 = round(t0*(epsilon**2),dps)
-  return df[df.t0 == t0].x.to_numpy()
+#  return df[df.t0 == t0].x.to_numpy()
 
 #function to get rho at time t0.
 def rho(t0):
@@ -69,7 +69,7 @@ def dsigma(t0 ):
 #used to compute cumulants and other functions
 def kappa(t0): #mu dot 1
   integral = rho(t0) * dsigma(t0)
-  return -np.trapz(integral,q_axis(t0))
+  return -np.trapz(integral,q_axis)
 
 
 
@@ -162,7 +162,7 @@ def dlogrho(t0 ):
   #interpolate only on non-zero vals of rho
   idx = get_rhomask(t0)
   logrho_temp = logrho[idx]
-  q_axis_temp = q_axis(t0)[idx]
+  q_axis_temp = q_axis[idx]
 
   #differentiate and filter without edges
   dlogrho = np.gradient(logrho_temp,q_axis_temp)
@@ -179,12 +179,12 @@ def drho(t0):
   #interpolate only on non-zero vals of rho
   idx = get_rhomask(t0)
   rho_vals_temp = rho(t0)[idx]
-  q_axis_temp = q_axis(t0)[idx]
+  q_axis_temp = q_axis[idx]
 
   drho = np.gradient(rho_vals_temp,q_axis_temp)
 
   #set values outside of range to zero to prevent extrapolation error
-  drho_vals = np.zeros_like(q_axis(t0))
+  drho_vals = np.zeros_like(q_axis)
   drho_vals[idx] = drho #generic_filter(drho,sc.median,filter_delta,mode="constant")
 
   return drho_vals
@@ -214,9 +214,9 @@ def rho_ddsigma_alpha_rho(t0):
 
   #remove zeros first
   idx = get_rhomask(t0)
-  ddrhotemp = drhotemp[idx]
-  q_temp = q_axis(t0)[idx]
-  ddlogrho = np.gradient(ddrhotemp,q_temp)
+  #ddrhotemp = 
+  #q_temp = 
+  ddlogrho = np.gradient(drhotemp[idx],q_axis[idx])
 
   ddlogrho = ddlogrho#generic_filter(ddlogrho,sc.mean,filter_delta,mode="nearest")
 
@@ -227,15 +227,15 @@ def rho_ddsigma_alpha_rho(t0):
 
   temp_out = alpha*ddlogrho + ddsigtemp#generic_filter(ddsigtemp,sc.mean,filter_delta,mode="nearest")
 
-  temp_vals_out = np.zeros(len(q_axis(t0)))
+  temp_vals_out = np.zeros_like(q_axis)
   temp_vals_out[idx] = temp_out
 
   output_vals = temp_vals_out*rho(t0)
   return output_vals#generic_filter(output_vals,sc.mean,size=filter_delta,mode="constant")
 
 def script_k(t0):#varsigma dot/2
-  temp_vals = q_axis(t0)*rho_dsigma_alpha_rho(t0)
-  return -np.trapz(temp_vals,q_axis(t0)) - kappa(t0)*mean_t0(t0)
+  temp_vals = q_axis*rho_dsigma_alpha_rho(t0)
+  return -np.trapz(temp_vals,q_axis) - kappa(t0)*mean_t0(t0)
 
 ##
 def f11(t0,g):
@@ -353,22 +353,22 @@ def optimal_drift(t0 ):
 #function for interpolated dsigma
 def dsigma_interp(t0,q):
   t2 = round(epsilon**2*t0,dps)
-  q_temp = q_axis(t0)
+  #q_temp = q_axis
   dsig_temp = dsigma(t0)
   w_temp = rho(t0)
 
-  interp_dsig = sci.splrep(q_temp, dsig_temp,w = w_temp,k=3)
+  interp_dsig = sci.splrep(q_axis, dsig_temp,w = w_temp,k=3)
   return sci.splev(q,interp_dsig)
 
 #function for interpolated DU
 def underdamped_drift_interp_function(t0,g):
 
-  q_temp = q_axis(t0)
+  #q_temp = q_axis
 
   w_temp = distribution(t0)
   dsig_temp_underdamped = optimal_drift(t0)
   #dsigout = generic_filter(dsig_temp_underdamped,sc.mean,size=100)
-  interp_dsig_underdamped = sci.splrep(q_temp[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()],
+  interp_dsig_underdamped = sci.splrep(q_axis[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()],
                                        dsig_temp_underdamped[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()],
                                        w=w_temp[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()], k=5)
 
