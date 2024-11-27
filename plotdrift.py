@@ -65,6 +65,7 @@ lw = 3
 
 # Data for the graphs
 titlepad = 5
+
 def format_axes(ax,fontsize):
 
   ax.set_xlim((0,T))
@@ -121,9 +122,8 @@ def cleaner(arr,t0):
   masknan = functions.get_rhomask(t0)
 
   #this function removes nan's and the end points which come from the truncation of the gradients
-  arr = arr[np.min(masknan)+30:np.max(masknan)-30]
-  plotq = q_axis[np.min(masknan)+30:np.max(masknan)-30]
-
+  arr = arr[np.min(masknan)+100:np.max(masknan)-100]
+  plotq = q_axis[np.min(masknan)+100:np.max(masknan)-100]
   return plotq , arr
 
 #set ylim for plot
@@ -136,7 +136,8 @@ def plot_pair(tcurr,title,labels,gs,locy):
   plt.title(title, loc = "center", fontsize=fontsizetitles)
 
   plt.plot(q_axis,functions.rho(tcurr),color=c3,lw=4)
-  plt.plot(q_axis,generic_filter(functions.distribution(tcurr),sc.median,size=10,mode="nearest"),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
+  plt.plot(q_axis,generic_filter(functions.distribution(tcurr),sc.median,size=30,mode="constant"),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
+
 
   ax = plt.gca()
   format_dist_axes(ax)
