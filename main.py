@@ -38,7 +38,7 @@ xmax = 2.5
 q_axis = np.linspace(xmin,xmax,N)
 
 #tolerance to zero
-tol = 1e-10
+tol = 1e-5
 
 #size of smoothing filter
 filter_delta = 20

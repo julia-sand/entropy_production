@@ -122,8 +122,8 @@ def cleaner(arr,t0):
   masknan = functions.get_rhomask(t0)
 
   #this function removes nan's and the end points which come from the truncation of the gradients
-  arr = arr[np.min(masknan)+500:np.max(masknan)-300]
-  plotq = q_axis[np.min(masknan)+500:np.max(masknan)-300]
+  #arr = arr[np.min(masknan)+500:np.max(masknan)-300]
+  #plotq = q_axis[np.min(masknan)+500:np.max(masknan)-300]
   return plotq , arr
 
 #set ylim for plot
@@ -136,7 +136,8 @@ def plot_pair(tcurr,title,labels,gs,locy):
   plt.title(title, loc = "center", fontsize=fontsizetitles)
 
   plt.plot(q_axis,functions.rho(tcurr),color=c3,lw=4)
-  plt.plot(q_axis,generic_filter(functions.distribution(tcurr),sc.median,size=150,mode="constant"),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
+  plt.plot(q_axis,functions.distribution(tcurr),color=c1,lw=3)
+  #plt.plot(q_axis,generic_filter(functions.distribution(tcurr),sc.median,size=150,mode="constant"),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
 
 
   ax = plt.gca()
@@ -151,7 +152,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
   #this just removes the areas of low statistics rho < tol
   qseries =  plot_data[0]
-  yseries = generic_filter(plot_data[1],sc.median,size=10,mode="nearest")
+  yseries = plot_data[1]#generic_filter(plot_data[1],sc.median,size=10,mode="nearest")
   sigma_data = cleaner(functions.dsigma(tcurr),tcurr)
   sigmaseries = -sigma_data[1]#-functions.dsigma(tcurr)
 
@@ -162,14 +163,14 @@ def plot_pair(tcurr,title,labels,gs,locy):
   series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
   series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
 
-  ax0.set_ylim((-45,30))
+  #ax0.set_ylim((-45,30))
 
   if locy ==0:
     ax.set_ylabel(r'$\mathrm{f}_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= 7)
     ax0.set_ylabel(r'$-\partial U_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= -5)
     if gs == gs0:
       #for edges
-      ax0.set_ylim((-270,0))
+      #ax0.set_ylim((-270,0))
       ax.fill_between(q_axis,p_initial(q_axis),color = c2,alpha = shadingalpha)
   #else:
   #   ax0.set_ylim((-45,30))
@@ -178,7 +179,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
   if locy ==-1 and gs == gs1:
     ax.fill_between(q_axis,p_final(q_axis),color = c2,alpha = shadingalpha)
-    ax0.set_ylim((-40,300))
+    #ax0.set_ylim((-40,300))
 
 
 #set up the gridspec
