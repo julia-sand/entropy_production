@@ -8,6 +8,8 @@ import matplotlib.gridspec as gridspec
 import matplotlib.patches as mpatches
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.lines as mlines
+from scipy.ndimage import median_filter,generic_filter
+import scipy.ndimage as sc
 
 
 ##make the plots
@@ -119,20 +121,10 @@ def cleaner(arr,t0):
   masknan = functions.get_rhomask(t0)
 
   #this function removes nan's and the end points which come from the truncation of the gradients
-  arr = arr[np.min(masknan)+20:np.max(masknan)-20]
-  plotq = q_axis[np.min(masknan)+20:np.max(masknan)-20]
+  arr = arr[np.min(masknan)+30:np.max(masknan)-30]
+  plotq = q_axis[np.min(masknan)+30:np.max(masknan)-30]
 
-  return plotq, arr
-  #generic_filter(arr,sc.median,1,mode="constant")
-
-
-#plot params
-
-#fontsizes
-xmax = 5
-fontsize = 28
-fontsizeticks = 22
-fontsizetitles = 28
+  return plotq , arr
 
 #set ylim for plot
 #ymin = -30
@@ -144,7 +136,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
   plt.title(title, loc = "center", fontsize=fontsizetitles)
 
   plt.plot(q_axis,functions.rho(tcurr),color=c3,lw=4)
-  plt.plot(q_axis,functions.distribution(tcurr),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
+  plt.plot(q_axis,generic_filter(functions.distribution(tcurr),sc.median,size=10,mode="nearest"),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
 
   ax = plt.gca()
   format_dist_axes(ax)
@@ -153,18 +145,18 @@ def plot_pair(tcurr,title,labels,gs,locy):
   ax.set_xticklabels([])
   ax.tick_params(axis='y', labelsize=fontsizeticks)
 
-  drift0 = plt.subplot(gs[1, locy])
+  ax0 = plt.subplot(gs[1, locy])
   plot_data = cleaner(functions.optimal_drift(tcurr),tcurr)
 
   #this just removes the areas of low statistics rho < tol
   qseries =  plot_data[0]
-  yseries = plot_data[1]
+  yseries = generic_filter(plot_data[1],sc.median,size=10,mode="nearest")
   sigma_data = cleaner(functions.dsigma(tcurr),tcurr)
   sigmaseries = -sigma_data[1]#-functions.dsigma(tcurr)
 
-  ax0 = plt.gca()
+  #ax0 = plt.gca()
   format_drift(ax0)
-  ax0.text(s = labels[1],fontsize = fontsizetitles,x = 0.1, y =0.95, zorder = titlezorder,transform=ax.transAxes)
+  ax0.text(s = labels[1],fontsize = fontsizetitles,x = 0.05, y =-0.25, zorder = titlezorder,transform=ax.transAxes)
 
   series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
   series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
@@ -188,8 +180,8 @@ def plot_pair(tcurr,title,labels,gs,locy):
 fig = plt.figure(figsize = (18,24)) #figsize = (width,height)
 
 gs = gridspec.GridSpec(2, 1, height_ratios=[1,1],hspace=0.2)
-gs0 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[0], hspace=0.1, wspace=0.2)
-gs1 = gridspec.GridSpecFromSubplotSpec(2, 4, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.1, wspace=0.2)
+gs0 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[0], hspace=0.1, wspace=0.3)
+gs1 = gridspec.GridSpecFromSubplotSpec(2, 4, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.1, wspace=0.3)
 
 plot_pair(0,"$\mathrm{t} = 0$",["(a)","(f)"],gs0,0)
 plot_pair(0.25,"$\mathrm{t} = 1/8\ \mathrm{t}_f$",["(b)","(g)"],gs0,1)

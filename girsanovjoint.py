@@ -42,7 +42,7 @@ plot_titles = np.flip(plot_titles)
 
 #write header to file
 header=["t","P","Q","ptx"]
-with open("ep_girsanovjoint.csv","w") as file: 
+with open("ep_girsanovjoint.csv","w") as file:
    writer = csv.writer(file,delimiter=" ", lineterminator="\n")
    writer.writerow(header)
 
@@ -105,7 +105,7 @@ for t in plot_times:
   ####
 
 
-df_girspdf_ep = pd.read_csv("ep_girsanovjoint.csv", header = 0)
+df_girspdf_ep = pd.read_csv("ep_girsanovjoint.csv", sep=" ", header = 0)
 
 #make the plot
 vmax = np.max(df_girspdf_ep.ptx)

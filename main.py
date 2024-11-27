@@ -32,9 +32,9 @@ times_t0 = np.round(t2_vec/(epsilon**2),4)
 alpha = 0
 
 #xaxis for calculations
-N = 6000
-xmin = -3
-xmax = 3
+N = 50000
+xmin = -2.5
+xmax = 2.5
 q_axis = np.linspace(xmin,xmax,N)
 
 #tolerance to zero
