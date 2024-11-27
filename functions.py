@@ -132,18 +132,18 @@ def mean_t0(t0):
   q = df[df.t0 == t0].x.to_numpy()
   #get rho
   rho_temp = df[df.t0 == t0].ptx.to_numpy()
-  
+
   return np.trapz(q*rho_temp,q)
 
 def var_t0(t0):
 
   #t2 = round(t0*(epsilon**2),dps)
   #get q-axis
-  q = df[df.t0 == t0].x.to_numpy()
+  #q = df[df.t0 == t0].x.to_numpy()
   #get rho
   rho_temp = df[df.t0 == t0].ptx.to_numpy()
   
-  return np.trapz((q**2)*rho_temp,q)
+  return np.trapz((q_axis**2)*rho_temp,q)
 
 
 def dfun(vals,qs):
@@ -365,12 +365,14 @@ def underdamped_drift_interp_function(t0,g):
 
   #q_temp = q_axis
 
+  mask = get_rhomask(t0)
   w_temp = distribution(t0)
   dsig_temp_underdamped = optimal_drift(t0)
   #dsigout = generic_filter(dsig_temp_underdamped,sc.mean,size=100)
-  interp_dsig_underdamped = sci.splrep(q_axis[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()],
-                                       dsig_temp_underdamped[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()],
-                                       w=w_temp[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()], k=5)
+  interp_dsig_underdamped = sci.splrep(q_axis[mask],dsig_temp_underdamped[mask],w=w_temp[mask],k=5)
+  #sci.splrep(q_axis[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()],
+  #                                     dsig_temp_underdamped[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()],
+  #                                     w=w_temp[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()], k=5)
 
   return interp_dsig_underdamped
 

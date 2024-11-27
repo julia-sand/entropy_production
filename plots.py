@@ -102,7 +102,7 @@ def joint_distributions_scatter(fig,gs,
   #qorder = np.argsort(q_init)
   qnorm = np.trapz(qmarginal,Q.T[0])
 
-  ax_qmarginal.plot(functions.distribution(time),functions.q_axis(time),
+  ax_qmarginal.plot(functions.distribution(time),q_axis,
                     color="orange",lw=lw)
   ax_qmarginal.plot(qmarginal/qnorm
                     ,Q.T[0],color=c1,lw=lw)

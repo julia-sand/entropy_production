@@ -32,13 +32,13 @@ times_t0 = np.round(t2_vec/(epsilon**2),4)
 alpha = 0
 
 #xaxis for calculations
-N = 50000
-xmin = -2.5
-xmax = 2.5
+N = 60000
+xmin = -3
+xmax = 3
 q_axis = np.linspace(xmin,xmax,N)
 
 #tolerance to zero
-tol = 1e-5
+tol = 1e-100
 
 #size of smoothing filter
 filter_delta = 20

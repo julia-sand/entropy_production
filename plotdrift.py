@@ -124,7 +124,7 @@ def cleaner(arr,t0):
   #this function removes nan's and the end points which come from the truncation of the gradients
   #arr = arr[np.min(masknan)+500:np.max(masknan)-300]
   #plotq = q_axis[np.min(masknan)+500:np.max(masknan)-300]
-  return plotq , arr
+  return q_axis , arr
 
 #set ylim for plot
 #ymin = -30

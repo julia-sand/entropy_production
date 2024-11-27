@@ -84,7 +84,7 @@ for t2 in enumerate(t2_vec):
   xz_sort, sort_idx = np.unique(xz, return_index = True)
 
   #run kde on these points
-  kde = KernelDensity(kernel='epanechnikov', bandwidth=0.15).fit(xz.reshape(-1, 1))
+  kde = KernelDensity(kernel='epanechnikov', bandwidth=0.2).fit(xz.reshape(-1, 1))
 
   #estimated pdf
   logrho_temp = kde.score_samples(q_axis.reshape(-1, 1))
