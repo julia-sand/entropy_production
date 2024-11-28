@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--epsilon", default=0.2, help="multiscale expansion parameter")
 parser.add_argument("--Tf", default=2, help="final (underdamped) time")
-parser.add_argument("--hstep", default=0.01, help="size of timemesh")
+parser.add_argument("--hstep", default=0.25, help="size of timemesh")
 parser.add_argument("--g", default=0.01, help="momentum coupling constant")
 parser.add_argument("--n", default=100000, help="number of points in optimal transport matching")
 parser.add_argument("--mcsamples", default=10000, help="number of monte carlo trajectories in calculation of joint distribution")
@@ -27,7 +27,7 @@ args = parser.parse_args()
 #get params
 epsilon = float(args.epsilon)
 T = float(args.Tf)
-h_step = float(args.hstep)
+h0_step = float(args.hstep)
 g = float(args.g)
 n = int(args.n)
 mc_samples = int(args.mcsamples)
@@ -42,12 +42,15 @@ filename = args.filename
 Tf = (epsilon**2)*T  #final time for t2
 
 #decimal places for the time lookup.
+h_step = h0_step*(epsilon**2)
 dps =  int(np.ceil(-np.log10(h_step))+1)
-t_steps = int(Tf/h_step) + 1 #number of timesteps
-t2_vec = np.round(np.linspace(0,Tf,t_steps,endpoint = True),dps)
-h0_step = np.round(h_step/(epsilon**2),dps)
+t_steps = int(T/h0_step) + 1 #number of timesteps
+times_t0 = np.round(np.linspace(0,T,t_steps,endpoint = True),dps)
+t2_vec = np.round(times_t0*(epsilon**2),dps)
+#t2_vec = np.round(np.linspace(0,Tf,t_steps,endpoint = True),dps)
+#h0_step = np.round(h_step/(epsilon**2),dps)
 
-times_t0 = np.round(t2_vec/(epsilon**2),dps)
+#times_t0 = np.round(t2_vec/(epsilon**2),dps)
 
 alpha = 0
 

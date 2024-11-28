@@ -91,7 +91,7 @@ for t2 in enumerate(t2_vec):
   #interp_dsigma = sci.interp1d(xz_sort,dsigmax[sort_idx], kind='cubic', bounds_error=False, fill_value=(dsigmax[0], dsigmax[-1]), assume_sorted=True)
 
   #make new df with these
-  data = np.column_stack((np.round(t2[1]/(epsilon**2),dps)*np.ones(N),t2[1]*np.ones(N), q_axis, 
+  data = np.column_stack((times_t0[t2[0]]*np.ones(N),t2[1]*np.ones(N), q_axis, 
                           np.interp(q_axis,xz_sort,dsigmax[sort_idx]),#interp_dsigma(x_axis), 
                           logrho_temp, dens))
   np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0)
