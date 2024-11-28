@@ -25,14 +25,14 @@ Tf = (epsilon**2)*T  #final time for t2
 dps =  int(np.ceil(-np.log10(h_step))+1)
 t_steps = int(Tf/h_step) + 1 #number of timesteps
 t2_vec = np.round(np.linspace(0,Tf,t_steps,endpoint = True),dps)
-h0_step = np.round(h_step/(epsilon**2),4)
+h0_step = np.round(h_step/(epsilon**2),dps)
 
-times_t0 = np.round(t2_vec/(epsilon**2),4)
+times_t0 = np.round(t2_vec/(epsilon**2),dps)
 
 alpha = 0
 
 #xaxis for calculations
-N = 60000
+N = 50000
 xmin = -3
 xmax = 3
 q_axis = np.linspace(xmin,xmax,N)

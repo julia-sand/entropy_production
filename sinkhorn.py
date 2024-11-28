@@ -1,10 +1,13 @@
 #import torch
+
+
+
 import ot
 #import scipy.interpolate as sci
 from sklearn.neighbors import KernelDensity
 #from geomloss import SamplesLoss # See also ImagesLoss, VolumesLoss
 
-from numba import jit
+#from numba import jit
 import csv
 
 #get the parameters
@@ -70,7 +73,7 @@ for x in enumerate(xs):
 #x_axis = np.linspace(xmin,xmax,N)
 #df = pd.DataFrame()
 
-header=["t2","x","dsigma","logptx","ptx"]
+header=["t0","t2","x","dsigma","logptx","ptx"]
 with open("results.csv","w") as file: 
    writer = csv.writer(file,delimiter=" ", lineterminator="\n")
    writer.writerow(header)
@@ -84,7 +87,7 @@ for t2 in enumerate(t2_vec):
   xz_sort, sort_idx = np.unique(xz, return_index = True)
 
   #run kde on these points
-  kde = KernelDensity(kernel='epanechnikov', bandwidth=0.2).fit(xz.reshape(-1, 1))
+  kde = KernelDensity(kernel='epanechnikov', bandwidth=0.5).fit(xz.reshape(-1, 1))
 
   #estimated pdf
   logrho_temp = kde.score_samples(q_axis.reshape(-1, 1))
@@ -94,7 +97,7 @@ for t2 in enumerate(t2_vec):
   #interp_dsigma = sci.interp1d(xz_sort,dsigmax[sort_idx], kind='cubic', bounds_error=False, fill_value=(dsigmax[0], dsigmax[-1]), assume_sorted=True)
 
   #make new df with these
-  data = np.column_stack((t2[1]*np.ones(N), q_axis, 
+  data = np.column_stack((np.round(t2[1]/(epsilon**2),dps)*np.ones(N),t2[1]*np.ones(N), q_axis, 
                           np.interp(q_axis,xz_sort,dsigmax[sort_idx]),#interp_dsigma(x_axis), 
                           logrho_temp, dens))
   np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0)

@@ -44,13 +44,14 @@ def zchop(a,tol):
 #function to get rho at time t0.
 def rho(t0):
   #t2 = round(t0*(epsilon**2),dps)
-  rho_temp = df[df.t0==t0].ptx.to_numpy()
-  return zchop(rho_temp,tol)
+  #rho_temp = df[df.t0==t0].ptx.to_numpy()
+  return df[df.t0==t0].ptx.to_numpy()#zchop(rho_temp,tol)
 
 
 #get all xcoords where there is probability mass
-def get_rhomask(t0):
-  return np.where(rho(t0)>0)
+def get_rhomask(t0,tol=tol):
+  
+  return np.where(zchop(rho(t0),tol)>0)
 
 def od_bound(T,g):
   return (1/(1+g))*(w2_dist/(T*(epsilon**2)))
@@ -143,7 +144,7 @@ def var_t0(t0):
   #get rho
   rho_temp = df[df.t0 == t0].ptx.to_numpy()
   
-  return np.trapz((q_axis**2)*rho_temp,q)
+  return np.trapz((q_axis**2)*rho_temp,q_axis)
 
 
 def dfun(vals,qs):
