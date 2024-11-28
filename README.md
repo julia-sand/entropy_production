@@ -1,26 +1,29 @@
 # entropy_production
 
 To compute the overdamped problem (an optimal transport problem)
-
-srun python entropy_production/sinkhorn.py --epsilon=<epsilon>
+```
+srun python entropy_production/sinkhorn.py --epsilon= --T= --hstep=
+```
 
 where:
 
 epsilon is the multiscale expansion parameter. 
 
-T is the final time in the underdamped problem
+Tf is the final time in the underdamped problem
 
-h_step is the size of the time mesh
+hstep is the size of the time mesh
 
 g is the coupling constant in the dynamics 
 
-n is the number of samples in the pointclouds for solving the optimal transport problem
+and more arguments can be found by using the help "-h" option.
+
+Outputs: the csv containing the results of the overdamped calculation and a text file containing the metaparameters of the problem
 
 To compute the corrections for the underdamped distributions and drift, use
 
-srun python3 distributionanddrift.py epsilon T h_step g
+srun python3 distributionanddrift.py --args
 
-The overdamped data is fetched in the datafetch.py script. The new underdamped columns are appended to the "results" csv. This behviour can be customised by changing the output file for at the end of the distributionanddrift.py file. Similarly, use plotdrift.py to get the plot of the drifts.
+The overdamped data is fetched in the datafetch.py script based on the input file name. The new underdamped columns are appended to the "results" csv. This behviour can be customised by changing the output file for at the end of the distributionanddrift.py file. Similarly, use plotdrift.py to get the plot of the drifts.
 
 
 
