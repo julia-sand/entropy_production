@@ -9,13 +9,33 @@ import numpy as np
 import numpy.random as npr
 import datetime
 
-import sys
+import argparse,sys
+
+#add the arguments to the parser
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--epsilon", default=0.2, help="multiscale expansion parameter")
+parser.add_argument("--Tf", default=2, help="final (underdamped) time")
+parser.add_argument("--hstep", default=0.01, help="size of timemesh")
+parser.add_argument("--g", default=0.01, help="momentum coupling constant")
+parser.add_argument("--n", default=100000, help="number of points in optimal transport matching")
+parser.add_argument("--mcsamples", default=10000, help="number of monte carlo trajectories in calculation of joint distribution")
+parser.add_argument("--filename", default="results", help="filename for input and output file")
+
+args = parser.parse_args()
 
 #get params
-epsilon = float(sys.argv[1])
-T = float(sys.argv[2])
-h_step = float(sys.argv[3]) #size of time mesh
-g = float(sys.argv[4])
+epsilon = float(args.epsilon)
+T = float(args.Tf)
+h_step = float(args.hstep)
+g = float(args.g)
+n = int(args.n)
+mc_samples = int(args.mcsamples)
+filename = args.filename
+
+#T = float(sys.argv[2])
+#h_step = float(sys.argv[3]) #size of time mesh
+#g = float(sys.argv[4])
 #n = int(sys.argv[5]) #number of samples for the optimal transport problem
 
 ### params

@@ -1,9 +1,4 @@
-#import torch
-
-
-
 import ot
-#import scipy.interpolate as sci
 from sklearn.neighbors import KernelDensity
 #from geomloss import SamplesLoss # See also ImagesLoss, VolumesLoss
 
@@ -13,7 +8,7 @@ import csv
 #get the parameters
 from main import *
 
-n = int(sys.argv[5]) #number of samples for the optimal transport problem
+#number of samples for the optimal transport problem
 
 # Create some large histograms from initial and final data
 xs = npr.choice(np.linspace(-10,10,n), size = n, p = p_initial(np.linspace(-10,10,n))/ sum(p_initial(np.linspace(-10,10,n))))
@@ -30,7 +25,6 @@ idx = np.argmax(G0_data[1]["G"],axis=1)
 
 
 #print("OT done")
-
 
 #find lagrangian trajectories and burgers velocities
 #@jit(nopython=True)
@@ -74,7 +68,7 @@ for x in enumerate(xs):
 #df = pd.DataFrame()
 
 header=["t0","t2","x","dsigma","logptx","ptx"]
-with open("results.csv","w") as file: 
+with open(filename+".csv","w") as file: 
    writer = csv.writer(file,delimiter=" ", lineterminator="\n")
    writer.writerow(header)
 
@@ -103,7 +97,7 @@ for t2 in enumerate(t2_vec):
   np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0)
 
   #append to the csv
-  with open("results.csv","a") as file:
+  with open(filename+".csv","a") as file:
     np.savetxt(file,data)
 
 #sort by
@@ -117,9 +111,9 @@ for t2 in enumerate(t2_vec):
 #df.to_csv("results.csv",index=False)
 
 #write out the parameters
-filename = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+#filename = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 # open a file in write mode
-with open(filename+'.txt', 'w') as file:
+with open(filename+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+'.txt', 'w') as file:
     # write variables using repr() function
     file.write("epsilon = " + repr(epsilon) + '\n')
     file.write("T = " + repr(T) + '\n')

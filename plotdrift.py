@@ -119,7 +119,7 @@ def cleaner(arr,t0):
   #copy q axis
   #plotq = np.copy(q_axis)
 
-  masknan = functions.get_rhomask(t0,1e-5)
+  masknan = functions.get_rhomask(t0,1e-4)
 
   #this function removes nan's and the end points which come from the truncation of the gradients
   #arr = arr[np.min(masknan)+500:np.max(masknan)-300]
