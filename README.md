@@ -20,7 +20,7 @@ To compute the corrections for the underdamped distributions and drift, use
 
 srun python3 distributionanddrift.py epsilon T h_step g
 
-The overdamped data is fetched in the datafetch.py script. The "results" csv is overwritten to add the underdamped columns. This can be amended with the filename of the output. 
+The overdamped data is fetched in the datafetch.py script. The new underdamped columns are appended to the "results" csv. This behviour can be customised by changing the output file for at the end of the distributionanddrift.py file. Similarly, use plotdrift.py to get the plot of the drifts.
 
 
 
