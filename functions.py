@@ -4,7 +4,7 @@ girsanov theorem
 """
 
 
-#from scipy.ndimage import median_filter,generic_filter
+from scipy.ndimage import median_filter,generic_filter
 import scipy.ndimage as sc
 import scipy.interpolate as sci
 
@@ -148,11 +148,11 @@ def var_t0(t0):
 
 
 def dfun(vals,qs):
-  #finds numerical gradient using central differences and applies a small median filter to reduce outliers
+  #finds numerical  using central differences and applies a small median filter to reduce outliers
 
-  #dfun = np.gradient(vals,qs,edge_order=2)
+  dfun = np.gradient(vals,qs,edge_order=2)
 
-  return np.gradient(vals,qs,edge_order=2)#generic_filter(dfun,sc.median,filter_delta,mode = "nearest")
+  return generic_filter(dfun,sc.median,filter_delta,mode = "nearest")
 
 def dlogrho(t0 ):
 
@@ -162,16 +162,13 @@ def dlogrho(t0 ):
   #get rid of nans
   #interpolate only on non-zero vals of rho
   idx = get_rhomask(t0)
-  logrho_temp = logrho[idx]
-  q_axis_temp = q_axis[idx]
 
   #differentiate and filter without edges
-  dlogrho = np.gradient(logrho_temp,q_axis_temp,edge_order=2)
-  #filter_dlogrho = dlogrho#generic_filter(dlogrho,sc.median,filter_delta,mode="nearest")
+  dlogrho = np.gradient(logrho[idx],q_axis[idx],edge_order=2)
 
   #put back into right place
   dlogout = np.zeros_like(logrho)
-  dlogout[idx] = dlogrho #filter_dlogrho
+  dlogout[idx] = generic_filter(dlogrho,sc.median,filter_delta,mode="nearest")
 
   return dlogout
 
@@ -179,14 +176,14 @@ def drho(t0):
 
   #interpolate only on non-zero vals of rho
   idx = get_rhomask(t0)
-  rho_vals_temp = rho(t0)[idx]
+  #rho_vals_temp = rho(t0)[idx]
   #q_axis_temp = q_axis[idx]
 
-  #drho = np.gradient(rho_vals_temp,q_axis_temp,edge_order=2)
+  drho = np.gradient(rho(t0)[idx],q_axis[idx],edge_order=2)
 
   #set values outside of range to zero to prevent extrapolation error
   drho_vals = np.zeros_like(q_axis)
-  drho_vals[idx] = np.gradient(rho_vals_temp,q_axis[idx],edge_order=2)#drho #generic_filter(drho,sc.median,filter_delta,mode="constant")
+  drho_vals[idx] = generic_filter(drho,sc.median,filter_delta,mode="constant")
 
   return drho_vals
 
@@ -211,28 +208,20 @@ def dsigma_alpha_rho(t0):
 def rho_ddsigma_alpha_rho(t0):
 
   #get drho
-  drhotemp = dlogrho(t0)
+  #drhotemp = dlogrho(t0)
 
   #remove zeros first
   idx = get_rhomask(t0)
-  #ddrhotemp = 
-  #q_temp = 
-  ddlogrho = np.gradient(drhotemp[idx],q_axis[idx],edge_order=2)
-
-  ddlogrho = ddlogrho #generic_filter(ddlogrho,sc.mean,filter_delta,mode="nearest")
+  ddlogrho = np.gradient(dlogrho(t0)[idx],q_axis[idx],edge_order=2)
 
   #get ddsigma
-  dsigtemp = dsigma(t0)
-  #dsig_vals = dsigtemp[idx]
-  ddsigtemp = np.gradient(dsigtemp[idx],q_axis[idx],edge_order=2)
-
-  temp_out = alpha*ddlogrho + ddsigtemp#generic_filter(ddsigtemp,sc.mean,filter_delta,mode="nearest")
+  ddsigtemp = np.(dsigma(t0)[idx],q_axis[idx],edge_order=2)
 
   temp_vals_out = np.zeros_like(q_axis)
-  temp_vals_out[idx] = temp_out
+  temp_vals_out[idx] = alpha*generic_filter(ddlogrho,sc.median,filter_delta,mode="nearest") + generic_filter(ddsigtemp,sc.median,filter_delta,mode="nearest")
 
-  output_vals = temp_vals_out*rho(t0)
-  return output_vals#generic_filter(output_vals,sc.mean,size=filter_delta,mode="constant")
+  return temp_vals_out*rho(t0)
+  #output_vals#generic_filter(output_vals,sc.mean,size=filter_delta,mode="constant")
 
 def script_k(t0):#varsigma dot/2
   temp_vals = q_axis*rho_dsigma_alpha_rho(t0)
