@@ -2,7 +2,7 @@
 
 To compute the overdamped problem (an optimal transport problem)
 ```
-srun python entropy_production/sinkhorn.py --epsilon= --T= --hstep=
+srun python entropy_production/sinkhorn.py --args**
 ```
 
 where:
