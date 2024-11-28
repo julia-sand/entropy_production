@@ -7,7 +7,7 @@ srun python entropy_production/sinkhorn.py --args**
 
 For optional params, info can be found using "-h". See "main.py" for default values.
 
-Outputs: the csv containing the results of the overdamped calculation and a text file containing the metaparameters of the problem
+Outputs: the csv containing the results of the overdamped calculation and a text file containing the metaparameters of the run
 
 To compute the corrections for the underdamped distributions and drift, use
 
