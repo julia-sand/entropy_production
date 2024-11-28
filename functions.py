@@ -130,11 +130,11 @@ def mean_t0(t0):
 
   #t2 = round(t0*(epsilon**2),dps)
   #get q-axis
-  q = df[df.t0 == t0].x.to_numpy()
+  #q = df[df.t0 == t0].x.to_numpy()
   #get rho
   rho_temp = df[df.t0 == t0].ptx.to_numpy()
 
-  return np.trapz(q*rho_temp,q)
+  return np.trapz(q_axis*rho_temp,q_axis)
 
 def var_t0(t0):
 
@@ -215,7 +215,7 @@ def rho_ddsigma_alpha_rho(t0):
   ddlogrho = np.gradient(dlogrho(t0)[idx],q_axis[idx],edge_order=2)
 
   #get ddsigma
-  ddsigtemp = np.(dsigma(t0)[idx],q_axis[idx],edge_order=2)
+  ddsigtemp = np.gradient(dsigma(t0)[idx],q_axis[idx],edge_order=2)
 
   temp_vals_out = np.zeros_like(q_axis)
   temp_vals_out[idx] = alpha*generic_filter(ddlogrho,sc.median,filter_delta,mode="nearest") + generic_filter(ddsigtemp,sc.median,filter_delta,mode="nearest")

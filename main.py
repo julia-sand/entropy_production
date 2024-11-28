@@ -41,7 +41,7 @@ q_axis = np.linspace(xmin,xmax,N)
 tol = 1e-100
 
 #size of smoothing filter
-filter_delta = 20
+filter_delta = 500
 
 #set up the boundary conditions
 peak_center = 1
