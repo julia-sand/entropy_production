@@ -4,7 +4,7 @@ girsanov theorem
 """
 
 
-from scipy.ndimage import median_filter,generic_filter
+from scipy.ndimage import generic_filter
 import scipy.ndimage as sc
 import scipy.interpolate as sci
 
@@ -64,7 +64,6 @@ def dsigma(t0 ):
   sigtemp = df[df.t0==t0].dsigma.to_numpy()
 
   return -sigtemp
-  #-generic_filter(sigtemp,sc.median,100,mode="nearest")
 
 
 #used to compute cumulants and other functions
@@ -148,11 +147,11 @@ def var_t0(t0):
 
 
 def dfun(vals,qs):
-  #finds numerical  using central differences and applies a small median filter to reduce outliers
+  #finds numerical  using central differences and applies a small filter to reduce outliers
 
   dfun = np.gradient(vals,qs,edge_order=2)
 
-  return generic_filter(dfun,sc.median,filter_delta,mode = "nearest")
+  return generic_filter(dfun,sc.mean,filter_delta,mode = "nearest")
 
 def dlogrho(t0 ):
 
@@ -168,7 +167,7 @@ def dlogrho(t0 ):
 
   #put back into right place
   dlogout = np.zeros_like(logrho)
-  dlogout[idx] = generic_filter(dlogrho,sc.median,filter_delta,mode="nearest")
+  dlogout[idx] = generic_filter(dlogrho,sc.mean,filter_delta,mode="nearest")
 
   return dlogout
 
@@ -183,7 +182,7 @@ def drho(t0):
 
   #set values outside of range to zero to prevent extrapolation error
   drho_vals = np.zeros_like(q_axis)
-  drho_vals[idx] = generic_filter(drho,sc.median,filter_delta,mode="constant")
+  drho_vals[idx] = generic_filter(drho,sc.mean,filter_delta,mode="constant")
 
   return drho_vals
 
@@ -218,7 +217,7 @@ def rho_ddsigma_alpha_rho(t0):
   ddsigtemp = np.gradient(dsigma(t0)[idx],q_axis[idx],edge_order=2)
 
   temp_vals_out = np.zeros_like(q_axis)
-  temp_vals_out[idx] = alpha*generic_filter(ddlogrho,sc.median,filter_delta,mode="nearest") + generic_filter(ddsigtemp,sc.median,filter_delta,mode="nearest")
+  temp_vals_out[idx] = alpha*generic_filter(ddlogrho,sc.mean,filter_delta,mode="nearest") + generic_filter(ddsigtemp,sc.mean,filter_delta,mode="nearest")
 
   return temp_vals_out*rho(t0)
   #output_vals#generic_filter(output_vals,sc.mean,size=filter_delta,mode="constant")
