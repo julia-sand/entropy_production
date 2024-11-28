@@ -33,6 +33,10 @@ n = int(args.n)
 mc_samples = int(args.mcsamples)
 filename = args.filename
 
+#for compatibility with pandas
+#fileall = filename+".csv"
+
+
 #T = float(sys.argv[2])
 #h_step = float(sys.argv[3]) #size of time mesh
 #g = float(sys.argv[4])

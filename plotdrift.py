@@ -190,17 +190,15 @@ gs = gridspec.GridSpec(2, 1, height_ratios=[1,1],hspace=0.2)
 gs0 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[0], hspace=0.1, wspace=0.3)
 gs1 = gridspec.GridSpecFromSubplotSpec(2, 4, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.1, wspace=0.3)
 
-plot_pair(times_t0[0],"$\mathrm{t} = 0$",["(a)","(f)"],gs0,0)
-plot_pair(0.25,"$\mathrm{t} = 1/8\ \mathrm{t}_f$",["(b)","(g)"],gs0,1)
-plot_pair(0.5,"$\mathrm{t} = 1/4\ \mathrm{t}_f$",["(c)","(h)"],gs0,2)
-plot_pair(0.75,"$\mathrm{t} = 3/8\ \mathrm{t}_f$",["(d)","(i)"],gs0,3)
-plot_pair(1,"$\mathrm{t} = 1/2\ \mathrm{t}_f$",["(e)","(j)"],gs0,-1)
 
-plot_pair(1.25,"$\mathrm{t} = 5/8\ \mathrm{t}_f$",["(k)","(p)"],gs1,0)
-plot_pair(1.5,"$\mathrm{t} = 3/4\ \mathrm{t}_f$",["(l)","(q)"],gs1,1)
-plot_pair(1.75,"$\mathrm{t} = 7/8 \mathrm{t}_f$",["(m)","(r)"],gs1,2)
-plot_pair(2.,"$\mathrm{t} = \mathrm{t}_f$",["(n)","(s)"],gs1,3)
-#plot_pair(T,"$\mathrm{t} = \mathrm{t}_f$",["(o)","(t)"],gs1,-1)
+#get elements of the array
+idx = np.round(np.linspace(0, t_steps - 1, 9)).astype(int)
+
+for i in idx:
+   
+   gs = gs0 if (i<4) else gs1
+   plot_pair(times_t0[i],f"t = {times_t0[i]}",["(a)","(f)"],gs0,i%4)
+   
 
 #make legend
 l0 = mlines.Line2D([], [], color=c1, lw = lw)
