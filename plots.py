@@ -28,12 +28,6 @@ c4 = "#b2df8a" #light green
 #panel labels:
 label_titles = ["(a)","(b)","(c)","(d)","(e)","(f)"]
 
-
-# Plotting the distributions -initialise the figure object & creates the gridspec
-#fig_joint_distributions_meshgrid = plt.figure(figsize=(15,10))
-#gs_joint_distributions = fig_joint_distributions_meshgrid.add_gridspec(2, 3, width_ratios=[1, 1, 1], height_ratios=[1, 1])
-
-
 #axes formatting
 def format_dist_axes(ax):
 
@@ -48,7 +42,67 @@ def format_dist_axes(ax):
   ax.spines['bottom'].set_zorder(1000)
 
 
-#function for plotting
+#set up plots
+#panel labels:
+label_titles = ["(a)","(b)","(c)","(d)","(e)","(f)"]
+
+#what times to plot
+times_to_save = [0,0.2,0.4,0.6,0.8,1]
+times_to_save = np.round(times_to_save,4)
+
+hist_plot_titles = [f"t = {times_to_save[j]}"+r"$\,t_f$" for j in range(0,len(times_to_save))]
+
+##########-------HISTOGRAMS PLOTS-------##################
+def plot_distributions_ep(plot_index,underdamped_data,overdamped_data,tcurr):
+
+  """
+  Function that plots the histogram, underdamped and overdamped distributions in a lil square
+
+  input:
+  -plot_index: where to put the plot
+  -histogram data
+  -current t0
+  """
+
+
+  x_ind = int(np.floor(plot_index/3))
+  y_ind = plot_index % 3
+  #get plot location
+  ax = fig_distributions.add_subplot(gs_distributions[x_ind,y_ind])
+  ax.set_title(hist_plot_titles[plot_index], loc = "center", fontsize=fontsizetitles)
+  ax.text(-2.6,0.5,label_titles[plot_index],fontsize = fontsizetitles)
+
+  
+  #plot the histograms
+  ax.hist(underdamped_data, range=(xmin,xmax), color = c2,bins = 100,density = True)
+  
+  #fit kde of the samples
+  kde = KernelDensity(kernel='epanechnikov', bandwidth=0.15).fit(underdamped_data.reshape(-1, 1))
+
+  #estimated pdf
+  kde_estimate = np.exp(kde.score_samples(q_axis.reshape(-1, 1)))
+  
+  ax.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw,  label =r"$T=2$",zorder = 10000)
+  ax.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
+  ax.plot(q_axis,kde_estimate,color="steelblue",lw=lw)
+
+  #format the axes
+  format_dist_axes(ax)
+  ax.set_ylim((-0.01,0.6))
+
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  if x_ind ==0:
+    ax.set_xticklabels([])
+  else:
+    ax.set_xlabel(r"$q$",fontsize = fontsizetitles)
+
+  if y_ind == 0:
+    ax.set_ylabel(r"$\rho(q,t)$",fontsize = fontsizetitles)
+
+
+##########--------------##################
+#GIRSANOV JOINT DISTRIBUTION PLOT
+
 def joint_distributions_scatter(fig,gs,
                                 plot_index,
                                 joint_out,
