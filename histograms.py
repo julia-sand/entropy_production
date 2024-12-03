@@ -11,7 +11,7 @@ import matplotlib.patches as mpatches
 
 from main import *
 import functions
-import plots
+from plots import *
 
 # Plotting the distributions
 fig_distributions = plt.figure(figsize=(8,6))
@@ -54,7 +54,7 @@ for i in range(0,len(times_t0)-1):
   
   #plot the selected times
   if (times_t0[i]/T in times_to_save):
-    plots.plot_distributions_ep(plot_index,q_evo_UD_prev,x_evo,times_t0[i])
+    plot_distributions_ep(plot_index,q_evo_UD_prev,x_evo,times_t0[i])
     plot_index += 1
 
   #overdamped
@@ -98,7 +98,7 @@ for i in range(0,len(times_t0)-1):
 
 
 #add final time plot
-plots.plot_distributions_ep(plot_index,q_evo_UD_prev,x_evo,T);
+plot_distributions_ep(plot_index,q_evo_UD_prev,x_evo,T);
 
 #add legend
 orange_line = mlines.Line2D([], [],color="orange",lw=lw)
