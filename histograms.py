@@ -54,7 +54,8 @@ for i in range(0,len(times_t0)-1):
   
   #plot the selected times
   if (times_t0[i]/T in times_to_save):
-    plot_distributions_ep(plot_index,q_evo_UD_prev,x_evo,times_t0[i])
+    plot_distributions_ep(fig_distributions,gs_distributions,
+                          plot_index,q_evo_UD_prev,x_evo,times_t0[i])
     plot_index += 1
 
   #overdamped
@@ -98,7 +99,7 @@ for i in range(0,len(times_t0)-1):
 
 
 #add final time plot
-plot_distributions_ep(plot_index,q_evo_UD_prev,x_evo,T);
+plot_distributions_ep(fig_distributions,gs_distributions,plot_index,q_evo_UD_prev,x_evo,T);
 
 #add legend
 orange_line = mlines.Line2D([], [],color="orange",lw=lw)
