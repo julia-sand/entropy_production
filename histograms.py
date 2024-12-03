@@ -121,7 +121,7 @@ fig_distributions.tight_layout(rect=(0, bbox.y1, 1, 1), h_pad=0.5, w_pad=0.5)
 
 
 #save the cumulants
-df_ep_cumulants_exp.to_csv("cumulants.csv")
+df_ep_cumulants_exp.to_csv("cumulants.csv", index=False)
 
 #save the histogram
 plt.savefig("histograms_test.pdf",bbox_inches="tight")
