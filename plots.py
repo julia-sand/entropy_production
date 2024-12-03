@@ -168,7 +168,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
 
   
   #plot the histograms
-  ax.hist(underdamped_data, range=(xmin,xmax), color = c2,bins = 100,density = True)
+  ax.hist(underdamped_data, range=(xmin,xmax), color = "slateblue",bins = 100,density = True)
   
   #fit kde of the samples
   kde = KernelDensity(kernel='epanechnikov', bandwidth=0.15).fit(underdamped_data.reshape(-1, 1))
