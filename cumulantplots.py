@@ -1,3 +1,8 @@
+from main import *
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
 df_ep_cumulants = pd.read_csv("cumulants.csv",header=0)
 cumulants_perturbative = pd.read_csv("cumulantscalculated.csv",header=0)
 cumulant_plot_times = df_ep_cumulants.t0.unique()
