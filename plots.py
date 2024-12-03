@@ -176,8 +176,8 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   #estimated pdf
   kde_estimate = np.exp(kde.score_samples(q_axis.reshape(-1, 1)))
   
-  ax.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw,  label =r"$T=2$",zorder = 10000)
   ax.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
+  ax.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw,  label =r"$T=2$")
   ax.plot(q_axis,kde_estimate,color="midnightblue",lw=lw)
 
   #format the axes
