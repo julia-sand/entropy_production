@@ -1,4 +1,9 @@
-df_ep_cumulants = pd.read_csv("cumulants.csv",index_col=0)
+from main import *
+import pandas as pd
+from plots import *
+
+
+df_ep_cumulants = pd.read_csv("cumulants.csv",header=0)
 cumulant_plot_times = df_ep_cumulants.t0.unique()
 cumulant_plot_times.sort()
 
