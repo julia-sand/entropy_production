@@ -7,7 +7,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.lines as mlines
 from sklearn.neighbors import KernelDensity
 
-
+import string
 from main import *
 import functions
 
@@ -25,9 +25,104 @@ c3 = "#33a02c" #dark green
 c1 = "#1f78b4" #darkblue
 c4 = "#b2df8a" #light green
 
-#set up plots
-#panel labels:
-label_titles = ["(a)","(b)","(c)","(d)","(e)","(f)"]
+##make the plots
+
+titlepad = 5
+titlex = 0.15
+titley = 0.85
+titlezorder = 1000
+
+#dist title location
+disttitlex = -2.8
+disttitley = 0.52
+
+suptitlex = 0.07
+suptitley = 1.1
+
+dashlinezorder = 10
+
+#alpha for filled shapes
+shadingalpha = 1
+
+# Plotting the graphs)
+#COLORS
+c2 = "#a6cee3" #lightblue
+c3 = "orange" #"#33a02c" #dark green
+c1 = "#1f78b4" #darkblue
+c4 = "#b2df8a" #light green
+
+
+#set ylim for plot
+ymin = -30
+ymax = 20
+
+#xlims
+xlimmax = 3
+xlimmin = -3
+
+lw = 3
+
+#fontsizes
+xmax = 5
+fontsize = 22
+fontsizeticks = 18
+fontsizetitles = 22
+
+titlepad = 10
+xtitle = 0.07
+ytitle = 0.88
+titlezorder = 1000
+
+
+lw = 3
+
+# Data for the graphs
+titlepad = 5
+
+def format_axes(ax,fontsize):
+
+  ax.set_xlim((0,T))
+  ax.set_xlabel(r"$\mathrm{t}$",fontsize = fontsizetitles)
+
+  #ax.set_xticklabels(labels = [0,1,2,3,4,5],fontsize=10)
+  #ax.tick_params(axis='y', labelsize=fontsizeticks)
+  ax.tick_params(axis='x', labelsize=fontsizeticks)
+  return ax
+
+def format_drift(ax):
+
+  #ax.yaxis.tick_right()
+  ax.tick_params(axis='x', labelsize=fontsizeticks)
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
+
+  #ax.set_ylim((-30,30))
+  ax.set_xlim((xlimmin,xlimmax))
+  ax.set_xlabel(r"$\mathrm{q}$",fontsize= fontsize,labelpad=7)
+
+##plot set-up
+def format_dist_axes(ax):
+
+  #ax.patch.set_alpha(0)
+  #ax.yaxis.tick_right()
+  ax.tick_params(axis='x', labelsize=fontsizeticks)
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  #ax.tick_params(labeltop='off', labelright='off')
+
+  ax.set_ylim((-0.01,0.6))
+  ax.set_xlim((xlimmin,xlimmax))
+  ax.spines['bottom'].set_zorder(1000)
+
+  #ax.set_xticks([])
+  #ax.set_xticklabels([])
+  #ax.set_xlabel(r"$\mathrm{q}$",fontsize= fontsize)
+
+##plot set-up
+def format_scatter_axes(ax):
+
+  ax.set_xlim((-4,3))
+  ax.set_ylim((-3,3))
+
+  ax.tick_params(axis='both', labelsize=fontsizeticks)
 
 #axes formatting
 def format_dist_axes(ax):
@@ -45,8 +140,6 @@ def format_dist_axes(ax):
 
 #set up plots
 #panel labels:
-label_titles = ["(a)","(b)","(c)","(d)","(e)","(f)"]
-
 #what times to plot
 times_to_save = [0,0.2,0.4,0.6,0.8,1]
 times_to_save = np.round(times_to_save,4)
@@ -71,7 +164,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   #get plot location
   ax = fig.add_subplot(gs[x_ind,y_ind])
   ax.set_title(hist_plot_titles[plot_index], loc = "center", fontsize=fontsizetitles)
-  ax.text(-2.6,0.5,label_titles[plot_index],fontsize = fontsizetitles)
+  ax.text(-2.85,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles)
 
   
   #plot the histograms
@@ -85,7 +178,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   
   ax.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw,  label =r"$T=2$",zorder = 10000)
   ax.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
-  ax.plot(q_axis,kde_estimate,color="steelblue",lw=lw)
+  ax.plot(q_axis,kde_estimate,color="midnightblue",lw=lw)
 
   #format the axes
   format_dist_axes(ax)
@@ -98,7 +191,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
     ax.set_xlabel(r"$q$",fontsize = fontsizetitles)
 
   if y_ind == 0:
-    ax.set_ylabel(r"$\rho(q,t)$",fontsize = fontsizetitles)
+    ax.set_ylabel(r"$\rho_t(q)$",fontsize = fontsizetitles)
 
 
 ##########--------------##################
@@ -139,7 +232,7 @@ def joint_distributions_scatter(fig,gs,
   ax_pmarginal = ax.inset_axes([0, 1.05, 1, 0.6])
   ax_qmarginal = ax.inset_axes([1.1, 0, 0.6, 1])
 
-  ax_pmarginal.text(-2.85,0.5,label_titles[plot_index],fontsize = fontsizetitles,zorder = 200)
+  ax_pmarginal.text(-2.85,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles,zorder = 200)
 
   #compute joint distribution and set nans to zero
   joint_out[np.isnan(joint_out)] = 0
