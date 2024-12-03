@@ -117,6 +117,11 @@ bbox = legend.get_window_extent(fig_distributions.canvas.get_renderer()).transfo
 fig_distributions.tight_layout(rect=(0, bbox.y1, 1, 1), h_pad=0.5, w_pad=0.5)
 
 
-#format
+
+
+#save the cumulants
+df_ep_cumulants_exp.to_csv("cumulants.csv")
+
+#save the histogram
 plt.savefig("histograms_test.pdf",bbox_to_inches="tight")
 
