@@ -53,7 +53,7 @@ times_to_save = np.round(times_to_save,4)
 hist_plot_titles = [f"t = {times_to_save[j]}"+r"$\,t_f$" for j in range(0,len(times_to_save))]
 
 ##########-------HISTOGRAMS PLOTS-------##################
-def plot_distributions_ep(plot_index,underdamped_data,overdamped_data,tcurr):
+def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcurr):
 
   """
   Function that plots the histogram, underdamped and overdamped distributions in a lil square
@@ -68,7 +68,7 @@ def plot_distributions_ep(plot_index,underdamped_data,overdamped_data,tcurr):
   x_ind = int(np.floor(plot_index/3))
   y_ind = plot_index % 3
   #get plot location
-  ax = fig_distributions.add_subplot(gs_distributions[x_ind,y_ind])
+  ax = fig.add_subplot(gs[x_ind,y_ind])
   ax.set_title(hist_plot_titles[plot_index], loc = "center", fontsize=fontsizetitles)
   ax.text(-2.6,0.5,label_titles[plot_index],fontsize = fontsizetitles)
 
