@@ -1,14 +1,7 @@
 from main import *
+import functions
 
 gs = np.logspace(-1,-4,4)
-
-####Cumulant functions
-
-def omega_fun(g):
-  return np.sqrt((1+g)/g)
-
-def A_fun(T,g):
-  return (1+g)*(1 - (((((1+g)/g) - 4)*(np.tanh(omega_fun(g)*T/2)*np.tanh(T)))/(omega_fun(g)*T*(omega_fun(g)*np.tanh(omega_fun(g)*T/2)-2*np.tanh(T)))))
 
 ##
 def mom_mean(t0,g):
@@ -17,15 +10,15 @@ def mom_mean(t0,g):
   #Bg = B_fun(T,g)
   #return epsilon*(a_minus_b2(t0))*kappa(t0)/(Ag-Bg)
 
-  A_minus_B = (1+g)*(1-((2/(omega_fun(g)*T))*(np.tanh(omega_fun(g)*T/2))))
-  return epsilon*(a_minus_b2(t0,g))*kappa(t0)/A_minus_B
+  A_minus_B = (1+g)*(1-((2/(functions.omega_fun(g)*T))*(np.tanh(functions.omega_fun(g)*T/2))))
+  return epsilon*(functions.a_minus_b2(t0,g))*functions.kappa(t0)/A_minus_B
 
 #momentum variance - ONLY FOR EP.
 def momentum_variance(t0,g):
-  Ag = A_fun(T,g)
+  Ag = functions.A_fun(T,g)
 
-  term1 = 1 - (((kappa(t0)*epsilon/Ag)*a(t0,g))**2)
-  int1 = np.trapz(rho_ddsigma_alpha_rho(t0),q_axis(t0))/Ag
+  term1 = 1 - (((functions.kappa(t0)*epsilon/Ag)*a(t0,g))**2)
+  int1 = np.trapz(functions.rho_ddsigma_alpha_rho(t0),q_axis)/Ag
   int_limit = np.where(times_t0==t0)[0][0] + 1
 
   aexp_temp = [a(t,g)*int1*np.exp(-2*(t0-t)) for t in times_t0]
@@ -33,28 +26,28 @@ def momentum_variance(t0,g):
 
   term2 = 2*(epsilon**2)*int2
 
-  sq_temp = ((dsigma(t0))**2)*rho(t0)
+  sq_temp = ((functions.dsigma(t0))**2)*functions.rho(t0)
 
-  term3 = (((epsilon)*a(t0,g)/Ag)**2)*np.trapz(sq_temp,q_axis(t0))
+  term3 = (((epsilon)*functions.a(t0,g)/Ag)**2)*np.trapz(sq_temp,q_axis)
 
   return term1 + term2 + term3
 
 
 #cross correlation
 def cross_correlation(t0,g):
-  Ag = A_fun(T,g)
-  return epsilon*a(t0,g)*script_k(t0)/Ag
+  Ag = functions.A_fun(T,g)
+  return epsilon*functions.a(t0,g)*functions.script_k(t0)/Ag
 
 #position process variance
 def position_variance_g(t0,g):
-  Ag = A_fun(T,g)
-  term1 = var_t0(t0) - (mean_t0(t0)**2)
-  term2 = 2*(epsilon**2)*g*a(t0,g)*script_k(t0)/Ag
+  Ag = functions.A_fun(T,g)
+  term1 = functions.var_t0(t0) - (functions.mean_t0(t0)**2)
+  term2 = 2*(epsilon**2)*g*functions.a(t0,g)*functions.script_k(t0)/Ag
 
   coeff3 = -2*script_k(t0)*(epsilon**2)*(1+g)/Ag
 
   int_limit = np.where(times_t0==t0)[0][0] + 1
-  a_temp = [a(t,g) for t in times_t0]
+  a_temp = [functions.a(t,g) for t in times_t0]
 
   int1 = (t0/T)*np.trapz(a_temp,times_t0,axis =0)
   int2 = np.trapz(a_temp[0:int_limit],times_t0[0:int_limit],axis =0)
@@ -62,13 +55,13 @@ def position_variance_g(t0,g):
 
 #linear position cumulant aka position mean
 def linear_position_cumulant(t0,g):
-  Ag = A_fun(T,g)
-  A_minus_B = (1+g)*(1-((2/(omega_fun(g)*T))*(np.tanh(omega_fun(g)*T/2))))
+  Ag = functions.A_fun(T,g)
+  A_minus_B = (1+g)*(1-((2/(functions.omega_fun(g)*T))*(np.tanh(functions.omega_fun(g)*T/2))))
 
-  term1 = mean_t0(t0) + kappa(t0)*(epsilon**2)*g*(a_minus_b2(t0,g))/A_minus_B
-  coeff2 = (epsilon**2)*(1+g)*kappa(t0)/A_minus_B
+  term1 = functions.mean_t0(t0) + functions.kappa(t0)*(epsilon**2)*g*(functions.a_minus_b2(t0,g))/A_minus_B
+  coeff2 = (epsilon**2)*(1+g)*functions.kappa(t0)/A_minus_B
   int_limit = np.where(times_t0==t0)[0][0] + 1
-  ab_temp = [a_minus_b2(t,g) for t in times_t0]
+  ab_temp = [functions.a_minus_b2(t,g) for t in times_t0]
   int1 = (t0/T)*np.trapz(ab_temp,times_t0,axis =0)
   int2 = np.trapz(ab_temp[0:int_limit],times_t0[0:int_limit],axis =0)
 
