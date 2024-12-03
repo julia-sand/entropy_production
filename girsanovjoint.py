@@ -22,7 +22,7 @@ import csv
 
 #initialise p,q axes
 p_init = np.linspace(-8,8,p_samples)
-q_init = np.linspace(-8,8,q_samples)
+q_init = np.linspace(-3,3,q_samples)
 
 #make a mesh grid
 P,Q = np.meshgrid(p_init,q_init)
