@@ -21,6 +21,7 @@ parser.add_argument("--g", default=0.01, help="momentum coupling constant")
 parser.add_argument("--n", default=100000, help="number of points in optimal transport matching")
 parser.add_argument("--mcsamples", default=10000, help="number of monte carlo trajectories in calculation of joint distribution")
 parser.add_argument("--filename", default="results", help="filename for input and output file")
+parser.add_argument("--pqsamples", default=51, help="number of samples to use for P and Q in the Girsanov calculation")
 
 args = parser.parse_args()
 
@@ -32,6 +33,8 @@ g = float(args.g)
 n = int(args.n)
 mc_samples = int(args.mcsamples)
 filename = args.filename
+p_samples = pqsamples
+q_samples = pqsamples
 
 #for compatibility with pandas
 #fileall = filename+".csv"

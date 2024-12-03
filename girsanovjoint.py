@@ -17,8 +17,8 @@ import csv
 #mc_samples = int(sys.argv[5]) #number of sample trajectories
 
 #set up the spacial coordinates
-p_samples = 21
-q_samples = 21
+#p_samples = 1
+#q_samples = 21
 
 #initialise p,q axes
 p_init = np.linspace(-8,8,p_samples)
