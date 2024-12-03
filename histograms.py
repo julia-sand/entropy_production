@@ -27,7 +27,7 @@ df_ep_cumulants_exp = pd.DataFrame(columns = ["g","t0","pos_var","mom_var","mom_
 ##Evolve the underdamped dynamics using EM SCHEME
 plot_index = 0
 
-evo_choice = np.linspace(xmin,xmax,mc_samples*10) #starting points to choose from for histograms
+evo_choice = np.linspace(xmin,xmax,mc_samples) #starting points to choose from for histograms
 sample_weights = p_initial(evo_choice)
 sample_weights /= sum(sample_weights)
 
@@ -68,23 +68,6 @@ for i in range(0,len(times_t0)-1):
   q_evo_UD_prev = q_evo_UD_prev + epsilon*h0_step*(p_evo_UD_prev-g*epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g)) + epsilon*np.sqrt(2*g*h0_step)*npr.randn(mc_samples)
   p_evo_UD_prev = p_evo_UD_prev - (p_evo_UD_prev + epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g))*h0_step + np.sqrt(2*h0_step)*npr.randn(mc_samples)
 
-
-  #idx = get_rhomask(times_t0[i])
-  #qmin = np.min(q_axis(times_t0[i]))
-  #qmax = np.max(q_axis(times_t0[i]))
-  #remove escaped particles
-  #q_evo_UD_new[q_evo_UD_new>xmax] = np.nan
-  #q_evo_UD_new[q_evo_UD_new<xmin] = np.nan
-
-  #remove nans and infs
-  #good_idx_q = np.argwhere(~np.isnan(q_evo_UD_new)) #np.where(q_evo_UD_mid != [np.nan,np.inf,-np.inf])
-  #good_idx_p = np.argwhere(~np.isnan(p_evo_UD_new)) #np.where(p_evo_UD_new != [np.nan,np.inf,-np.inf])
-
-  #idx_out = np.intersect1d(good_idx_q,good_idx_p)
-  #go forward without nans and infs
-  #q_evo_UD_prev = q_evo_UD_new[idx_out]
-  #p_evo_UD_prev = p_evo_UD_new[idx_out]
-
   covmat = np.cov(q_evo_UD_prev,p_evo_UD_prev)
 
   #compute mean and variance of p and q using MLE
@@ -104,8 +87,9 @@ plot_distributions_ep(fig_distributions,gs_distributions,plot_index,q_evo_UD_pre
 #add legend
 orange_line = mlines.Line2D([], [],color="orange",lw=lw)
 blue_line = mlines.Line2D([], [],color=c1,lw=lw)
-legend = fig_distributions.legend(handles=[blue_line,orange_line],
-          labels = ["Underdamped","Overdamped"],
+darkblue_line = mlines.Line2D([], [],color="midnightblue",lw=lw)
+legend = fig_distributions.legend(handles=[blue_line,darkblue_line,orange_line],
+          labels = ["Underdamped (Perturbative)","Underdamped (From Evolution)","Overdamped"],
            #prop={"size":fontsizeticks},
           fontsize = fontsizetitles,
           frameon = False,
