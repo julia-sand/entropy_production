@@ -44,7 +44,7 @@ def position_variance_g(t0,g):
   term1 = functions.var_t0(t0) - (functions.mean_t0(t0)**2)
   term2 = 2*(epsilon**2)*g*functions.a(t0,g)*functions.script_k(t0)/Ag
 
-  coeff3 = -2*script_k(t0)*(epsilon**2)*(1+g)/Ag
+  coeff3 = -2*functions.script_k(t0)*(epsilon**2)*(1+g)/Ag
 
   int_limit = np.where(times_t0==t0)[0][0] + 1
   a_temp = [functions.a(t,g) for t in times_t0]
