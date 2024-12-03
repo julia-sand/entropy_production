@@ -33,7 +33,7 @@ sample_weights /= sum(sample_weights)
 
 x_evo = npr.choice(evo_choice, size = mc_samples, p = sample_weights)
 q_evo_UD_prev = npr.choice(evo_choice, size = mc_samples, p = sample_weights) #position from assigned initial dist.
-p_evo_UD_prev = npr.randn(samples) #momentum, independent standard Gaussian samples
+p_evo_UD_prev = npr.randn(mc_samples) #momentum, independent standard Gaussian samples
 
 #compute mean and variance of p and q using MLE at t=0
 covmat = np.cov(q_evo_UD_prev,p_evo_UD_prev)
