@@ -5,6 +5,7 @@ This file stores all the plotting functions
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as mlines
+from sklearn.neighbors import KernelDensity
 
 
 from main import *
