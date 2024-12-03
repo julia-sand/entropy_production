@@ -11,14 +11,14 @@ import matplotlib.gridspec as gridspec
 from main import *
 from datafetch import *
 
-import sys
+#import sys
 import csv
 
-mc_samples = int(sys.argv[5]) #number of sample trajectories
+#mc_samples = int(sys.argv[5]) #number of sample trajectories
 
 #set up the spacial coordinates
-p_samples = 51
-q_samples = 51
+p_samples = 21
+q_samples = 21
 
 #initialise p,q axes
 p_init = np.linspace(-8,8,p_samples)

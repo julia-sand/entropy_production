@@ -10,6 +10,7 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.lines as mlines
 from scipy.ndimage import median_filter,generic_filter
 import scipy.ndimage as sc
+import string
 
 
 ##make the plots
@@ -119,16 +120,13 @@ def cleaner(arr,t0):
   #copy q axis
   #plotq = np.copy(q_axis)
 
-  masknan = functions.get_rhomask(t0,1e-4)
+  masknan = functions.get_rhomask(t0,1e-3)
 
   #this function removes nan's and the end points which come from the truncation of the gradients
   #arr = arr[np.min(masknan)+500:np.max(masknan)-300]
   #plotq = q_axis[np.min(masknan)+500:np.max(masknan)-300]
   return q_axis[masknan] , arr[masknan]
 
-#set ylim for plot
-#ymin = -30
-#ymax = 30
 
 def plot_pair(tcurr,title,labels,gs,locy):
   # t0 distribution
@@ -164,6 +162,11 @@ def plot_pair(tcurr,title,labels,gs,locy):
   series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
 
   #ax0.set_ylim((-45,30))
+  if gs == gs0:
+    #ax.set_ylim((-250,0))
+    ax0.set_ylim((-260,0))
+  else:
+    ax0.set_ylim((-20,260))
 
   if locy ==0:
     ax.set_ylabel(r'$\mathrm{f}_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= 7)
@@ -188,17 +191,18 @@ fig = plt.figure(figsize = (18,24)) #figsize = (width,height)
 
 gs = gridspec.GridSpec(2, 1, height_ratios=[1,1],hspace=0.2)
 gs0 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[0], hspace=0.1, wspace=0.3)
-gs1 = gridspec.GridSpecFromSubplotSpec(2, 4, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.1, wspace=0.3)
+gs1 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.1, wspace=0.3)
 
 
 #get elements of the array
-idx = np.round(np.linspace(0, t_steps - 1, 9)).astype(int)
+idx = np.round(np.linspace(0, t_steps - 1, 10)).astype(int)
 
-for i in idx:
-   
-   gs = gs0 if (i<4) else gs1
-   plot_pair(times_t0[i],f"t = {times_t0[i]}",["(a)","(f)"],gs0,i%4)
-   
+for i in enumerate(times_t0[idx]):
+   print(i)
+   print(i[0]%5)
+   gs = gs0 if (i[0]<5) else gs1
+   plot_pair(i[1],f"t = {i[1]}",["("+string.ascii_lowercase[(i[0]//10)+i[0]]+")","("+string.ascii_lowercase[(i[0]//10)+i[0]+10]+")"],gs,i[0]%5)
+
 
 #make legend
 l0 = mlines.Line2D([], [], color=c1, lw = lw)

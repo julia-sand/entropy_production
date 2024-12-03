@@ -175,10 +175,10 @@ def drho(t0):
 
   #interpolate only on non-zero vals of rho
   idx = get_rhomask(t0)
-  #rho_vals_temp = rho(t0)[idx]
+  rho_vals_temp = rho(t0)[idx]
   #q_axis_temp = q_axis[idx]
 
-  drho = np.gradient(rho(t0)[idx],q_axis[idx],edge_order=2)
+  drho = np.gradient(rho_vals_temp,q_axis[idx],edge_order=2)
 
   #set values outside of range to zero to prevent extrapolation error
   drho_vals = np.zeros_like(q_axis)
