@@ -164,7 +164,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   #get plot location
   ax = fig.add_subplot(gs[x_ind,y_ind])
   ax.set_title(hist_plot_titles[plot_index], loc = "center", fontsize=fontsizetitles)
-  ax.text(-2.85,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles)
+  ax.text(-2.4,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles)
 
   
   #plot the histograms
@@ -182,8 +182,10 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
 
   #format the axes
   format_dist_axes(ax)
+  #overwrite axes lims
   ax.set_ylim((-0.01,0.6))
-
+  ax.set_xlim((-2.5,2.5))
+  
   ax.tick_params(axis='y', labelsize=fontsizeticks)
   if x_ind ==0:
     ax.set_xticklabels([])
