@@ -1,6 +1,7 @@
 
 """This file evolves the trajectories and plots sample histograms using the approximate underdamped drift
-Note: the number of trajectories is ALSO called mc_samples, as in the Girsanov joint file.
+Note: the number of trajectories is ALSO called mc_samples, as in the Girsanov joint file. 
+The default it 10000 samples. 
 """
 
 
@@ -25,7 +26,6 @@ df_ep_cumulants_exp = pd.DataFrame(columns = ["g","t0","pos_var","mom_var","mom_
 
 ##Evolve the underdamped dynamics using EM SCHEME
 plot_index = 0
-
 
 evo_choice = np.linspace(xmin,xmax,mc_samples*10) #starting points to choose from for histograms
 sample_weights = p_initial(evo_choice)
