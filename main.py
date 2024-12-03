@@ -33,8 +33,8 @@ g = float(args.g)
 n = int(args.n)
 mc_samples = int(args.mcsamples)
 filename = args.filename
-p_samples = pqsamples
-q_samples = pqsamples
+p_samples = int(args.pqsamples)
+q_samples = int(args.pqsamples)
 
 #for compatibility with pandas
 #fileall = filename+".csv"
