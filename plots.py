@@ -218,8 +218,18 @@ def joint_distributions_scatter(fig,gs,
   - vmax: maximum value for the scatter plots
   """
 
-  qmin = -8
-  qmax = 8
+  ##try to get the cumulants
+  try:
+    df_ep_cumulants = pd.read_csv("cumulants.csv",header=0)
+    cumulants_exist = True
+    
+  except:
+    print("Cumulants file not given. Check the filename.\n")
+    print("The plots will not have estimated marginals for the momentum.\n")
+    cumulants_exist = False
+    
+  qmin = -3
+  qmax = 3
   pmin = -8
   pmax = 8
 
@@ -241,9 +251,13 @@ def joint_distributions_scatter(fig,gs,
 
   pmarginal = np.nansum(joint_out.reshape((P.shape[1],P.shape[0])),axis=0)
   pnorm = np.trapz(pmarginal,P[0])
-  #mom_mean_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_mean.values
-  #mom_var_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_var.values
-  #ax_pmarginal.plot(P[0], stats.norm.pdf(P[0], mom_mean_temp,np.sqrt(mom_var_temp)),color="orange",linestyle="dashed",lw=lw)
+  
+  if cumulants_exist:                                
+    mom_mean_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_mean.values
+    mom_var_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_var.values
+    ax_pmarginal.plot(P[0], stats.norm.pdf(P[0], mom_mean_temp,np.sqrt(mom_var_temp)),color="green",linestyle="dashed",lw=lw)
+  
+  
   ax_pmarginal.plot(P[0],pmarginal/pnorm
                     ,color=c1,lw=lw)
 
