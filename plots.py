@@ -211,6 +211,7 @@ def joint_distributions_scatter(fig,gs,
 
   input:
   - fig: the figure for plotting
+  - gs: the gridspec, should be attached to the fig
   - plot_index: location of plot
   - joint_out: joint distribution as a numpy array
   - Q: q-coordinate
