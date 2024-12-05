@@ -233,7 +233,10 @@ def joint_distributions_scatter(fig,gs,
   qmax = np.max(Q)
   pmin = np.min(P)
   pmax = np.max(P)
-                                  
+    
+  ax.set_xlim((pmin,pmax))
+  ax.set_ylim((qmin,qmax))
+                              
   x_ind = int(np.floor(plot_index/3))
   y_ind = plot_index % 3
 
@@ -243,7 +246,7 @@ def joint_distributions_scatter(fig,gs,
   ax = fig.add_subplot(gs[x_ind,y_ind])
 
   ax_pmarginal = ax.inset_axes([0, 1.05, 1, 0.6])
-  ax_qmarginal = ax.inset_axes([-0.6, 0, 0.6, 1])
+  ax_qmarginal = ax.inset_axes([-0.65, 0, 0.6, 1])
 
   ax_pmarginal.text(-9,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles,zorder = 200)
 
@@ -289,8 +292,6 @@ def joint_distributions_scatter(fig,gs,
   ax.scatter(pout[order],qout[order],c=zout.flatten()[order]
              ,cmap="Blues",norm="log",vmin=0.001,vmax=vmax)
 
-
-
   #ax.contour(np.meshgrid(functions.q_axis(time),functions.q_axis(time)),
   #           joint_distribution_perturbative(functions.q_axis(time),time))
 
@@ -312,7 +313,7 @@ def joint_distributions_scatter(fig,gs,
   ax_qmarginal.tick_params(
       axis='x',          # changes apply to the x-axis
       which='both',
-      rotation=-70,
+      rotation=70,
       labelsize = fontsizeticks, pad=-3,
       length =5,
       labelleft=False)
@@ -322,17 +323,15 @@ def joint_distributions_scatter(fig,gs,
       left=False,
       labelleft=False)
 
-  ax.set_xlim((pmin,pmax))
-  ax.set_ylim((qmin,qmax))
-
   ax.tick_params(axis='both', labelsize=fontsizeticks)
 
   #add labels to outside and remove ticks from inside plots
-  #ax_qmarginal.set_yticklabels([])
+  ax_qmarginal.set_yticklabels([])
   ax_pmarginal.set_xticklabels([])
   ax.yaxis.set_label_position("right")
   ax.yaxis.tick_right()
-                                  
+  ax_qmarginal.xaxis.set_label_position("top")
+                 
   #if x_ind ==0:
   #ax.set_xticklabels([])
   #ax_qmarginal.set_xticklabels([])
@@ -342,13 +341,13 @@ def joint_distributions_scatter(fig,gs,
     ax_qmarginal.set_xlabel(r"$\rho_t(q)$",fontsize = fontsizetitles)
 
   if y_ind == 0:
-    ax.set_ylabel(r"$q$",fontsize = fontsizetitles)
     ax_pmarginal.set_ylabel(r"$\rho_t(p)$",fontsize = fontsizetitles)
-  else:
-    ax.set_yticklabels([])
-    #ax_pmarginal.set_yticklabels([])
-
-
+  
+  if y_int == 2:
+    #make label and add text
+    ax.set_ylabel(r"$q$",fontsize = fontsizetitles)
+    ax.yaxis.set_label_position("right")
+    
   #add contour plots of the boundary conditions
   if plot_index ==0:
     #[X, Y] = np.meshgrid(q_axis(0), q_axis(0))
