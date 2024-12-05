@@ -230,10 +230,10 @@ def joint_distributions_scatter(fig,gs,
     print("The plots will not have estimated marginals for the momentum.\n")
     cumulants_exist = False
     
-  qmin = -3
-  qmax = 3
-  pmin = -8
-  pmax = 8
+  qmin = np.min(Q)[0]
+  qmax = np.max(Q)[0]
+  pmin = np.min(P)[0]
+  pmax = np.max(P)[0]
 
   x_ind = int(np.floor(plot_index/3))
   y_ind = plot_index % 3
