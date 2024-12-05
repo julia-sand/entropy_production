@@ -13,6 +13,8 @@ cumulants_perturbative = pd.read_csv("cumulantscalculated.csv",header=0)
 cumulant_plot_times = df_ep_cumulants.t0.unique()
 cumulant_plot_times.sort()
 
+print(times_t0)
+
 # Plotting the cumulants
 plt.figure(figsize=(15, 8))#, constrained_layout=True)
 
