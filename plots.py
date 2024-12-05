@@ -169,7 +169,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
 
   
   #plot the histograms
-  ax.hist(underdamped_data, range=(xmin,xmax), color = "slateblue",bins = 60,density = True)
+  ax.hist(underdamped_data, range=(xmin,xmax), color = c1,bins = 60,density = True,alpha=0.6)
   
   #fit kde of the samples
   kde = KernelDensity(kernel='epanechnikov', bandwidth=0.20).fit(underdamped_data.reshape(-1, 1))
@@ -178,8 +178,8 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   kde_estimate = np.exp(kde.score_samples(q_axis.reshape(-1, 1)))
   
   ax.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
-  ax.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw,  label =r"$T=2$")
-  ax.plot(q_axis,kde_estimate,color="midnightblue",lw=lw)
+  ax.plot(q_axis,functions.distribution(tcurr),color="midnightblue",lw=lw,  label =r"$T=2$")
+  ax.plot(q_axis,kde_estimate,color=c1,lw=lw)
 
   #format the axes
   format_dist_axes(ax)
@@ -188,9 +188,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   ax.set_xlim((-2.5,2.5))
   
   ax.tick_params(axis='y', labelsize=fontsizeticks)
-  if x_ind ==0:
-    ax.set_xticklabels([])
-  else:
+  if x_ind !=0:
     ax.set_xlabel(r"$q$",fontsize = fontsizetitles)
 
   if y_ind == 0:
