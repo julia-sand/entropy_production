@@ -231,6 +231,11 @@ def joint_distributions_scatter(fig,gs,
     cumulants_exist = False
     
 
+  qmin = np.min(Q)
+  qmax = np.max(Q)
+  pmin = np.min(P)
+  pmax = np.max(P)
+                                  
   x_ind = int(np.floor(plot_index/3))
   y_ind = plot_index % 3
 
@@ -286,10 +291,6 @@ def joint_distributions_scatter(fig,gs,
   ax.scatter(pout[order],qout[order],c=zout.flatten()[order]
              ,cmap="Blues",norm="log",vmin=0.001,vmax=vmax)
 
-  qmin = np.min(qout)
-  qmax = np.max(qout)
-  pmin = np.min(pout)
-  pmax = np.max(pout)
 
 
   #ax.contour(np.meshgrid(functions.q_axis(time),functions.q_axis(time)),
