@@ -46,7 +46,7 @@ sm =  ScalarMappable(norm="log",cmap=plt.get_cmap("Blues"))
 sm.set_array([])
 sm.set_clim(vmin=0.001, vmax=vmax)
 
-cbar_ax = fig_joint_distributions_meshgrid.add_axes([0.2, -0.1, 0.75, 0.05])
+cbar_ax = fig_joint_distributions_meshgrid.add_axes([0.2, -0.1, 0.55, 0.05])
 cb = fig_joint_distributions_meshgrid.colorbar(sm,
                                           cax=cbar_ax,
                                           orientation="horizontal")
@@ -68,6 +68,6 @@ legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,orange_line,
           bbox_to_anchor=(0.75,0.2))
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(0.95,0.2))
+legend.set_bbox_to_anchor(bbox=(0.55,0.2))
 
 plt.savefig("test.pdf",bbox_inches="tight")
