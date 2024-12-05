@@ -374,6 +374,6 @@ def joint_distributions_scatter(fig,gs,
     ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center", fontsize=fontsizetitles)
 
   plt.setp(ax_qmarginal.xaxis.get_majorticklabels(), ha="left")
-  plt.gca().invert_xaxis()
+  ax_qmarginal.invert_xaxis()
   #ax.set_aspect('equal', adjustable='box')
 
