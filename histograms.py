@@ -84,12 +84,15 @@ for i in range(0,len(times_t0)-1):
 #add final time plot
 plot_distributions_ep(fig_distributions,gs_distributions,plot_index,q_evo_UD_prev,x_evo,T);
 
+#tightlayout
+fig_distributions.tight_layout()
+
 #add legend
 orange_line = mlines.Line2D([], [],color="orange",lw=lw)
 blue_line = mlines.Line2D([], [],color=c1,lw=lw)
 darkblue_line = mlines.Line2D([], [],color="midnightblue",lw=lw)
 legend = fig_distributions.legend(handles=[blue_line,darkblue_line,orange_line],
-          labels = ["Underdamped (Perturbative)","Underdamped (From Evolution)","Overdamped"],
+          labels = ["Underdamped (From Evolution)","Underdamped (Perturbative)","Overdamped"],
            #prop={"size":fontsizeticks},
           fontsize = fontsizetitles,
           frameon = False,
