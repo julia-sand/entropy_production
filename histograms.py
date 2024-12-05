@@ -27,12 +27,12 @@ df_ep_cumulants_exp = pd.DataFrame(columns = ["g","t0","pos_var","mom_var","mom_
 ##Evolve the underdamped dynamics using EM SCHEME
 plot_index = 0
 
-evo_choice = np.linspace(xmin,xmax,mc_samples) #starting points to choose from for histograms
+evo_choice = np.linspace(-10,10,mc_samples) #starting points to choose from for histograms. Note. use a larger range for x
 sample_weights = p_initial(evo_choice)
 sample_weights /= sum(sample_weights)
 
 x_evo = npr.choice(evo_choice, size = mc_samples, p = sample_weights)
-q_evo_UD_prev = npr.choice(evo_choice, size = mc_samples, p = sample_weights) #position from assigned initial dist.
+q_evo_UD_prev = x_evo #npr.choice(evo_choice, size = mc_samples, p = sample_weights) #position from assigned initial dist.
 p_evo_UD_prev = npr.randn(mc_samples) #momentum, independent standard Gaussian samples
 
 #compute mean and variance of p and q using MLE at t=0
@@ -60,7 +60,7 @@ for i in range(0,len(times_t0)-1):
 
   #overdamped
   #evolution in t2
-  #x_evo = x_evo - (h_step)*functions.dsigma_interp(times_t0[i],x_evo) + np.sqrt(2*g*h_step)*npr.randn(samples)
+  x_evo = x_evo - (h_step)*functions.dsigma_interp(times_t0[i],x_evo) + np.sqrt(2*g*h_step)*npr.randn(samples)
 
   #underdamped
   #evolution in t0
