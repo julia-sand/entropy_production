@@ -244,7 +244,7 @@ def joint_distributions_scatter(fig,gs,
   ax = fig.add_subplot(gs[x_ind,y_ind])
 
   ax_pmarginal = ax.inset_axes([0, 1.05, 1, 0.6])
-  ax_qmarginal = ax.inset_axes([1.1, 0, 0.6, 1])
+  ax_qmarginal = ax.inset_axes([-0.6, 0, 0.6, 1])
 
   ax_pmarginal.text(-9,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles,zorder = 200)
 
