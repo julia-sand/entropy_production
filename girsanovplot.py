@@ -67,6 +67,6 @@ legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,orange_line,
           bbox_to_anchor=(0.75,0.2))
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(0.75,0.2))
+legend.set_bbox_to_anchor(bbox=(0.65,0.2))
 
 plt.savefig("test.pdf",bbox_inches="tight")
