@@ -354,7 +354,7 @@ def underdamped_drift_interp_function(t0,g):
 
   #q_temp = q_axis
 
-  mask = get_rhomask(t0)
+  mask = get_rhomask(t0,1e-3)
   w_temp = distribution(t0)
   dsig_temp_underdamped = optimal_drift(t0)
   #dsigout = generic_filter(dsig_temp_underdamped,sc.mean,size=100)
