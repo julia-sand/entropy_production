@@ -323,7 +323,7 @@ def joint_distributions_scatter(fig,gs,
       labelleft=False)
                                   
   plt.setp(ax_qmarginal.get_xticklabels(),
-      rotation=90, va="right", rotation_mode="anchor")  
+      rotation=90, va="top", rotation_mode="anchor")  
   ax.tick_params(axis='both', labelsize=fontsizeticks)
 
   #add labels to outside and remove ticks from inside plots
