@@ -338,7 +338,7 @@ def joint_distributions_scatter(fig,gs,
   #ax.set_xticklabels([])
   #ax_qmarginal.set_xticklabels([])
 
-  else:
+  if x_ind !=0:
     ax.set_xlabel(r"$p$",fontsize = fontsizetitles)
     ax_qmarginal.set_xlabel(r"$\rho_t(q)$",fontsize = fontsizetitles)
 
