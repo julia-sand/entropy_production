@@ -21,7 +21,7 @@ def momentum_variance(t0,g):
   int1 = np.trapz(functions.rho_ddsigma_alpha_rho(t0),q_axis)/Ag
   int_limit = np.where(times_t0==t0)[0][0] + 1
 
-  aexp_temp = [a(t,g)*int1*np.exp(-2*(t0-t)) for t in times_t0]
+  aexp_temp = [functions.a(t,g)*int1*np.exp(-2*(t0-t)) for t in times_t0]
   int2 = np.trapz(aexp_temp[0:int_limit],times_t0[0:int_limit],axis =0)
 
   term2 = 2*(epsilon**2)*int2
