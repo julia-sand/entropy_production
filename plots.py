@@ -169,10 +169,10 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
 
   
   #plot the histograms
-  ax.hist(underdamped_data, range=(xmin,xmax), color = "slateblue",bins = 100,density = True)
+  ax.hist(underdamped_data, range=(xmin,xmax), color = "slateblue",bins = 60,density = True)
   
   #fit kde of the samples
-  kde = KernelDensity(kernel='epanechnikov', bandwidth=0.15).fit(underdamped_data.reshape(-1, 1))
+  kde = KernelDensity(kernel='epanechnikov', bandwidth=0.20).fit(underdamped_data.reshape(-1, 1))
 
   #estimated pdf
   kde_estimate = np.exp(kde.score_samples(q_axis.reshape(-1, 1)))
