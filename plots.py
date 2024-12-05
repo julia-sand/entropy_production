@@ -316,7 +316,7 @@ def joint_distributions_scatter(fig,gs,
       rotation=90,
       labelsize = fontsizeticks, pad=-3,
       length =5,
-      labelleft=False)
+      labelleft=False,ha="right")
   ax_qmarginal.tick_params(
       axis='y',          # changes apply to the x-axis
       which='both',
