@@ -23,7 +23,7 @@ parser.add_argument("--mcsamples", default=10000, help="number of monte carlo tr
 parser.add_argument("--filename", default="results", help="filename for input and output file")
 parser.add_argument("--pqsamples", default=51, help="number of samples to use for P and Q in the Girsanov calculation")
 parser.add_argument("--peaklocation", default=1, help="location of initial peak")
-parser.add_argument("--denominator", default=4, help="denominator of ")
+parser.add_argument("--denom", default=1, help="denominator of the distributions")
 
 args = parser.parse_args()
 
