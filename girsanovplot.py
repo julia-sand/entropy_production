@@ -4,7 +4,7 @@ from matplotlib.cm import ScalarMappable
 
 from main import *
 from datafetch import *
-import plots
+from plots import *
 
 #what times to plot
 plot_times = np.array([2,1.5,1.0,0.5,0.25,0])#np.flip([0,1,2,3,4,5])/(5/T)
@@ -28,17 +28,17 @@ fig_joint_distributions_meshgrid = plt.figure(figsize=(15,10))
 gs_joint_distributions = fig_joint_distributions_meshgrid.add_gridspec(2, 3, width_ratios=[1, 1, 1], height_ratios=[1, 1])
 
 for k in enumerate(plot_times):
-  plots.joint_distributions_scatter(fig_joint_distributions_meshgrid,gs_joint_distributions, 5-k[0],
-                              df_girspdf_ep[df_girspdf_ep["t"] == k[1]].ptx.to_numpy(),
-                              Q,P,
-                              k[1],vmax)
+  joint_distributions_scatter(fig_joint_distributions_meshgrid,gs_joint_distributions, 5-k[0],
+                                    df_girspdf_ep[df_girspdf_ep["t"] == k[1]].ptx.to_numpy(),
+                                    Q,P,
+                                    k[1],vmax)
+
 
 
 #adjust spacing
-fig_joint_distributions_meshgrid.subplots_adjust(
-     wspace=0.85,# The width of the padding between subplots, as a fraction of the average Axes width.
-    hspace=0.65# The height of the padding between subplots, as a fraction of the average Axes height.
-)
+fig_joint_distributions_meshgrid.subplots_adjust(wspace=1,# The width of the padding between subplots, as a fraction of the average Axes width.
+                                                hspace=0.95# The height of the padding between subplots, as a fraction of the average Axes height.
+                                                )
 
 #add the legend
 sm =  ScalarMappable(norm="log",cmap=plt.get_cmap("Blues"))
@@ -68,6 +68,5 @@ legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,orange_line,
 
 #move the legend
 legend.set_bbox_to_anchor(bbox=(0.75,0.2))
-
 
 plt.savefig("test.pdf",bbox_inches="tight")
