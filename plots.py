@@ -246,7 +246,7 @@ def joint_distributions_scatter(fig,gs,
   ax_pmarginal = ax.inset_axes([0, 1.05, 1, 0.6])
   ax_qmarginal = ax.inset_axes([1.1, 0, 0.6, 1])
 
-  ax_pmarginal.text(-2.85,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles,zorder = 200)
+  ax_pmarginal.text(-9,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles,zorder = 200)
 
   #compute joint distribution and set nans to zero
   joint_out[np.isnan(joint_out)] = 0
