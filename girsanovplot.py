@@ -63,7 +63,7 @@ legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,orange_line,
           fontsize = fontsizeticks,
           frameon = False,
           handlelength = 1,
-          ncols = 2,
+          ncols = 3,
           bbox_to_anchor=(0.75,0.2))
 
 #move the legend
