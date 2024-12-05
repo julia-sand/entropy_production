@@ -248,7 +248,7 @@ def joint_distributions_scatter(fig,gs,
   ax_pmarginal = ax.inset_axes([0, 1.05, 1, 0.6])
   ax_qmarginal = ax.inset_axes([-0.65, 0, 0.6, 1])
 
-  ax_pmarginal.text(-9,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles,zorder = 200)
+  ax_pmarginal.text(-9,0.4,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles,zorder = 200)
 
   #compute joint distribution and set nans to zero
   joint_out[np.isnan(joint_out)] = 0
@@ -278,7 +278,7 @@ def joint_distributions_scatter(fig,gs,
   format_dist_axes(ax_pmarginal)
 
   ax_pmarginal.set_xlim((pmin,pmax))
-  ax_pmarginal.set_ylim((-0.05,0.7))
+  ax_pmarginal.set_ylim((-0.05,0.55))
 
   ax_qmarginal.set_ylim((qmin,qmax))
   ax_qmarginal.set_xlim((-0.05,0.6))
@@ -313,7 +313,7 @@ def joint_distributions_scatter(fig,gs,
   ax_qmarginal.tick_params(
       axis='x',          # changes apply to the x-axis
       which='both',
-      rotation=70,
+      rotation=90,
       labelsize = fontsizeticks, pad=-3,
       length =5,
       labelleft=False)
@@ -340,8 +340,7 @@ def joint_distributions_scatter(fig,gs,
     ax.set_xlabel(r"$p$",fontsize = fontsizetitles)
     ax_qmarginal.set_xlabel(r"$\rho_t(q)$",fontsize = fontsizetitles,labelpad = 5)
 
-  if y_ind == 0:
-    ax_pmarginal.set_ylabel(r"$\rho_t(p)$",fontsize = fontsizetitles)
+  ax_pmarginal.set_ylabel(r"$\rho_t(p)$",fontsize = fontsizetitles)
   
   if y_ind == 2:
     #make label and add text
