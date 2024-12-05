@@ -17,7 +17,7 @@ def mom_mean(t0,g):
 def momentum_variance(t0,g):
   Ag = functions.A_fun(T,g)
 
-  term1 = 1 - (((functions.kappa(t0)*epsilon/Ag)*a(t0,g))**2)
+  term1 = 1 - (((functions.kappa(t0)*epsilon/Ag)*functions.a(t0,g))**2)
   int1 = np.trapz(functions.rho_ddsigma_alpha_rho(t0),q_axis)/Ag
   int_limit = np.where(times_t0==t0)[0][0] + 1
 
