@@ -343,7 +343,7 @@ def joint_distributions_scatter(fig,gs,
   if y_ind == 0:
     ax_pmarginal.set_ylabel(r"$\rho_t(p)$",fontsize = fontsizetitles)
   
-  if y_int == 2:
+  if y_ind == 2:
     #make label and add text
     ax.set_ylabel(r"$q$",fontsize = fontsizetitles)
     ax.yaxis.set_label_position("right")
