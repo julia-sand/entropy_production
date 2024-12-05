@@ -329,12 +329,14 @@ def joint_distributions_scatter(fig,gs,
   ax.tick_params(axis='both', labelsize=fontsizeticks)
 
   #add labels to outside and remove ticks from inside plots
-  ax_qmarginal.set_yticklabels([])
+  #ax_qmarginal.set_yticklabels([])
   ax_pmarginal.set_xticklabels([])
-
-  if x_ind ==0:
-    ax.set_xticklabels([])
-    ax_qmarginal.set_xticklabels([])
+  ax.yaxis.set_label_position("right")
+  ax.yaxis.tick_right()
+                                  
+  #if x_ind ==0:
+  #ax.set_xticklabels([])
+  #ax_qmarginal.set_xticklabels([])
 
   else:
     ax.set_xlabel(r"$p$",fontsize = fontsizetitles)
