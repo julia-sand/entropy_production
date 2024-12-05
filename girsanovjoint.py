@@ -21,7 +21,7 @@ import csv
 #q_samples = 21
 
 #initialise p,q axes
-p_init = np.linspace(-9,9,p_samples)
+p_init = np.linspace(-10,10,p_samples)
 q_init = np.linspace(-3,3,q_samples)
 
 #make a mesh grid
