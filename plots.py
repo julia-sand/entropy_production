@@ -284,12 +284,12 @@ def joint_distributions_scatter(fig,gs,
   ax_qmarginal.set_xlim((-0.05,0.6))
 
   #plot scatter graphs
-  zout = joint_out
+  #zout = joint_out
 
-  order = np.argsort(zout.flatten())
+  order = np.argsort(joint_out.flatten())
   pout = P.flatten().flatten()
   qout = Q.flatten().flatten()
-  ax.scatter(pout[order],qout[order],c=zout.flatten()[order]
+  ax.scatter(pout[order],qout[order],c=joint_out.flatten()[order]
              ,cmap="Blues",norm="log",vmin=0.001,vmax=vmax)
 
   #ax.contour(np.meshgrid(functions.q_axis(time),functions.q_axis(time)),
@@ -323,7 +323,7 @@ def joint_distributions_scatter(fig,gs,
       labelleft=False)
                                   
   plt.setp(ax_qmarginal.get_xticklabels(),
-      rotation=90, ha="right", rotation_mode="anchor")  
+      rotation=90, va="right", rotation_mode="anchor")  
   ax.tick_params(axis='both', labelsize=fontsizeticks)
 
   #add labels to outside and remove ticks from inside plots
