@@ -1,7 +1,7 @@
 from main import *
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import matplotlib.gridspec as gridspec
 
 df_ep_cumulants = pd.read_csv("cumulants.csv",header=0)
 cumulants_perturbative = pd.read_csv("cumulantscalculated.csv",header=0)
