@@ -331,14 +331,10 @@ def joint_distributions_scatter(fig,gs,
   ax.yaxis.set_label_position("right")
   ax.yaxis.tick_right()
   ax_qmarginal.xaxis.set_label_position("top")
-                 
-  #if x_ind ==0:
-  #ax.set_xticklabels([])
-  #ax_qmarginal.set_xticklabels([])
+  ax_qmarginal.set_xlabel(r"$\rho_t(q)$",fontsize = fontsizetitles,labelpad = 7)
 
   if x_ind !=0:
     ax.set_xlabel(r"$p$",fontsize = fontsizetitles)
-    ax_qmarginal.set_xlabel(r"$\rho_t(q)$",fontsize = fontsizetitles,labelpad = 5)
 
   ax_pmarginal.set_ylabel(r"$\rho_t(p)$",fontsize = fontsizetitles)
   
