@@ -59,10 +59,8 @@ dps =  int(np.ceil(-np.log10(h_step))+1)
 t_steps = int(T/h0_step) + 1 #number of timesteps
 times_t0 = np.round(np.linspace(0,T,t_steps,endpoint = True),dps)
 t2_vec = np.round(times_t0*(epsilon**2),dps)
-#t2_vec = np.round(np.linspace(0,Tf,t_steps,endpoint = True),dps)
-#h0_step = np.round(h_step/(epsilon**2),dps)
 
-#times_t0 = np.round(t2_vec/(epsilon**2),dps)
+print(dps)
 
 alpha = 0
 
