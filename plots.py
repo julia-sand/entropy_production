@@ -86,7 +86,7 @@ def format_axes(ax,fontsize):
   ax.set_xlabel(r"$\mathrm{t}$",fontsize = fontsizetitles)
 
   #ax.set_xticklabels(labels = [0,1,2,3,4,5],fontsize=10)
-  #ax.tick_params(axis='y', labelsize=fontsizeticks)
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
   ax.tick_params(axis='x', labelsize=fontsizeticks)
   return ax
 
