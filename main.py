@@ -22,6 +22,8 @@ parser.add_argument("--n", default=100000, help="number of points in optimal tra
 parser.add_argument("--mcsamples", default=10000, help="number of monte carlo trajectories in calculation of joint distribution")
 parser.add_argument("--filename", default="results", help="filename for input and output file")
 parser.add_argument("--pqsamples", default=51, help="number of samples to use for P and Q in the Girsanov calculation")
+parser.add_argument("--peaklocation", default=1, help="location of initial peak")
+parser.add_argument("--denominator", default=4, help="denominator of ")
 
 args = parser.parse_args()
 
@@ -35,6 +37,9 @@ mc_samples = int(args.mcsamples)
 filename = args.filename
 p_samples = int(args.pqsamples)
 q_samples = int(args.pqsamples)
+denom = float(args.denom)
+peak_center = int(args.peaklocation)
+
 
 #for compatibility with pandas
 #fileall = filename+".csv"
@@ -74,8 +79,8 @@ tol = 1e-100
 filter_delta = 500
 
 #set up the boundary conditions
-peak_center = 1
-denom = 1
+#peak_center = 1
+#denom = 1
 
 
 #q = np.linspace(xmin,xmax,n) #fixed axes of points
