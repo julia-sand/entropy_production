@@ -37,8 +37,8 @@ for k in enumerate(plot_times):
 
 
 #adjust spacing
-fig_joint_distributions_meshgrid.subplots_adjust(wspace=1,# The width of the padding between subplots, as a fraction of the average Axes width.
-                                                hspace=0.95# The height of the padding between subplots, as a fraction of the average Axes height.
+fig_joint_distributions_meshgrid.subplots_adjust(wspace=1.1,# The width of the padding between subplots, as a fraction of the average Axes width.
+                                                hspace=1.1# The height of the padding between subplots, as a fraction of the average Axes height.
                                                 )
 
 #add the legend
