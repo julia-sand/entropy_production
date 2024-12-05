@@ -100,7 +100,7 @@ legend = fig_distributions.legend(handles=[blue_line,darkblue_line,orange_line],
 
 
 bbox = legend.get_window_extent(fig_distributions.canvas.get_renderer()).transformed(fig_distributions.transFigure.inverted())
-fig_distributions.tight_layout(rect=(0, bbox.y1, 1, 1), h_pad=0.5, w_pad=0.5)
+fig_distributions.tight_layout(rect=(0, bbox.y1, 1, 1), h_pad=0.6, w_pad=0.5)
 
 
 
