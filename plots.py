@@ -167,16 +167,16 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   ax.set_title(hist_plot_titles[plot_index], loc = "center", fontsize=fontsizetitles)
   ax.text(-2.4,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles)
 
-  
+
   #plot the histograms
   ax.hist(underdamped_data, range=(xmin,xmax), color = c1,bins = 60,density = True,alpha=0.6)
-  
+
   #fit kde of the samples
   kde = KernelDensity(kernel='epanechnikov', bandwidth=0.20).fit(underdamped_data.reshape(-1, 1))
 
   #estimated pdf
   kde_estimate = np.exp(kde.score_samples(q_axis.reshape(-1, 1)))
-  
+
   ax.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
   ax.plot(q_axis,functions.distribution(tcurr),color="midnightblue",lw=lw,  label =r"$T=2$")
   ax.plot(q_axis,kde_estimate,color=c1,lw=lw)
@@ -186,7 +186,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   #overwrite axes lims
   ax.set_ylim((-0.01,0.6))
   ax.set_xlim((-2.5,2.5))
-  
+
   ax.tick_params(axis='y', labelsize=fontsizeticks)
   if x_ind !=0:
     ax.set_xlabel(r"$q$",fontsize = fontsizetitles)
@@ -222,18 +222,18 @@ def joint_distributions_scatter(fig,gs,
   try:
     df_ep_cumulants = pd.read_csv("cumulants.csv",header=0)
     cumulants_exist = True
-    
+
   except:
     print("Cumulants file not given. Check the filename.\n")
     print("The plots will not have estimated marginals for the momentum.\n")
     cumulants_exist = False
-    
+
 
   qmin = np.min(Q)
   qmax = np.max(Q)
   pmin = np.min(P)
   pmax = np.max(P)
-     
+
   x_ind = int(np.floor(plot_index/3))
   y_ind = plot_index % 3
 
@@ -244,7 +244,7 @@ def joint_distributions_scatter(fig,gs,
 
   ax.set_xlim((pmin,pmax))
   ax.set_ylim((qmin,qmax))
-                             
+
   ax_pmarginal = ax.inset_axes([0, 1.05, 1, 0.6])
   ax_qmarginal = ax.inset_axes([-0.65, 0, 0.6, 1])
 
@@ -255,13 +255,13 @@ def joint_distributions_scatter(fig,gs,
 
   pmarginal = np.nansum(joint_out.reshape((P.shape[1],P.shape[0])),axis=0)
   pnorm = np.trapz(pmarginal,P[0])
-  
-  if cumulants_exist:                                
+
+  if cumulants_exist:
     mom_mean_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_mean.values
     mom_var_temp = df_ep_cumulants[((df_ep_cumulants["g"]==g) & (df_ep_cumulants["t0"]==time))].mom_var.values
     ax_pmarginal.plot(P[0], stats.norm.pdf(P[0], mom_mean_temp,np.sqrt(mom_var_temp)),color="green",linestyle="dashed",lw=lw)
-  
-  
+
+
   ax_pmarginal.plot(P[0],pmarginal/pnorm
                     ,color=c1,lw=lw)
 
@@ -313,7 +313,7 @@ def joint_distributions_scatter(fig,gs,
   ax_qmarginal.tick_params(
       axis='x',          # changes apply to the x-axis
       which='both',
-      labelsize = fontsizeticks, pad=-3,
+      labelsize = fontsizeticks, pad=-3,rotation = 45,
       length =5,
       labelleft=False)
   ax_qmarginal.tick_params(
@@ -321,9 +321,10 @@ def joint_distributions_scatter(fig,gs,
       which='both',
       left=False,
       labelleft=False)
-                                  
-  plt.setp(ax_qmarginal.get_xticklabels(),
-      rotation=90, va="top", rotation_mode="anchor")  
+  ax.tick_params(axis="x", which="both",rotation = 45)
+
+  #plt.setp(ax_qmarginal.get_xticklabels(),
+  #    rotation=90, va="top", rotation_mode="anchor")
   ax.tick_params(axis='both', labelsize=fontsizeticks)
 
   #add labels to outside and remove ticks from inside plots
@@ -368,7 +369,9 @@ def joint_distributions_scatter(fig,gs,
   if (0 <plot_index < 5):
     ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center", fontsize=fontsizetitles)
 
-  plt.setp(ax_qmarginal.xaxis.get_majorticklabels(), ha="left")
+  plt.setp(ax_qmarginal.xaxis.get_majorticklabels(), ha="right")
   ax_qmarginal.invert_xaxis()
   #ax.set_aspect('equal', adjustable='box')
+  plt.setp(ax.xaxis.get_majorticklabels(), ha="left")
+
 
