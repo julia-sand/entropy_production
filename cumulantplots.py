@@ -68,5 +68,22 @@ ax.set_ylabel('Momentum Variance',fontsize = fontsizetitles)
 
 plt.tight_layout()
 
-#plt.show()
-plt.savefig("ep_cumulants.pdf")
+
+#get legend
+orange_line = mlines.Line2D([], [],color="orange",lw=lw)
+blue_line = mlines.Line2D([], [],color=c1,lw=lw)
+green_line = mlines.Line2D([], [],color=c3,lw=lw,linestyle="dashed")
+
+legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,orange_line,green_line],
+          labels = ["Overdamped","Underdamped (Perturbative)","Underdamped (From Evolution)"],
+          fontsize = fontsizeticks,
+          frameon = False,
+          handlelength = 1,
+          ncols = 3,
+          bbox_to_anchor=(0.75,0.2))
+
+#move the legend
+legend.set_bbox_to_anchor(bbox=(0.95,0.2))
+
+plt.savefig("ep_cumulants.pdf",bbox_inches="tight")
+plt.close()
