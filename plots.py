@@ -233,10 +233,7 @@ def joint_distributions_scatter(fig,gs,
   qmax = np.max(Q)
   pmin = np.min(P)
   pmax = np.max(P)
-    
-  ax.set_xlim((pmin,pmax))
-  ax.set_ylim((qmin,qmax))
-                              
+     
   x_ind = int(np.floor(plot_index/3))
   y_ind = plot_index % 3
 
@@ -245,6 +242,9 @@ def joint_distributions_scatter(fig,gs,
   #get plot location
   ax = fig.add_subplot(gs[x_ind,y_ind])
 
+  ax.set_xlim((pmin,pmax))
+  ax.set_ylim((qmin,qmax))
+                             
   ax_pmarginal = ax.inset_axes([0, 1.05, 1, 0.6])
   ax_qmarginal = ax.inset_axes([-0.65, 0, 0.6, 1])
 
