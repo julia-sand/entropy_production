@@ -60,7 +60,7 @@ t_steps = int(T/h0_step) + 1 #number of timesteps
 times_t0 = np.round(np.linspace(0,T,t_steps,endpoint = True),dps)
 t2_vec = np.round(times_t0*(epsilon**2),dps)
 
-print(dps)
+print(times_t0)
 
 alpha = 0
 
