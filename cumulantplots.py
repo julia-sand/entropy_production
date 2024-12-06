@@ -21,12 +21,12 @@ gs_cumulants = gridspec.GridSpec(2, 6, width_ratios=[1, 1, 1, 1,1,1], height_rat
                               #hspace = 0.3,wspace = 2.3)
                               #(1, 2, width_ratios=[6, 4], figure=fig)
 
-
+odmeans = np.fromiter((functions.mean_t0(t0) for t0 in times_t0),float)
 
 # position mean
 plt.subplot(gs_cumulants[0, 0:2])
 plt.plot(times_t0,  cumulants_perturbative[cumulants_perturbative.g==g].pos_mean,lw=lw,color=c1)
-plt.plot(times_t0, [functions.mean_t0(t0) for t0 in times_t0],lw=lw,color="orange")
+plt.plot(times_t0,odmeans,lw=lw,color="orange")
 plt.plot(cumulant_plot_times,  df_ep_cumulants[df_ep_cumulants.g==g].pos_mean,lw=lw,color=c2)
 plt.title('(a)',fontsize = fontsizetitles,pad = titlepad,x = titlex, y =titley,zorder = 1000000)
 ax = format_axes(plt.gca(),fontsize)
@@ -36,7 +36,7 @@ ax.set_ylabel('Position Mean',fontsize = fontsizetitles)
 # position variance
 plt.subplot(gs_cumulants[0, 2:4])
 plt.plot(times_t0,  cumulants_perturbative[cumulants_perturbative.g==g].pos_var,lw=lw,color=c1)
-plt.plot(times_t0, [functions.var_t0(t0) for t0 in times_t0],lw=lw,color="orange")
+plt.plot(times_t0, [functions.var_t0(t0) for t0 in times_t0]-(odmeans**2),lw=lw,color="orange")
 plt.plot(cumulant_plot_times, df_ep_cumulants[df_ep_cumulants.g==g].pos_var,lw=lw,color=c2)
 plt.title('(b)',fontsize = fontsizetitles,pad = titlepad,x = titlex, y =titley,zorder = 1000000)
 ax = format_axes(plt.gca(),fontsize)
@@ -85,7 +85,7 @@ legend = fig1.legend(handles=[orange_line,blue_line,green_line],
           bbox_to_anchor=(0.75,0.2))
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(0.95,-0.2))
+legend.set_bbox_to_anchor(bbox=(0.95,0.05))
 
 plt.savefig("ep_cumulants.pdf",bbox_inches="tight")
 plt.close()

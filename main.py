@@ -55,7 +55,7 @@ Tf = (epsilon**2)*T  #final time for t2
 
 #decimal places for the time lookup.
 h_step = h0_step*(epsilon**2)
-dps =  int(np.ceil(-np.log10(h_step))+1)
+dps =  int(np.ceil(-np.log10(h0_step))+1)
 t_steps = int(T/h0_step) + 1 #number of timesteps
 times_t0 = np.round(np.linspace(0,T,t_steps,endpoint = True),dps)
 t2_vec = np.round(times_t0*(epsilon**2),dps)
