@@ -48,6 +48,13 @@ df_ep_cumulants_exp.loc[len(df_ep_cumulants_exp)] = [g, times_t0[0],
                                                      np.var(x_evo)]
 
 
+
+#set up plots
+#what times to plot
+times_to_save = [0,0.2,0.4,0.6,0.8,1]
+times_to_save = np.round(times_to_save,4)
+
+
 for i in range(0,len(times_t0)-1):
 #enumerate(times_t0[0:-1]):
   print(i)
