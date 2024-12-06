@@ -26,59 +26,16 @@ c3 = "#33a02c" #dark green
 c1 = "#1f78b4" #darkblue
 c4 = "#b2df8a" #light green
 
-##make the plots
-
-titlepad = 5
-titlex = 0.15
-titley = 0.85
-titlezorder = 1000
-
 #dist title location
 disttitlex = -2.8
 disttitley = 0.52
 
-suptitlex = 0.07
-suptitley = 1.1
-
-dashlinezorder = 10
-
-#alpha for filled shapes
-shadingalpha = 1
-
 # Plotting the graphs)
 #COLORS
-c2 = "#a6cee3" #lightblue
-c3 = "orange" #"#33a02c" #dark green
-c1 = "#1f78b4" #darkblue
-c4 = "#b2df8a" #light green
-
-
-#set ylim for plot
-ymin = -30
-ymax = 20
-
-#xlims
-xlimmax = 3
-xlimmin = -3
-
-lw = 3
-
-#fontsizes
-xmax = 5
-fontsize = 22
-fontsizeticks = 18
-fontsizetitles = 22
-
-titlepad = 10
-xtitle = 0.07
-ytitle = 0.88
-titlezorder = 1000
-
-
-lw = 3
-
-# Data for the graphs
-titlepad = 5
+#c2 = "#a6cee3" #lightblue
+#c3 = "orange" #"#33a02c" #dark green
+#c1 = "#1f78b4" #darkblue
+#c4 = "#b2df8a" #light green
 
 def format_axes(ax,fontsize):
 
@@ -97,7 +54,7 @@ def format_drift(ax):
   ax.tick_params(axis='y', labelsize=fontsizeticks)
 
   #ax.set_ylim((-30,30))
-  ax.set_xlim((xlimmin,xlimmax))
+  ax.set_xlim((-3,3))
   ax.set_xlabel(r"$\mathrm{q}$",fontsize= fontsize,labelpad=7)
 
 ##plot set-up
@@ -110,7 +67,7 @@ def format_dist_axes(ax):
   #ax.tick_params(labeltop='off', labelright='off')
 
   ax.set_ylim((-0.01,0.6))
-  ax.set_xlim((xlimmin,xlimmax))
+  ax.set_xlim((-3,3))
   ax.spines['bottom'].set_zorder(1000)
 
   #ax.set_xticks([])
@@ -135,19 +92,102 @@ def format_dist_axes(ax):
   #ax.tick_params(labeltop='off', labelright='off')
 
   ax.set_ylim((-0.01,0.8))
-  #ax.set_xlim((xlimmin,xlimmax))
   ax.spines['bottom'].set_zorder(1000)
 
+#####-----DRIFT AND DISTRIBUTION PLOTS-----#####
 
-#set up plots
-#panel labels:
-#what times to plot
-times_to_save = [0,0.2,0.4,0.6,0.8,1]
-times_to_save = np.round(times_to_save,4)
+# Plotting the graphs)
+#COLORS
+c2 = "#a6cee3" #lightblue
+c3 = "orange" #"#33a02c" #dark green
+c1 = "#1f78b4" #darkblue
+c4 = "#b2df8a" #light green
 
-hist_plot_titles = [f"t = {times_to_save[j]}"+r"$\,t_f$" for j in range(0,len(times_to_save))]
+
+
+
+xtitle = 0.07
+ytitle = 0.88
+
+
+
+def cleaner(arr,t0):
+
+  #masks nans and infs and returns a pair for plotting
+  #copy q axis
+  #plotq = np.copy(q_axis)
+
+  masknan = functions.get_rhomask(t0,1e-3)
+
+  #this function removes nan's and the end points which come from the truncation of the gradients
+  #arr = arr[np.min(masknan)+500:np.max(masknan)-300]
+  #plotq = q_axis[np.min(masknan)+500:np.max(masknan)-300]
+  return q_axis[masknan] , arr[masknan]
+
+
+def plot_pair(tcurr,title,labels,gs,locy):
+  # t0 distribution
+  plt.subplot(gs[0,locy])
+  plt.title(title, loc = "center", fontsize=fontsizetitles)
+
+  plt.plot(q_axis,functions.rho(tcurr),color=c3,lw=4)
+  plt.plot(q_axis,functions.distribution(tcurr),color=c1,lw=3)
+  #plt.plot(q_axis,generic_filter(functions.distribution(tcurr),sc.median,size=150,mode="constant"),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
+
+
+  ax = plt.gca()
+  format_dist_axes(ax)
+  ax.text(s = labels[0],fontsize = fontsizetitles,x = disttitlex, y =disttitley,zorder = 1000)
+
+  ax.set_xticklabels([])
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
+
+  ax0 = plt.subplot(gs[1, locy])
+  plot_data = cleaner(functions.optimal_drift(tcurr),tcurr)
+
+  #this just removes the areas of low statistics rho < tol
+  qseries =  plot_data[0]
+  yseries = plot_data[1]#generic_filter(plot_data[1],sc.median,size=10,mode="nearest")
+  sigma_data = cleaner(functions.dsigma(tcurr),tcurr)
+  sigmaseries = -sigma_data[1]#-functions.dsigma(tcurr)
+
+  #ax0 = plt.gca()
+  format_drift(ax0)
+  ax0.text(s = labels[1],fontsize = fontsizetitles,x = 0.05, y =-0.25, zorder = 1000,transform=ax.transAxes)
+
+  series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
+  series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
+
+  #ax0.set_ylim((-45,30))
+  if gs == gs0:
+    #ax.set_ylim((-250,0))
+    ax0.set_ylim((-260,0))
+  else:
+    ax0.set_ylim((-20,260))
+
+  if locy ==0:
+    ax.set_ylabel(r'$\mathrm{f}_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= 7)
+    ax0.set_ylabel(r'$-\partial U_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= -5)
+    if gs == gs0:
+      #for edges
+      #ax0.set_ylim((-270,0))
+      ax.fill_between(q_axis,p_initial(q_axis),color = c2)
+  #else:
+  #   ax0.set_ylim((-45,30))
+  #  ax0.set_yticklabels([])
+  #  ax.set_yticklabels([])
+
+  if locy ==-1 and gs == gs1:
+    ax.fill_between(q_axis,p_final(q_axis),color = c2)
+    #ax0.set_ylim((-40,300))
+
+
+
+
+
 
 ##########-------HISTOGRAMS PLOTS-------##################
+
 def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcurr):
 
   """
@@ -164,12 +204,12 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   y_ind = plot_index % 3
   #get plot location
   ax = fig.add_subplot(gs[x_ind,y_ind])
-  ax.set_title(hist_plot_titles[plot_index], loc = "center", fontsize=fontsizetitles)
+  ax.set_title(f"t = {tcurr}", loc = "center", fontsize=fontsizetitles)
   ax.text(-2.4,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles)
 
 
   #plot the histograms
-  ax.hist(underdamped_data, range=(xmin,xmax), color = c1,bins = 60,density = True,alpha=0.6)
+  ax.hist(underdamped_data, range=(-3,3), color = c1,bins = 60,density = True,alpha=0.6)
 
   #fit kde of the samples
   kde = KernelDensity(kernel='epanechnikov', bandwidth=0.20).fit(underdamped_data.reshape(-1, 1))
