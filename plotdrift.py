@@ -23,8 +23,6 @@ gs1 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=g
 idx = np.round(np.linspace(0, t_steps - 1, 10)).astype(int)
 
 for i in enumerate(times_t0[idx]):
-   print(i)
-   print(i[0]%5)
    #gs = gs0 if (i[0]<5) else gs1
    plot_pair(i[1],f"t = {i[1]}",["("+string.ascii_lowercase[(i[0]//10)+i[0]]+")","("+string.ascii_lowercase[(i[0]//10)+i[0]+10]+")"],
                    (gs0 if (i[0]<5) else gs1),i[0]%5)
