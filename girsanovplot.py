@@ -7,7 +7,7 @@ from datafetch import *
 from plots import *
 
 #what times to plot
-plot_times = np.array([2,1.5,1.0,0.5,0.25,0])#np.flip([0,1,2,3,4,5])/(5/T)
+#plot_times = np.array([2,1.5,1.0,0.5,0.25,0])#np.flip([0,1,2,3,4,5])/(5/T)
 
 plot_titles = [f"$t = {plot_times[j]}$" for j in range(0,len(plot_times))]
 plot_titles = np.flip(plot_titles)
@@ -15,6 +15,12 @@ plot_titles = np.flip(plot_titles)
 
 
 df_girspdf_ep = pd.read_csv("ep_girsanovjoint.csv", sep=" ", header = 0)
+
+#get plot times from csv
+plot_times = df_girspdf_ep.t.unique()
+plot_titles = [f"$t = {plot_times[j]}$" for j in range(0,len(plot_times))]
+#plot_titles = np.flip(plot_titles)
+
 p_init = df_girspdf_ep[df_girspdf_ep["t"] == 0].P.unique()
 q_init = df_girspdf_ep[df_girspdf_ep["t"] == 0].Q.unique()
 

@@ -31,7 +31,6 @@ c4 = "#b2df8a" #light green
 disttitlex = -2.8
 disttitley = 0.52
 
-# Plotting the graphs)
 #COLORS
 #c2 = "#a6cee3" #lightblue
 #c3 = "orange" #"#33a02c" #dark green
@@ -51,8 +50,8 @@ def format_axes(ax,fontsize):
 def format_drift(ax):
 
   #ax.yaxis.tick_right()
-  ax.tick_params(axis='x', labelsize=fontsizeticks)
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  ax.tick_params(axis='both', labelsize=fontsizeticks)
+  #ax.tick_params(axis='y', labelsize=fontsizeticks)
 
   #ax.set_ylim((-30,30))
   ax.set_xlim((-3,3))
@@ -83,17 +82,6 @@ def format_scatter_axes(ax):
 
   ax.tick_params(axis='both', labelsize=fontsizeticks)
 
-#axes formatting
-def format_dist_axes(ax):
-
-  #ax.patch.set_alpha(0)
-  #ax.yaxis.tick_right()
-  ax.tick_params(axis='x', labelsize=fontsizeticks)
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
-  #ax.tick_params(labeltop='off', labelright='off')
-
-  ax.set_ylim((-0.01,0.8))
-  ax.spines['bottom'].set_zorder(1000)
 
 #####-----DRIFT AND DISTRIBUTION PLOTS-----#####
 
@@ -103,8 +91,6 @@ c2 = "#a6cee3" #lightblue
 c3 = "orange" #"#33a02c" #dark green
 c1 = "#1f78b4" #darkblue
 c4 = "#b2df8a" #light green
-
-
 
 
 xtitle = 0.07
@@ -143,7 +129,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
   ax.text(s = labels[0],fontsize = fontsizetitles,x = disttitlex, y =disttitley,zorder = 1000)
 
   ax.set_xticklabels([])
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  #ax.tick_params(axis='y', labelsize=fontsizeticks)
 
   ax0 = plt.subplot(gs[1, locy])
   plot_data = cleaner(functions.optimal_drift(tcurr),tcurr)
@@ -161,7 +147,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
   series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
   series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
 
-  ax0.set_ylim((-45,30))
+  ax0.set_ylim((-50,35))
   #if gs == gs0:
   #  #ax.set_ylim((-250,0))
   #  ax0.set_ylim((-260,0))
@@ -182,7 +168,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
   if tcurr == T: #locy ==-1 and gs == gs1:
     ax.fill_between(q_axis,p_final(q_axis),color = c2)
-    ax0.set_ylim((-40,300))
+    ax0.set_ylim((-40,270))
 
 
 
@@ -270,7 +256,6 @@ def joint_distributions_scatter(fig,gs,
     print("The plots will not have estimated marginals for the momentum.\n")
     cumulants_exist = False
 
-
   qmin = np.min(Q)
   qmax = np.max(Q)
   pmin = np.min(P)
@@ -326,8 +311,6 @@ def joint_distributions_scatter(fig,gs,
   ax_qmarginal.set_xlim((-0.05,0.6))
 
   #plot scatter graphs
-  #zout = joint_out
-
   order = np.argsort(joint_out.flatten())
   pout = P.flatten().flatten()
   qout = Q.flatten().flatten()
@@ -381,12 +364,12 @@ def joint_distributions_scatter(fig,gs,
     ax.set_xlabel(r"$p$",fontsize = fontsizetitles)
 
   ax_pmarginal.set_ylabel(r"$\rho_t(p)$",fontsize = fontsizetitles)
-  
+
   if y_ind == 2:
     #make label and add text
     ax.set_ylabel(r"$q$",fontsize = fontsizetitles)
     ax.yaxis.set_label_position("right")
-    
+
   #add contour plots of the boundary conditions
   if plot_index ==0:
     #[X, Y] = np.meshgrid(q_axis(0), q_axis(0))
