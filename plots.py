@@ -171,7 +171,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
   if locy ==0:
     ax.set_ylabel(r'$\mathrm{f}_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= 7)
     ax0.set_ylabel(r'$-\partial U_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= -5)
-    if gs == gs0:
+    if tcurr == 0: #gs == gs0:
       #for edges
       ax0.set_ylim((-270,0))
       ax.fill_between(q_axis,p_initial(q_axis),color = c2)
@@ -180,7 +180,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
   #  ax0.set_yticklabels([])
   #  ax.set_yticklabels([])
 
-  if locy ==-1 and gs == gs1:
+  if tcurr == T: #locy ==-1 and gs == gs1:
     ax.fill_between(q_axis,p_final(q_axis),color = c2)
     ax0.set_ylim((-40,300))
 
