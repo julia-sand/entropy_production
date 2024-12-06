@@ -5,6 +5,7 @@ This file stores all the plotting functions
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as mlines
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from sklearn.neighbors import KernelDensity
 import scipy.stats as stats
 
@@ -126,7 +127,9 @@ def cleaner(arr,t0):
 
 
 def plot_pair(tcurr,title,labels,gs,locy):
-  # t0 distribution
+
+  from scipy.ndimage import median_filter,generic_filter
+  import scipy.ndimage as sc  # t0 distribution
   plt.subplot(gs[0,locy])
   plt.title(title, loc = "center", fontsize=fontsizetitles)
 
@@ -158,19 +161,19 @@ def plot_pair(tcurr,title,labels,gs,locy):
   series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
   series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
 
-  #ax0.set_ylim((-45,30))
-  if gs == gs0:
-    #ax.set_ylim((-250,0))
-    ax0.set_ylim((-260,0))
-  else:
-    ax0.set_ylim((-20,260))
+  ax0.set_ylim((-45,30))
+  #if gs == gs0:
+  #  #ax.set_ylim((-250,0))
+  #  ax0.set_ylim((-260,0))
+  #else:
+  #  ax0.set_ylim((-20,260))
 
   if locy ==0:
     ax.set_ylabel(r'$\mathrm{f}_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= 7)
     ax0.set_ylabel(r'$-\partial U_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= -5)
     if gs == gs0:
       #for edges
-      #ax0.set_ylim((-270,0))
+      ax0.set_ylim((-270,0))
       ax.fill_between(q_axis,p_initial(q_axis),color = c2)
   #else:
   #   ax0.set_ylim((-45,30))
@@ -179,8 +182,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
   if locy ==-1 and gs == gs1:
     ax.fill_between(q_axis,p_final(q_axis),color = c2)
-    #ax0.set_ylim((-40,300))
-
+    ax0.set_ylim((-40,300))
 
 
 
