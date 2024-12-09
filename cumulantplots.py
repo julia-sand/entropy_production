@@ -2,6 +2,7 @@ from main import *
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import matplotlib.ticker as ticker
 
 #formatting options
 from plots import *
@@ -13,6 +14,10 @@ cumulant_plot_times = df_ep_cumulants.t0.unique()
 cumulant_plot_times.sort()
 
 
+titlepad = 5
+titlex = 0.07
+titley = 0.88
+
 # Plotting the cumulants
 fig1 = plt.figure(figsize=(15, 8))#, constrained_layout=True)
 
@@ -22,6 +27,8 @@ gs_cumulants = gridspec.GridSpec(2, 6, width_ratios=[1, 1, 1, 1,1,1], height_rat
                               #(1, 2, width_ratios=[6, 4], figure=fig)
 
 odmeans = np.fromiter((functions.mean_t0(t0) for t0 in times_t0),float)
+
+
 
 # position mean
 plt.subplot(gs_cumulants[0, 0:2])
@@ -59,6 +66,7 @@ plt.plot(cumulant_plot_times, df_ep_cumulants[df_ep_cumulants.g==g].mom_mean,lw=
 plt.title('(d)',fontsize = fontsizetitles,pad = titlepad,x = titlex*(2/3), y =titley,zorder = 1000000)
 ax = format_axes(plt.gca(),fontsize)
 ax.set_ylabel('Momentum Mean',fontsize = fontsizetitles)
+ax.xaxis.set_major_locator(ticker.MultipleLocator(0.5))
 
 # momentum variance
 mom_var = plt.subplot(gs_cumulants[1, 3:])
@@ -67,6 +75,8 @@ plt.plot(cumulant_plot_times,  df_ep_cumulants[df_ep_cumulants.g==g].mom_var,lw=
 plt.title('(e)',fontsize = fontsizetitles,pad = titlepad,x = titlex*(2/3), y =titley,zorder = 1000000)
 ax = format_axes(plt.gca(),fontsize)
 ax.set_ylabel('Momentum Variance',fontsize = fontsizetitles)
+ax.xaxis.set_major_locator(ticker.MultipleLocator(0.5))
+
 
 plt.tight_layout()
 
@@ -78,14 +88,14 @@ green_line = mlines.Line2D([], [],color=c2,lw=lw)
 
 legend = fig1.legend(handles=[orange_line,blue_line,green_line],
           labels = ["Overdamped","Underdamped (Perturbative)","Underdamped (From Evolution)"],
-          fontsize = fontsizeticks,
+          fontsize = fontsizetitles,
           frameon = False,
           handlelength = 1,
           ncols = 3,
           bbox_to_anchor=(0.75,0.2))
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(0.95,0.05))
+legend.set_bbox_to_anchor(bbox=(1.0,0.07))
 
 plt.savefig("ep_cumulants.pdf",bbox_inches="tight")
 plt.close()

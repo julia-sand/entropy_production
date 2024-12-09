@@ -9,8 +9,8 @@ from plots import *
 #what times to plot
 #plot_times = np.array([2,1.5,1.0,0.5,0.25,0])#np.flip([0,1,2,3,4,5])/(5/T)
 
-plot_titles = [f"$t = {plot_times[j]}$" for j in range(0,len(plot_times))]
-plot_titles = np.flip(plot_titles)
+#plot_titles = [f"$t = {plot_times[j]}$" for j in range(0,len(plot_times))]
+#plot_titles = np.flip(plot_titles)
 
 
 
@@ -67,13 +67,13 @@ green_line = mlines.Line2D([], [],color="green",lw=lw,linestyle="dashed")
 
 legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,orange_line,green_line],
           labels = ["Monte Carlo w. Girsanov","Perturbative Estimates","Gaussian Prediction"],
-          fontsize = fontsizeticks,
+          fontsize = fontsizetitles,
           frameon = False,
           handlelength = 1,
           ncols = 3,
           bbox_to_anchor=(0.75,0.2))
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(0.85,0.2))
+legend.set_bbox_to_anchor(bbox=(0.95,0.2))
 
 plt.savefig("test.pdf",bbox_inches="tight")

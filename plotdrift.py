@@ -12,7 +12,7 @@ import string
 
 #set up the gridspec
 
-fig = plt.figure(figsize = (18,24)) #figsize = (width,height)
+fig = plt.figure(figsize = (15,24)) #figsize = (width,height)
 
 gs = gridspec.GridSpec(2, 1, height_ratios=[1,1],hspace=0.2)
 gs0 = gridspec.GridSpecFromSubplotSpec(2, 5, height_ratios=[1,2], subplot_spec=gs[0], hspace=0.1, wspace=0.3)

@@ -8,6 +8,7 @@ import matplotlib.lines as mlines
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from sklearn.neighbors import KernelDensity
 import scipy.stats as stats
+import matplotlib.ticker as ticker
 
 import string
 from main import *
@@ -15,7 +16,7 @@ import functions
 
 #fontsizes
 fontsize = 22
-fontsizeticks = 16
+fontsizeticks = 18
 fontsizetitles = 22
 
 #linewidth
@@ -155,8 +156,8 @@ def plot_pair(tcurr,title,labels,gs,locy):
   #  ax0.set_ylim((-20,260))
 
   if locy ==0:
-    ax.set_ylabel(r'$\mathrm{f}_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= 7)
-    ax0.set_ylabel(r'$-\partial U_{\mathrm{t}}(\mathrm{q})$',fontsize = fontsizetitles,labelpad= -5)
+    ax.set_ylabel(r'$\rho_{t}{(q)$',fontsize = fontsizetitles,labelpad= 7)
+    ax0.set_ylabel(r'$-\partial U_{t}(q)$',fontsize = fontsizetitles,labelpad= -5)
     if tcurr == 0: #gs == gs0:
       #for edges
       ax0.set_ylim((-270,0))
@@ -188,26 +189,39 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   """
 
 
-  x_ind = int(np.floor(plot_index/3))
-  y_ind = plot_index % 3
+  x_ind = int(np.floor(plot_index/4))
+  y_ind = plot_index % 4
   #get plot location
   ax = fig.add_subplot(gs[x_ind,y_ind])
-  ax.set_title(f"t = {tcurr}", loc = "center", fontsize=fontsizetitles)
-  ax.text(-2.4,0.5,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles)
+
+  plot_title_value = round(tcurr/T,3)
+
+
+  if tcurr ==0:
+    ax.set_title("$t=0$",loc ="center", fontsize=fontsizetitles)
+  elif tcurr ==T:
+    ax.set_title("$t=t_f$",loc ="center", fontsize=fontsizetitles)
+  else:
+    ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center", fontsize=fontsizetitles)
+  ax.text(-2.4,0.54,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles)
 
 
   #plot the histograms
-  ax.hist(underdamped_data, range=(-3,3), color = c1,bins = 60,density = True,alpha=0.6)
+  #ax.hist(underdamped_data, range=(-3,3), color = c1,bins = 60,density = True,alpha=0.6)
 
   #fit kde of the samples
   kde = KernelDensity(kernel='epanechnikov', bandwidth=0.20).fit(underdamped_data.reshape(-1, 1))
+  kde_overdamped = KernelDensity(kernel='epanechnikov', bandwidth=0.20).fit(overdamped_data.reshape(-1, 1))
 
   #estimated pdf
   kde_estimate = np.exp(kde.score_samples(q_axis.reshape(-1, 1)))
+  kde_estimate_overdamped = np.exp(kde_overdamped.score_samples(q_axis.reshape(-1, 1)))
 
-  ax.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
-  ax.plot(q_axis,functions.distribution(tcurr),color="midnightblue",lw=lw,  label =r"$T=2$")
-  ax.plot(q_axis,kde_estimate,color=c1,lw=lw)
+  #ax.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
+  ax.plot(q_axis,kde_estimate_overdamped,color="orange",lw=lw)
+  ax.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw)
+  #color="midnightblue",lw=lw,  label =r"$T=2$")
+  ax.plot(q_axis,kde_estimate,color=c2,lw=lw)
 
   #format the axes
   format_dist_axes(ax)
@@ -220,7 +234,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
     ax.set_xlabel(r"$q$",fontsize = fontsizetitles)
 
   if y_ind == 0:
-    ax.set_ylabel(r"$\rho_t(q)$",fontsize = fontsizetitles)
+    ax.set_ylabel(r"$\tilde{\rho}_t(q)$",fontsize = fontsizetitles)
 
 
 ##########--------------##################
@@ -264,7 +278,7 @@ def joint_distributions_scatter(fig,gs,
   x_ind = int(np.floor(plot_index/3))
   y_ind = plot_index % 3
 
-  plot_title_value = round(time/T,2)
+  plot_title_value = round(time/T,3)
 
   #get plot location
   ax = fig.add_subplot(gs[x_ind,y_ind])
@@ -358,12 +372,12 @@ def joint_distributions_scatter(fig,gs,
   ax.yaxis.set_label_position("right")
   ax.yaxis.tick_right()
   ax_qmarginal.xaxis.set_label_position("top")
-  ax_qmarginal.set_xlabel(r"$\rho_t(q)$",fontsize = fontsizetitles,labelpad = 7)
+  ax_qmarginal.set_xlabel(r"$\tilde{\rho}_t(q)$",fontsize = fontsizetitles,labelpad = 7)
 
   if x_ind !=0:
     ax.set_xlabel(r"$p$",fontsize = fontsizetitles)
 
-  ax_pmarginal.set_ylabel(r"$\rho_t(p)$",fontsize = fontsizetitles)
+  ax_pmarginal.set_ylabel(r"$\tilde{\rho}_t(p)$",fontsize = fontsizetitles)
 
   if y_ind == 2:
     #make label and add text
