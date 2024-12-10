@@ -177,7 +177,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
 ##########-------HISTOGRAMS PLOTS-------##################
 
-def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcurr):
+def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcurr,nplots):
 
   """
   Function that plots the histogram, underdamped and overdamped distributions in a lil square
@@ -189,12 +189,15 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   """
 
 
-  x_ind = int(np.floor(plot_index/4))
-  y_ind = plot_index % 4
+  x_ind = 0 if (plot_index<4) else 1
+  y_ind = int(round(plot_index % round(nplots/2)))
+  print(x_ind)
+  print(y_ind)
+
   #get plot location
   ax = fig.add_subplot(gs[x_ind,y_ind])
 
-  plot_title_value = round(tcurr/T,3)
+  plot_title_value = round(tcurr/T,4)
 
 
   if tcurr ==0:
