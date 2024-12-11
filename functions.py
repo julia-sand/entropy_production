@@ -340,21 +340,24 @@ def optimal_drift(t0 ):
 
 
 #function for interpolated dsigma
-def dsigma_interp(t0,q):
-  t2 = round(epsilon**2*t0,dps)
+def dsigma_interp(t0,q,tol=1e-5):
+  #t2 = round(epsilon**2*t0,dps)
   #q_temp = q_axis
+  
+  mask = get_rhomask(t0,tol)
+
   dsig_temp = dsigma(t0)
   w_temp = rho(t0)
 
-  interp_dsig = sci.splrep(q_axis, dsig_temp,w = w_temp,k=3)
+  interp_dsig = sci.splrep(q_axis[mask], dsig_temp[mask],w = w_temp[mask],k=3)
   return sci.splev(q,interp_dsig)
 
 #function for interpolated DU
-def underdamped_drift_interp_function(t0,g):
+def underdamped_drift_interp_function(t0,g,tol=1e-3):
 
   #q_temp = q_axis
 
-  mask = get_rhomask(t0,1e-3)
+  mask = get_rhomask(t0,tol)
   w_temp = distribution(t0)
   dsig_temp_underdamped = optimal_drift(t0)
   #dsigout = generic_filter(dsig_temp_underdamped,sc.mean,size=100)
@@ -365,9 +368,9 @@ def underdamped_drift_interp_function(t0,g):
 
   return interp_dsig_underdamped
 
-def underdamped_drift_interp(t0,q,g):
+def underdamped_drift_interp(t0,q,g,tol):
 
-  return -sci.splev(q,underdamped_drift_interp_function(t0,g),ext=3)
+  return -sci.splev(q,underdamped_drift_interp_function(t0,g,tol),ext=3)
 
 
 #function for derivative of interpolated DU

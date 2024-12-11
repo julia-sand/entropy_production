@@ -191,8 +191,7 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
 
   x_ind = 0 if (plot_index<4) else 1
   y_ind = int(round(plot_index % round(nplots/2)))
-  print(x_ind)
-  print(y_ind)
+
 
   #get plot location
   ax = fig.add_subplot(gs[x_ind,y_ind])
@@ -202,8 +201,10 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
 
   if tcurr ==0:
     ax.set_title("$t=0$",loc ="center", fontsize=fontsizetitles)
+    ax.fill_between(q_axis,p_initial(q_axis))
   elif tcurr ==T:
     ax.set_title("$t=t_f$",loc ="center", fontsize=fontsizetitles)
+    ax.fill_between(q_axis,p_final(q_axis))
   else:
     ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center", fontsize=fontsizetitles)
   ax.text(-2.4,0.54,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles)

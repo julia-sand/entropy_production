@@ -37,7 +37,7 @@ plt.plot(times_t0,odmeans,lw=lw,color="orange")
 plt.plot(cumulant_plot_times,  df_ep_cumulants[df_ep_cumulants.g==g].pos_mean,lw=lw,color=c2)
 plt.title('(a)',fontsize = fontsizetitles,pad = titlepad,x = titlex, y =titley,zorder = 1000000)
 ax = format_axes(plt.gca(),fontsize)
-#ax.set_ylim((-0.05,1.2))
+ax.set_ylim((-0.05,1.2))
 ax.set_ylabel('Position Mean',fontsize = fontsizetitles)
 
 # position variance
@@ -87,7 +87,7 @@ blue_line = mlines.Line2D([], [],color=c1,lw=lw)
 green_line = mlines.Line2D([], [],color=c2,lw=lw)
 
 legend = fig1.legend(handles=[orange_line,blue_line,green_line],
-          labels = ["Overdamped","Underdamped (Perturbative)","Underdamped (From Evolution)"],
+          labels = ["Overdamped","Underdamped (Predicted)","Underdamped (Evolved)"],
           fontsize = fontsizetitles,
           frameon = False,
           handlelength = 1,

@@ -41,15 +41,6 @@ denom = float(args.denom)
 peak_center = int(args.peaklocation)
 
 
-#for compatibility with pandas
-#fileall = filename+".csv"
-
-
-#T = float(sys.argv[2])
-#h_step = float(sys.argv[3]) #size of time mesh
-#g = float(sys.argv[4])
-#n = int(sys.argv[5]) #number of samples for the optimal transport problem
-
 ### params
 Tf = (epsilon**2)*T  #final time for t2
 

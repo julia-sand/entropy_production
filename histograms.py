@@ -18,9 +18,8 @@ from plots import *
 fig_distributions = plt.figure(figsize=(15,10))
 
 nplots = 8
-print(int(round(nplots/2)))
+#print(int(round(nplots/2)))
 #create plot grid
-nplots = 8
 gs_distributions = fig_distributions.add_gridspec(2, int(round(nplots/2)), width_ratios=[1,1, 1, 1], height_ratios=[1, 1])
 
 ##SET UP: RUN BEFORE THE SIMULATIONS
@@ -82,8 +81,8 @@ for i in range(0,len(times_t0)-1):
   #underdamped
   #evolution in t0
   h0_step = h_step/(epsilon**2)
-  q_evo_UD_prev = q_evo_UD_prev + epsilon*h0_step*(p_evo_UD_prev-g*epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g)) + epsilon*np.sqrt(2*g*h0_step)*npr.randn(mc_samples)
-  p_evo_UD_prev = p_evo_UD_prev - (p_evo_UD_prev + epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g))*h0_step + np.sqrt(2*h0_step)*npr.randn(mc_samples)
+  q_evo_UD_prev = q_evo_UD_prev + epsilon*h0_step*(p_evo_UD_prev-g*epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-5)) + epsilon*np.sqrt(2*g*h0_step)*npr.randn(mc_samples)
+  p_evo_UD_prev = p_evo_UD_prev - (p_evo_UD_prev + epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-5))*h0_step + np.sqrt(2*h0_step)*npr.randn(mc_samples)
 
   covmat = np.cov(q_evo_UD_prev,p_evo_UD_prev)
 
@@ -123,7 +122,7 @@ fig_distributions.tight_layout(rect=(0, bbox.y1, 1, 1), h_pad=2, w_pad=2)
 
 
 #save the cumulants
-#df_ep_cumulants_exp.to_csv("cumulants.csv", index=False)
+df_ep_cumulants_exp.to_csv("cumulants.csv", index=False)
 
 #save the histogram
 plt.savefig("histograms_test.pdf",bbox_inches="tight")

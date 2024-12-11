@@ -6,10 +6,10 @@ from main import *
 from datafetch import *
 
 #get dataframe
-#df = pd.read_csv("results.csv",index_col=0)
+#df = pd.read_csv("results_FLIP_TEMP.csv",index_col=0)
 
 #add t0 col
-#df["t0"] = np.round(df.t2/(epsilon**2) ,dps)
+df["t0"] = np.round(df.t2/(epsilon**2) ,dps)
 
 #fill infs with zeros
 df.replace([np.inf,-np.inf,np.nan], 0, inplace=True)
@@ -32,4 +32,3 @@ for t0 in times_t0:
 #save the dataframe as a csv
 temp = filename+".csv"
 df.to_csv(temp, sep = " ", index=False)
-
