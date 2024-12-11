@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--epsilon", default=0.2, help="multiscale expansion parameter")
 parser.add_argument("--Tf", default=2, help="final (underdamped) time")
-parser.add_argument("--hstep", default=0.25, help="size of timemesh")
+parser.add_argument("--hstep", default=0.05, help="size of timemesh")
 parser.add_argument("--g", default=0.01, help="momentum coupling constant")
 parser.add_argument("--n", default=100000, help="number of points in optimal transport matching")
 parser.add_argument("--mcsamples", default=10000, help="number of monte carlo trajectories in calculation of joint distribution")
@@ -38,7 +38,7 @@ filename = args.filename
 p_samples = int(args.pqsamples)
 q_samples = int(args.pqsamples)
 denom = float(args.denom)
-peak_center = int(args.peaklocation)
+peak_center = float(args.peaklocation)
 
 
 ### params
@@ -80,7 +80,7 @@ filter_delta = 500
 def p_initial_unnormalised(q):
   return np.exp(-(q-peak_center)**4/denom)
 def p_final_unnormalised(q):
-  return np.exp(-(((q**2 -peak_center**2)**2)/denom))
+  return np.exp(-(((q**2 -1**2)**2)/denom))
 
 #compute normalisation constacomputents
 pi_norm = np.abs(np.trapz(p_initial_unnormalised(np.linspace(-8,8,10000)),np.linspace(-8,8,10000)))
