@@ -24,6 +24,7 @@ parser.add_argument("--filename", default="resultsXL", help="filename for input 
 parser.add_argument("--pqsamples", default=51, help="number of samples to use for P and Q in the Girsanov calculation")
 parser.add_argument("--peaklocation", default=1, help="location of initial peak")
 parser.add_argument("--denom", default=1, help="denominator of the distributions")
+parser.add_argument("--w2dist", default=1.1180988295435215, help="This is the wasserstein distance found from the cell problem. See the .txt data file for the value")
 
 args = parser.parse_args()
 
@@ -39,7 +40,7 @@ p_samples = int(args.pqsamples)
 q_samples = int(args.pqsamples)
 denom = float(args.denom)
 peak_center = float(args.peaklocation)
-
+w2_dist = float(args.w2dist)
 
 ### params
 Tf = (epsilon**2)*T  #final time for t2
