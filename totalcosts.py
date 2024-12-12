@@ -76,4 +76,4 @@ data = [gs_temp,np.ones(len(gs_temp))*T,first_term1,entropy_production_cost1,ove
 df_costs = pd.concat([df_costs,pd.DataFrame(dict(zip(columns, data)))])
 
 #append to csv
-df_costs.to_csv("ep_costs.csv")
+df_costs.to_csv("ep_costs.csv", index=False)
