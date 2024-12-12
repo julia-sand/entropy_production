@@ -28,7 +28,7 @@ plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.01].mom_var,lw=lw,c = c2)
 plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.001].mom_var,lw=lw,c = c3)
 plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.0001].mom_var,lw=lw,c = c4)
 plt.ylabel("Momentum Variance",fontsize=fontsizetitles)
-#plt.text(0.1, 1.14,"(b)",fontweight="bold",fontsize=fontsizetitles)
+plt.text(0.0, 4.2,"(a)",fontsize=fontsizetitles)
 
 ax = plt.gca()
 format_axes(ax,fontsizetitles)
@@ -43,19 +43,21 @@ ax1.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.001].mom_mean,label=r"$g=
 ax1.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.0001].mom_mean,label=r"$g=10^{-4}$",lw=lw,c = c4)
 format_axes(ax1,fontsizetitles)
 
-ax1.set_ylabel("Mom. Mean",fontsize=fontsizetitles)
+ax1.set_ylabel("Momentum Mean",fontsize=fontsizetitles)
+
 
 ax1.set_xlim(-0.05,2.05)
 #ax.set_ylim(0.97,1.155)
-
+ax1.text(0.0,-0.1,"(b)", fontsize=fontsizetitles)
 plt.xlabel(r"$\mathrm{t}$",fontsize=fontsizetitles)
-fig.legend(bbox_to_anchor=(0.85, 0.09),
+fig.legend(bbox_to_anchor=(0.85, 0.08),
             prop = {"size": fontsizetitles},
             frameon=False, ncol=4,handlelength=1)
 
 
 plt.tight_layout()
-plt.savefig("ep_land_mom_cumulants.png")
+plt.savefig("ep_land_mom_cumulants.pdf",bbox_inches = "tight")
+plt.savefig("ep_land_mom_cumulants.png",bbox_inches = "tight")
 #plt.savefig("ep_land_mom_cumulants.pdf")
 #plt.savefig("ep_land_mom_cumulants.eps")
 
