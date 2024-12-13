@@ -362,15 +362,23 @@ def underdamped_drift_interp_function(t0,g,tol=1e-3):
   dsig_temp_underdamped = optimal_drift(t0)
   #dsigout = generic_filter(dsig_temp_underdamped,sc.mean,size=100)
   interp_dsig_underdamped = sci.splrep(q_axis[mask],dsig_temp_underdamped[mask],w=w_temp[mask],k=5)
-  #sci.splrep(q_axis[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()],
-  #                                     dsig_temp_underdamped[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()],
-  #                                     w=w_temp[(w_temp!=0).argmax():-(np.flip(w_temp)!=0).argmax()], k=5)
-
   return interp_dsig_underdamped
 
 def underdamped_drift_interp(t0,q,g,tol):
+  
+  #q_temp = q_axis
 
-  return -sci.splev(q,underdamped_drift_interp_function(t0,g,tol),ext=3)
+  mask = get_rhomask(t0,tol)
+  w_temp = distribution(t0)
+  dsig_temp_underdamped = optimal_drift(t0)
+  #dsigout = generic_filter(dsig_temp_underdamped,sc.mean,size=100)
+  return -np.interp(q, q_axis[mask], dsig_temp_underdamped[mask], left=30, right=-30)
+  #the most dodgy way to do this but idk how else 
+  #for qi in q:
+  #  try:
+  #    -sci.splev(qi,underdamped_drift_interp_function(t0,g,tol),ext=2)
+  #  except:
+  #  return -sci.splev(q,underdamped_drift_interp_function(t0,g,tol),ext=3)
 
 
 #function for derivative of interpolated DU
