@@ -76,7 +76,7 @@ for i in range(0,len(times_t0)-1):
 
   #overdamped
   #evolution in t2
-  x_evo = x_evo - (h_step)*functions.dsigma_interp(times_t0[i],x_evo) + np.sqrt(2*g*h_step)*npr.randn(mc_samples)
+  x_evo = x_evo - (h0_step)*functions.dsigma_interp(times_t0[i],x_evo) + np.sqrt(2*g*h0_step)*npr.randn(mc_samples)
 
   #underdamped
   #evolution in t0
@@ -122,8 +122,8 @@ fig_distributions.tight_layout(rect=(0, bbox.y1, 1, 1), h_pad=2, w_pad=2)
 
 
 #save the cumulants
-df_ep_cumulants_exp.to_csv("cumulants_V2.csv", index=False)
+df_ep_cumulants_exp.to_csv("cumulants_V3.csv", index=False)
 
 #save the histogram
-plt.savefig("histograms_test_V2.pdf",bbox_inches="tight")
+plt.savefig("histograms_test_V3.pdf",bbox_inches="tight")
 
