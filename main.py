@@ -25,6 +25,7 @@ parser.add_argument("--pqsamples", default=51, help="number of samples to use fo
 parser.add_argument("--peaklocation", default=1, help="location of initial peak")
 parser.add_argument("--denom", default=1, help="denominator of the distributions")
 parser.add_argument("--w2dist", default=1.1180988295435215, help="This is the wasserstein distance found from the cell problem. See the .txt data file for the value")
+parser.add_argument("--fileid", default="V1", help="This can be used to add a version number at the end of filenames for outputs, eg csv, plot images")
 
 args = parser.parse_args()
 
@@ -41,6 +42,7 @@ q_samples = int(args.pqsamples)
 denom = float(args.denom)
 peak_center = float(args.peaklocation)
 w2_dist = float(args.w2dist)
+fileid = args.fileid
 
 ### params
 Tf = (epsilon**2)*T  #final time for t2

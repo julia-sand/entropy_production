@@ -88,4 +88,4 @@ for gi in gs:
   df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"pos_mean"] = pos_mean_temp
   df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"xcorr"] = x_corr_temp
 
-df_ep_cumulants.to_csv("cumulantscalculated.csv", index = False)
+df_ep_cumulants.to_csv("cumulantscalculatedT5.csv", index = False)

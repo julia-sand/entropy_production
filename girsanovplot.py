@@ -13,8 +13,9 @@ from plots import *
 #plot_titles = np.flip(plot_titles)
 
 
+filename_temp = "ep_girsanovjoint" +f"{fileid}"+".csv"
 
-df_girspdf_ep = pd.read_csv("ep_girsanovjoint.csv", sep=" ", header = 0)
+df_girspdf_ep = pd.read_csv(filename_temp, sep=" ", header = 0)
 
 #get plot times from csv
 plot_times = df_girspdf_ep.t.unique()

@@ -8,11 +8,12 @@ import matplotlib.ticker as ticker
 from plots import *
 import functions
 
-df_ep_cumulants = pd.read_csv("cumulants.csv",header=0)
+df_ep_cumulants = pd.read_csv("cumulants_V6.csv",header=0)
 cumulants_perturbative = pd.read_csv("cumulantscalculated.csv",header=0)
 cumulant_plot_times = df_ep_cumulants.t0.unique()
 cumulant_plot_times.sort()
-
+times_t0 = cumulants_perturbative.t0.unique()
+times_t0.sort()
 
 titlepad = 5
 titlex = 0.07
@@ -39,6 +40,7 @@ plt.title('(a)',fontsize = fontsizetitles,pad = titlepad,x = titlex, y =titley,z
 ax = format_axes(plt.gca(),fontsize)
 ax.set_ylim((-0.05,1.2))
 ax.set_ylabel('Position Mean',fontsize = fontsizetitles)
+ax.set_xlim((-0.01,2.01))
 
 # position variance
 plt.subplot(gs_cumulants[0, 2:4])
@@ -48,6 +50,7 @@ plt.plot(cumulant_plot_times, df_ep_cumulants[df_ep_cumulants.g==g].pos_var,lw=l
 plt.title('(b)',fontsize = fontsizetitles,pad = titlepad,x = titlex, y =titley,zorder = 1000000)
 ax = format_axes(plt.gca(),fontsize)
 ax.set_ylabel('Position Variance',fontsize = fontsizetitles)
+ax.set_xlim((-0.01,2.01))
 
 # cross corr
 plt.subplot(gs_cumulants[0, 4:])
@@ -56,7 +59,7 @@ plt.plot(cumulant_plot_times, df_ep_cumulants[df_ep_cumulants.g==g].xcorr,lw=lw,
 plt.title('(c)',fontsize = fontsizetitles,pad = titlepad,x = titlex, y =titley,zorder = 1000000)
 ax = format_axes(plt.gca(),fontsize)
 ax.set_ylabel('Cross Correlation',fontsize = fontsizetitles)
-
+ax.set_xlim((-0.01,2.01))
 
 # momentum mean
 plt.subplot(gs_cumulants[1,:3])
@@ -67,6 +70,7 @@ plt.title('(d)',fontsize = fontsizetitles,pad = titlepad,x = titlex*(2/3), y =ti
 ax = format_axes(plt.gca(),fontsize)
 ax.set_ylabel('Momentum Mean',fontsize = fontsizetitles)
 ax.xaxis.set_major_locator(ticker.MultipleLocator(0.5))
+ax.set_xlim((-0.01,2.01))
 
 # momentum variance
 mom_var = plt.subplot(gs_cumulants[1, 3:])
@@ -76,6 +80,7 @@ plt.title('(e)',fontsize = fontsizetitles,pad = titlepad,x = titlex*(2/3), y =ti
 ax = format_axes(plt.gca(),fontsize)
 ax.set_ylabel('Momentum Variance',fontsize = fontsizetitles)
 ax.xaxis.set_major_locator(ticker.MultipleLocator(0.5))
+ax.set_xlim((-0.01,2.01))
 
 
 plt.tight_layout()
@@ -91,11 +96,11 @@ legend = fig1.legend(handles=[orange_line,blue_line,green_line],
           fontsize = fontsizetitles,
           frameon = False,
           handlelength = 1,
-          ncols = 3,
-          bbox_to_anchor=(0.75,0.2))
+          ncols = 3)
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(1.0,0.07))
+legend.set_bbox_to_anchor(bbox=(0.95,0.07))
 
-plt.savefig("ep_cumulants.pdf",bbox_inches="tight")
+plt.savefig("ep_cumulants_V6.pdf",bbox_inches="tight")
+plt.savefig("ep_cumulants_V6.png",bbox_inches="tight")
 plt.close()

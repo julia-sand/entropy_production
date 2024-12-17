@@ -370,9 +370,9 @@ def underdamped_drift_interp(t0,q,g,tol):
 
   mask = get_rhomask(t0,tol)
   w_temp = distribution(t0)
-  dsig_temp_underdamped = optimal_drift(t0)
+  dsig_temp_underdamped = optimal_drift(t0)[mask]
   #dsigout = generic_filter(dsig_temp_underdamped,sc.mean,size=100)
-  return -np.interp(q, q_axis[mask], dsig_temp_underdamped[mask], left=30, right=-30)
+  return -np.interp(q, q_axis[mask], dsig_temp_underdamped, left=np.abs(dsig_temp_underdamped[0]), right=-np.abs(dsig_temp_underdamped[-1]))
   #the most dodgy way to do this but idk how else 
   #for qi in q:
   #  try:

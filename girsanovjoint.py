@@ -42,9 +42,10 @@ plot_titles = np.flip(plot_titles)
 
 #write header to file
 #header=["t","P","Q","ptx"]
-#with open("ep_girsanovjoint.csv","w") as file:
-#   writer = csv.writer(file,delimiter=" ", lineterminator="\n")
-#   writer.writerow(header)
+filename_temp = "ep_girsanovjoint" +f"{fileid}"+".csv"
+with open(filename_temp,"w") as file:
+   writer = csv.writer(file, delimiter=" ", lineterminator="\n")
+   writer.writerow(header)
 
 for t in plot_times:
   print(t)
@@ -98,7 +99,7 @@ for t in plot_times:
   np.nan_to_num(data,copy=False,nan=0,posinf=0,neginf=0)
 
   #append to the csv
-  with open("ep_girsanovjoint.csv","a") as file:
+  with open(filename_temp,"a") as file:
     np.savetxt(file,data)
 
   plot_index -= 1

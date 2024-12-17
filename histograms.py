@@ -76,13 +76,13 @@ for i in range(0,len(times_t0)-1):
 
   #overdamped
   #evolution in t2
-  x_evo = x_evo - (h0_step)*functions.dsigma_interp(times_t0[i],x_evo) + np.sqrt(2*g*h0_step)*npr.randn(mc_samples)
+  x_evo = x_evo - (h_step)*functions.dsigma_interp(times_t0[i],x_evo,1e-5) + np.sqrt(2*epsilon*h_step)*npr.randn(mc_samples)
 
   #underdamped
   #evolution in t0
-  h0_step = h_step/(epsilon**2)
-  q_evo_UD_prev = q_evo_UD_prev + epsilon*h0_step*(p_evo_UD_prev-g*epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-5)) + epsilon*np.sqrt(2*g*h0_step)*npr.randn(mc_samples)
-  p_evo_UD_prev = p_evo_UD_prev - (p_evo_UD_prev + epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-5))*h0_step + np.sqrt(2*h0_step)*npr.randn(mc_samples)
+  #h0_step = h_step/(epsilon**2)
+  q_evo_UD_prev = q_evo_UD_prev + epsilon*h0_step*(p_evo_UD_prev-g*epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-7)) + epsilon*np.sqrt(2*g*h0_step)*npr.randn(mc_samples)
+  p_evo_UD_prev = p_evo_UD_prev - (p_evo_UD_prev + epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-7))*h0_step + np.sqrt(2*h0_step)*npr.randn(mc_samples)
 
   covmat = np.cov(q_evo_UD_prev,p_evo_UD_prev)
 
@@ -122,8 +122,12 @@ fig_distributions.tight_layout(rect=(0, bbox.y1, 1, 1), h_pad=2, w_pad=2)
 
 
 #save the cumulants
-df_ep_cumulants_exp.to_csv("cumulants_V3.csv", index=False)
+filename_temp = "cumulants" +f"{fileid}"+".csv"
+
+df_ep_cumulants_exp.to_csv(filename_temp, index=False)
 
 #save the histogram
-plt.savefig("histograms_test_V3.pdf",bbox_inches="tight")
+filename_temp = "histograms_test" +f"{fileid}"+".pdf"
+
+plt.savefig(filename_temp,bbox_inches="tight")
 
