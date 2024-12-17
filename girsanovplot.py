@@ -77,4 +77,7 @@ legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,orange_line,
 #move the legend
 legend.set_bbox_to_anchor(bbox=(0.95,0.2))
 
-plt.savefig("test.pdf",bbox_inches="tight")
+
+fileout = "ep_jointpdf_" +f"{fileid}"+".pdf"
+
+plt.savefig(fileout,bbox_inches="tight")

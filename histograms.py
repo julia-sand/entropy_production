@@ -76,7 +76,7 @@ for i in range(0,len(times_t0)-1):
 
   #overdamped
   #evolution in t2
-  x_evo = x_evo - (h_step)*functions.dsigma_interp(times_t0[i],x_evo,1e-5) + np.sqrt(2*epsilon*h_step)*npr.randn(mc_samples)
+  x_evo = x_evo - (h_step)*functions.dsigma_interp(times_t0[i],x_evo,1e-5)# + np.sqrt(2*epsilon*h_step)*npr.randn(mc_samples)
 
   #underdamped
   #evolution in t0

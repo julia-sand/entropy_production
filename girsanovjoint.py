@@ -35,13 +35,14 @@ P,Q = np.meshgrid(p_init,q_init)
 plot_index = 5
 
 #what times to plot
-plot_times = np.array([1.0,0.5,0.25,0])#np.array([2,1.5,1.0,0.5,0.25,0])#np.flip([0,1,2,3,4,5])/(5/T)
+plot_times = np.array([2,1.5,1.0,0.5,0.25,0])
+#np.array([1.0,0.5,0.25,0])#np.array([2,1.5,1.0,0.5,0.25,0])#np.flip([0,1,2,3,4,5])/(5/T)
 
 plot_titles = [f"$t = {plot_times[j]}$" for j in range(0,len(plot_times))]
 plot_titles = np.flip(plot_titles)
 
 #write header to file
-#header=["t","P","Q","ptx"]
+header=["t","P","Q","ptx"]
 filename_temp = "ep_girsanovjoint" +f"{fileid}"+".csv"
 with open(filename_temp,"w") as file:
    writer = csv.writer(file, delimiter=" ", lineterminator="\n")
@@ -69,7 +70,7 @@ for t in plot_times:
 
     innovation = npr.randn(mc_samples,p_samples,q_samples)
 
-    currdrift = functions.underdamped_drift_interp(curr_time,q_evo_UD_prev,g)
+    currdrift = functions.underdamped_drift_interp(curr_time,q_evo_UD_prev,g,1e-5)
 
     #underdamped dynamics
     #backward (T-t0) evolution in t0
