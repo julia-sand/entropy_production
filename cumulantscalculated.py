@@ -1,3 +1,7 @@
+
+import sys
+sys.path.append("setup")
+
 from main import *
 import functions
 
@@ -88,4 +92,8 @@ for gi in gs:
   df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"pos_mean"] = pos_mean_temp
   df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"xcorr"] = x_corr_temp
 
-df_ep_cumulants.to_csv("cumulantscalculatedT5.csv", index = False)
+
+#save the cumulants
+filename_temp = "cumulants_" +f"{fileid}"+".csv"
+
+df_ep_cumulants.to_csv(filename_temp, index=False)

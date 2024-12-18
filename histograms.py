@@ -4,6 +4,10 @@ Note: the number of trajectories is ALSO called mc_samples, as in the Girsanov j
 The default it 10000 samples. 
 """
 
+import sys
+sys.path.append("setup")
+sys.path.append("plotting")
+
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec

@@ -1,3 +1,7 @@
+
+import sys
+sys.path.append("setup")
+
 import scipy.interpolate as sci
 from sklearn.neighbors import KernelDensity
 

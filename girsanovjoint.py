@@ -3,10 +3,14 @@ Compute the joint distribution using the perturbative drift and girsanov's theor
 
 save to csv
 """
+import sys
+sys.path.append("setup")
+
+
 
 import functions
-import plots
-import matplotlib.pyplot as plt
+#import plots
+#import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from main import *
 from datafetch import *
