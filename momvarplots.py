@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from plots import *
+from setup.plots import *
 
 ##momentum mean and var only
 

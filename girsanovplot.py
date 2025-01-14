@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.cm import ScalarMappable
 
-from main import *
-from datafetch import *
-from plots import *
+from setup.main import *
+from setup.datafetch import *
+from setup.plots import *
 
 #what times to plot
 #plot_times = np.array([2,1.5,1.0,0.5,0.25,0])#np.flip([0,1,2,3,4,5])/(5/T)

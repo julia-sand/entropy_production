@@ -5,8 +5,8 @@ import matplotlib.gridspec as gridspec
 import matplotlib.ticker as ticker
 
 #formatting options
-from plots import *
-import functions
+from setup.plots import *
+import setup.functions as functions
 
 df_ep_cumulants = pd.read_csv("cumulants_V6.csv",header=0)
 cumulants_perturbative = pd.read_csv("cumulantscalculated.csv",header=0)

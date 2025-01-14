@@ -1,3 +1,4 @@
+
 import ot
 from sklearn.neighbors import KernelDensity
 #from geomloss import SamplesLoss # See also ImagesLoss, VolumesLoss
@@ -6,14 +7,13 @@ from sklearn.neighbors import KernelDensity
 import csv
 
 #get the parameters
-from main import *
+from setup.main import *
 
 #number of samples for the optimal transport problem
 
 # Create some large histograms from initial and final data
 xs = npr.choice(np.linspace(-10,10,n), size = n, p = p_initial(np.linspace(-10,10,n))/ sum(p_initial(np.linspace(-10,10,n))))
 xt = npr.choice(np.linspace(-10,10,n), size = n, p = p_final(np.linspace(-10,10,n))/ sum(p_final(np.linspace(-10,10,n))))
-
 
 #solve OT problem using Python OT
 G0_data = ot.emd2_1d(xs.reshape((n, 1)), xt.reshape((n, 1)),log=True)

@@ -1,15 +1,19 @@
 """
-This file stores all the functions for the calculation of the distribution and drift, and the interpolation functions used for the evolution of
-girsanov theorem
+
+This file stores all the functions for the calculation 
+of the distribution and drift, and the interpolation functions 
+used for the evolution of girsanov theorem and histogram plots
+
 """
+
 
 
 from scipy.ndimage import generic_filter
 import scipy.ndimage as sc
 import scipy.interpolate as sci
 
-from main import *  
-from datafetch import *
+from setup.main import *  
+from setup.datafetch import *
 
 
 def omega_fun(g):

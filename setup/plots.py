@@ -9,10 +9,12 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from sklearn.neighbors import KernelDensity
 import scipy.stats as stats
 import matplotlib.ticker as ticker
-
 import string
-from main import *
-import functions
+
+
+from setup.main import *
+import setup.functions as functions
+
 
 #fontsizes
 fontsize = 22
@@ -83,6 +85,16 @@ def format_scatter_axes(ax):
 
   ax.tick_params(axis='both', labelsize=fontsizeticks)
 
+
+#format axes
+def format_log_axes(ax):
+  ax.set_xscale('log')
+  ax.invert_xaxis()
+  #ax.set_ylim((4.6,5.3))
+  ax.set_xlim((0.13,(8e-7)))
+  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  #ax.tick_params(axis='x', labelsize=fontsizeticks)
+  #ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
 
 #####-----DRIFT AND DISTRIBUTION PLOTS-----#####
 
@@ -418,3 +430,30 @@ def joint_distributions_scatter(fig,gs,
   plt.setp(ax.xaxis.get_majorticklabels(), ha="left")
 
 
+
+def plot_pdf_nucleation(tcurr,title,labels,loc):
+  '''This functions plots one distribution and labels it
+
+  input:
+  -tcurr: the time in terms of t0 to plot
+  -title: title of the graph (if using)
+  -label: label of the panel
+  -loc: location as a matplotlib subplot code (or gridspec)
+
+  output:
+  -plot in location given by loc with the overdamped(in orange)
+  and underdamped (in blue) of the marginal density of the position
+  '''
+
+  # t0 distribution
+  plt.subplot(loc)
+  plt.title(title, loc = "center", fontsize=fontsizetitles)
+
+  plt.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw,  label =r"$T=5$",zorder = 10000)
+  plt.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
+
+  ax = plt.gca()
+  format_dist_axes(ax)
+
+  #ax.set_xticklabels([])
+  ax.tick_params(axis='y', labelsize=fontsizeticks)

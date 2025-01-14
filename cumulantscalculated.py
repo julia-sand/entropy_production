@@ -1,9 +1,6 @@
 
-import sys
-sys.path.append("setup")
-
-from main import *
-import functions
+from setup.main import *
+import setup.functions as functions
 
 gs = np.logspace(-1,-4,4)
 

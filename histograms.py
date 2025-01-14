@@ -4,19 +4,14 @@ Note: the number of trajectories is ALSO called mc_samples, as in the Girsanov j
 The default it 10000 samples. 
 """
 
-import sys
-sys.path.append("setup")
-sys.path.append("plotting")
-
-
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
 
-from main import *
-import functions
-from plots import *
+from setup.main import *
+import setup.functions as functions
+from setup.plots import *
 
 # Plotting the distributions
 fig_distributions = plt.figure(figsize=(15,10))

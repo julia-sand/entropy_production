@@ -1,6 +1,5 @@
-from main import *
-import functions
-from plots import *
+from setup.main import *
+from setup.plots import *
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -11,7 +10,6 @@ import string
 
 
 #set up the gridspec
-
 fig = plt.figure(figsize = (15,24)) #figsize = (width,height)
 
 gs = gridspec.GridSpec(2, 1, height_ratios=[1,1],hspace=0.2)
