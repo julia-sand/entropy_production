@@ -42,11 +42,11 @@ covmat = np.cov(q_evo_UD_prev,p_evo_UD_prev)
 df_ep_cumulants_exp.loc[len(df_ep_cumulants_exp)] = [g, times_t0[0],
                                                      covmat[0,0],
                                                      covmat[1,1],
-                                                     np.mean(p_evo_UD_prev),
-                                                     np.mean(q_evo_UD_prev),
+                                                     np.nanmean(p_evo_UD_prev),
+                                                     np.nanmean(q_evo_UD_prev),
                                                      covmat[0,1],
                                                      np.nanmean(x_evo),
-                                                     np.var(x_evo)]
+                                                     np.nanvar(x_evo)]
 
 
 
@@ -75,25 +75,30 @@ for i in range(0,len(times_t0)-1):
 
   #overdamped
   #evolution in t2
-  x_evo = x_evo - (h_step)*functions.dsigma_interp(times_t0[i],x_evo,1e-5)# + np.sqrt(2*epsilon*h_step)*npr.randn(mc_samples)
+  x_evo = x_evo - (h_step)*functions.dsigma_interp(times_t0[i],x_evo,1e-5) + np.sqrt(2*h_step)*npr.randn(mc_samples)
 
   #underdamped
   #evolution in t0
   #h0_step = h_step/(epsilon**2)
-  q_evo_UD_prev = q_evo_UD_prev + epsilon*h0_step*(p_evo_UD_prev-g*epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-7)) + epsilon*np.sqrt(2*g*h0_step)*npr.randn(mc_samples)
-  p_evo_UD_prev = p_evo_UD_prev - (p_evo_UD_prev + epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-7))*h0_step + np.sqrt(2*h0_step)*npr.randn(mc_samples)
+  q_evo_UD_prev = q_evo_UD_prev + epsilon*h0_step*(p_evo_UD_prev-g*epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-5)) + epsilon*np.sqrt(2*g*h0_step)*npr.randn(mc_samples)
+  p_evo_UD_prev = p_evo_UD_prev - (p_evo_UD_prev + epsilon*functions.underdamped_drift_interp(times_t0[i],q_evo_UD_prev,g,1e-5))*h0_step + np.sqrt(2*h0_step)*npr.randn(mc_samples)
 
+  #remove escaped particles
+  #q_evo_UD_prev[q_evo_UD_prev>30] = np.nan
+  #q_evo_UD_prev[q_evo_UD_prev<-30] = np.nan
+  #p_evo_UD_prev[p_evo_UD_prev>30] = np.nan
+  #p_evo_UD_prev[p_evo_UD_prev<-30] = np.nan
   covmat = np.cov(q_evo_UD_prev,p_evo_UD_prev)
 
   #compute mean and variance of p and q using MLE
   df_ep_cumulants_exp.loc[len(df_ep_cumulants_exp)] = [g, times_t0[i+1],
                                                            covmat[0,0],
                                                             covmat[1,1],
-                                                            np.mean(p_evo_UD_prev),
-                                                            np.mean(q_evo_UD_prev),
+                                                            np.nanmean(p_evo_UD_prev),
+                                                            np.nanmean(q_evo_UD_prev),
                                                             covmat[0,1],
                                                             np.nanmean(x_evo),
-                                                            np.var(x_evo)]
+                                                            np.nanvar(x_evo)]
 
 
 #add final time plot

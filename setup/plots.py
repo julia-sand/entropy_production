@@ -58,7 +58,7 @@ def format_drift(ax):
 
   #ax.set_ylim((-30,30))
   ax.set_xlim((-3,3))
-  ax.set_xlabel(r"$\mathrm{q}$",fontsize= fontsize,labelpad=7)
+  ax.set_xlabel(r"$q$",fontsize= fontsize,labelpad=7)
 
 ##plot set-up
 def format_dist_axes(ax):
@@ -117,7 +117,7 @@ def cleaner(arr,t0):
   #copy q axis
   #plotq = np.copy(q_axis)
 
-  masknan = functions.get_rhomask(t0,1e-3)
+  masknan = functions.get_rhomask(t0,1e-4)
 
   #this function removes nan's and the end points which come from the truncation of the gradients
   #arr = arr[np.min(masknan)+500:np.max(masknan)-300]
@@ -150,7 +150,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
   #this just removes the areas of low statistics rho < tol
   qseries =  plot_data[0]
   yseries = plot_data[1]#generic_filter(plot_data[1],sc.median,size=10,mode="nearest")
-  sigma_data = cleaner(functions.dsigma(tcurr),tcurr)
+  sigma_data = cleaner(functions.dsigma(tcurr) - functions.dlogrho(tcurr),tcurr)
   sigmaseries = -sigma_data[1]#-functions.dsigma(tcurr)
 
   #ax0 = plt.gca()
@@ -168,11 +168,12 @@ def plot_pair(tcurr,title,labels,gs,locy):
   #  ax0.set_ylim((-20,260))
 
   if locy ==0:
-    ax.set_ylabel(r'$\rho_{t}{(q)$',fontsize = fontsizetitles,labelpad= 7)
-    ax0.set_ylabel(r'$-\partial U_{t}(q)$',fontsize = fontsizetitles,labelpad= -5)
+    #ax.set_ylabel(r'$\rho_{t}(q)$',fontsize = fontsizetitles,labelpad= 7)
+    ax.set_ylabel(r'$f_{t}(q)$',fontsize = fontsizetitles,labelpad= 7)
+    ax0.set_ylabel(r'$-\partial U_{t}(q)$',fontsize = fontsizetitles,labelpad= 5)
     if tcurr == 0: #gs == gs0:
       #for edges
-      ax0.set_ylim((-270,0))
+      ax0.set_ylim((-270,30))
       ax.fill_between(q_axis,p_initial(q_axis),color = c2)
   #else:
   #   ax0.set_ylim((-45,30))
@@ -181,6 +182,8 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
   if tcurr == T: #locy ==-1 and gs == gs1:
     ax.fill_between(q_axis,p_final(q_axis),color = c2)
+    ax0.set_ylim((-50,270))
+  if tcurr ==1.9:
     ax0.set_ylim((-40,270))
 
 
@@ -226,7 +229,9 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   #ax.hist(underdamped_data, range=(-3,3), color = c1,bins = 60,density = True,alpha=0.6)
 
   #fit kde of the samples
+  underdamped_data = underdamped_data[~np.isnan(underdamped_data)]
   kde = KernelDensity(kernel='epanechnikov', bandwidth=0.20).fit(underdamped_data.reshape(-1, 1))
+  overdamped_data = overdamped_data[~np.isnan(overdamped_data)]
   kde_overdamped = KernelDensity(kernel='epanechnikov', bandwidth=0.20).fit(overdamped_data.reshape(-1, 1))
 
   #estimated pdf
@@ -338,7 +343,7 @@ def joint_distributions_scatter(fig,gs,
   ax_pmarginal.set_ylim((-0.05,0.55))
 
   ax_qmarginal.set_ylim((qmin,qmax))
-  ax_qmarginal.set_xlim((-0.05,0.6))
+  ax_qmarginal.set_xlim((-0.05,0.7))
 
   #plot scatter graphs
   order = np.argsort(joint_out.flatten())
@@ -376,7 +381,7 @@ def joint_distributions_scatter(fig,gs,
       which='both',
       left=False,
       labelleft=False)
-  ax.tick_params(axis="x", which="both",rotation = 45)
+  ax.tick_params(axis="x", which="both",pad=-3,rotation = 45,length=5)
 
   #plt.setp(ax_qmarginal.get_xticklabels(),
   #    rotation=90, va="top", rotation_mode="anchor")
@@ -408,7 +413,7 @@ def joint_distributions_scatter(fig,gs,
     Z = ud_pinitial(Q,P)
 
     # plots contour lines
-    ax.contour(Q,P, Z,zorder =10000)
+    ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
     ax.set_title(f"$t = 0$", loc = "center", fontsize=fontsizetitles)
 
   if plot_index == 5:
@@ -418,7 +423,7 @@ def joint_distributions_scatter(fig,gs,
     Z = ud_pfinal(Q,P)
 
     # plots contour lines
-    ax.contour(Q,P, Z,zorder =10000)
+    ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
     ax.set_title(f"$t = t_f$", loc = "center", fontsize=fontsizetitles)
 
   if (0 <plot_index < 5):

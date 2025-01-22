@@ -108,8 +108,8 @@ for peaks in enumerate([f1,f2,f3]):
       fontsize = fontsizetitles,
        transform=ax.transAxes)
 
-  ax.plot(times_t0_temp,height_a,lw=lw,color="royalblue",label = "Underdamped")
-  ax.plot(times_t0_temp,height_b,lw=lw,color="royalblue")
+  ax.plot(times_t0_temp,height_a,lw=lw,color=c1,label = "Underdamped")
+  ax.plot(times_t0_temp,height_b,lw=lw,color=c1)
   ax.plot(times_t0_temp,ODheight_a,lw=lw,color = "orange",label = "Overdamped")
   ax.plot(times_t0_temp,ODheight_b,lw=lw,color = "orange")
   #plt.ylim((0.25,0.45))
@@ -121,8 +121,8 @@ for peaks in enumerate([f1,f2,f3]):
 
   ax2 = fig1.add_subplot(gs1[plot_idx,1])#(gs1[peaks[0],1])#
   #ax2.title("Location of peaks")
-  ax2.scatter(times_t0_temp,loc_a,lw=lw,color="royalblue",label = "Underdamped")
-  ax2.scatter(times_t0_temp,loc_b,lw=lw,color="royalblue")
+  ax2.scatter(times_t0_temp,loc_a,lw=lw,color=c1,label = "Underdamped")
+  ax2.scatter(times_t0_temp,loc_b,lw=lw,color=c1)
   ax2.scatter(times_t0_temp,ODloc_a,lw=lw,color = "orange",label = "Overdamped")
   ax2.scatter(times_t0_temp,ODloc_b,lw=lw,color = "orange")
   format_axes(ax2)
@@ -135,7 +135,10 @@ for peaks in enumerate([f1,f2,f3]):
   peak_center = round(loc_a[0])
   ax3.set_ylabel(f"Center = {peak_center}",rotation=270, fontsize=fontsizetitles,labelpad = 30)
 
-  #if plot_idx != 2:
+  #
+  
+  ax.set_xlabel(r"$t$",fontsize=fontsizetitles)
+  ax2.set_xlabel(r"$t$",fontsize=fontsizetitles)
   #  ax.set_xticklabels([])
   #  ax2.set_xticklabels([])
   #  ax.tick_params('both', length=10, which='both')
@@ -143,7 +146,7 @@ for peaks in enumerate([f1,f2,f3]):
 
 #get legend
 orange_line = mlines.Line2D([], [],color="orange",lw=lw)
-blue_line = mlines.Line2D([], [],color="royalblue",lw=lw)
+blue_line = mlines.Line2D([], [],color=c1,lw=lw)
 
 
 legend = fig1.legend(handles=[blue_line,orange_line],
@@ -155,11 +158,12 @@ legend = fig1.legend(handles=[blue_line,orange_line],
 
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(0.65,0.07))
+legend.set_bbox_to_anchor(bbox=(0.65,0.06))
 
-plt.subplots_adjust(wspace=0.25)
+plt.subplots_adjust(wspace=0.25,hspace=0.25)
 
 #plt.tight_layout()
+plt.savefig("peakheights.pdf",bbox_inches="tight")
 
 plt.savefig("peakheights.png",bbox_inches="tight")
 plt.close()

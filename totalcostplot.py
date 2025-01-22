@@ -15,10 +15,10 @@ def format_log_axes(ax):
   #ax.set_ylim((4.6,5.3))
   ax.set_xlim((0.11,(8e-7)))
   ax.tick_params(axis='y', labelsize=fontsizeticks)
-  #ax.tick_params(axis='x', labelsize=fontsizeticks)
+  ax.tick_params(axis='x', labelsize=fontsizeticks)
   #ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
 
-fig1 = plt.figure(figsize = (15,6))
+fig1 = plt.figure(figsize = (15,10))
 
 plt.subplot(gs_costs[0])
 plt.plot(df_ep_cost_all[df_ep_cost_all.Tf==2].g,df_ep_cost_all[df_ep_cost_all.Tf==2].EPcost,lw=lw,label=r"EP Cost")#,yerr=0.04,ecolor="black",capsize=4,elinewidth=1,label=r"EP cost $\pm 0.04$")
@@ -26,7 +26,7 @@ plt.plot(df_ep_cost_all[df_ep_cost_all.Tf==2].g,df_ep_cost_all[df_ep_cost_all.Tf
 plt.plot(df_ep_cost_all[df_ep_cost_all.Tf==2].g,(1+df_ep_cost_all[df_ep_cost_all.Tf==2].g)*df_ep_cost_all[df_ep_cost_all.Tf==2].ODBound,linestyle="dashed",lw=lw,label=r"$\mathcal{W}_2$-distance")#,yerr=0.04,ecolor="black",capsize=4,elinewidth=1,label=r"EP cost $\pm 0.04$")
 ax = plt.gca()
 format_log_axes(ax)
-ax.set_xticklabels([]) #remove x axis lables
+#ax.set_xticklabels([]) #remove x axis lables
 #ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
 ax.minorticks_off()
 ax2 = ax.twinx()
@@ -40,7 +40,7 @@ plt.plot(df_ep_cost_all[df_ep_cost_all.Tf==5].g,(1+df_ep_cost_all[df_ep_cost_all
 format_log_axes(plt.gca())
 ax = plt.gca()
 ax.set_ylim((4.8,5.8))
-ax.set_xticklabels([]) #remove x axis lables
+#ax.set_xticklabels([]) #remove x axis lables
 ax.set_ylabel(r"Mean Entropy Production",fontsize = fontsizetitles,labelpad =35)
 #ax.set_ylabel(r"$\mathcal{E}$", fontsize=fontsizetitles)
 ax.minorticks_off()
@@ -72,10 +72,9 @@ ax2.set_yticks([])
 #                    hspace = 0.05)   # the amount of height reserved for white space between subplots
 
 
-plt.tight_layout()
 #get legend
 orange_line = mlines.Line2D([], [],color="orange",lw=lw)
-blue_line = mlines.Line2D([], [],color="royalblue",lw=lw)
+blue_line = mlines.Line2D([], [],color=c1,lw=lw)
 green_line = mlines.Line2D([], [],color="green",lw=lw,linestyle="dashed")
 
 legend = fig1.legend(handles=[blue_line,orange_line,green_line],
@@ -87,8 +86,10 @@ legend = fig1.legend(handles=[blue_line,orange_line,green_line],
           #bbox_to_anchor=(0.75,0.2))
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(0.95,0.1))
+legend.set_bbox_to_anchor(bbox=(0.9,0.07))
 
-plt.savefig("ep_cost_all2.png",bbox_inches="tight")
+plt.subplots_adjust(hspace=0.2)
+
+plt.savefig("ep_cost_all3.png",bbox_inches="tight")
 plt.savefig("ep_cost_all.pdf",bbox_inches="tight")
 plt.close()

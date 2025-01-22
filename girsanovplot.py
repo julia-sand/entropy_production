@@ -52,14 +52,25 @@ fig_joint_distributions_meshgrid.subplots_adjust(wspace=1.1,# The width of the p
 sm =  ScalarMappable(norm="log",cmap=plt.get_cmap("Blues"))
 sm.set_array([])
 sm.set_clim(vmin=0.001, vmax=vmax)
+sm2 =  ScalarMappable(norm="log",cmap=plt.get_cmap("viridis"))
+sm2.set_array([])
+sm2.set_clim(vmin=0.001, vmax=vmax)
+
 
 cbar_ax = fig_joint_distributions_meshgrid.add_axes([0.2, -0.1, 0.55, 0.05])
 cb = fig_joint_distributions_meshgrid.colorbar(sm,
                                           cax=cbar_ax,
                                           orientation="horizontal")
 
+cbar_ax2 = fig_joint_distributions_meshgrid.add_axes([0.2, -0.1, 0.55, 0.05])
+cb2 = fig_joint_distributions_meshgrid.colorbar(sm2,
+                                          cax=cbar_ax2,
+                                          orientation="horizontal")
+
 cb.ax.tick_params(labelsize=fontsizeticks)
 cb.ax.set_xlabel("Joint Distribution",fontsize=fontsizetitles)
+cb2.ax.tick_params(labelsize=fontsizeticks)
+cb2.ax.set_xlabel("Boundary Conditions",fontsize=fontsizetitles)
 
 #get legend
 blue_line = mlines.Line2D([], [],color=c1,lw=lw)
@@ -67,7 +78,7 @@ orange_line = mlines.Line2D([], [],color="orange",lw=lw)
 green_line = mlines.Line2D([], [],color="green",lw=lw,linestyle="dashed")
 
 legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,orange_line,green_line],
-          labels = ["Monte Carlo w. Girsanov","Perturbative Estimates","Gaussian Prediction"],
+          labels = ["Monte Carlo w. Girsanov","Perturbative Prediction","Gaussian Prediction"],
           fontsize = fontsizetitles,
           frameon = False,
           handlelength = 1,
