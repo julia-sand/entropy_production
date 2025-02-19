@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.cm import ScalarMappable
+import matplotlib.patches as mpatches
 
 from setup.main import *
 from setup.datafetch import *
@@ -31,7 +32,7 @@ P,Q = np.meshgrid(p_init,q_init)
 vmax = np.max(df_girspdf_ep.ptx)
 
 # Plotting the distributions -initialise the figure object & creates the gridspec
-fig_joint_distributions_meshgrid = plt.figure(figsize=(15,10))
+fig_joint_distributions_meshgrid = plt.figure(figsize=(15,12))
 gs_joint_distributions = fig_joint_distributions_meshgrid.add_gridspec(2, 3, width_ratios=[1, 1, 1], height_ratios=[1, 1])
 
 for k in enumerate(plot_times):
@@ -52,41 +53,38 @@ fig_joint_distributions_meshgrid.subplots_adjust(wspace=1.1,# The width of the p
 sm =  ScalarMappable(norm="log",cmap=plt.get_cmap("Blues"))
 sm.set_array([])
 sm.set_clim(vmin=0.001, vmax=vmax)
-sm2 =  ScalarMappable(norm="log",cmap=plt.get_cmap("viridis"))
-sm2.set_array([])
-sm2.set_clim(vmin=0.001, vmax=vmax)
 
 
-cbar_ax = fig_joint_distributions_meshgrid.add_axes([0.2, -0.1, 0.55, 0.05])
+cbar_ax = fig_joint_distributions_meshgrid.add_axes([0.2, -0.15, 0.55, 0.05])
 cb = fig_joint_distributions_meshgrid.colorbar(sm,
                                           cax=cbar_ax,
                                           orientation="horizontal")
 
-cbar_ax2 = fig_joint_distributions_meshgrid.add_axes([0.2, -0.1, 0.55, 0.05])
-cb2 = fig_joint_distributions_meshgrid.colorbar(sm2,
-                                          cax=cbar_ax2,
-                                          orientation="horizontal")
-
 cb.ax.tick_params(labelsize=fontsizeticks)
 cb.ax.set_xlabel("Joint Distribution",fontsize=fontsizetitles)
-cb2.ax.tick_params(labelsize=fontsizeticks)
-cb2.ax.set_xlabel("Boundary Conditions",fontsize=fontsizetitles)
 
 #get legend
 blue_line = mlines.Line2D([], [],color=c1,lw=lw)
 orange_line = mlines.Line2D([], [],color="orange",lw=lw)
 green_line = mlines.Line2D([], [],color="green",lw=lw,linestyle="dashed")
+blue_patch = mpatches.Patch(color = c2, alpha=1)
 
-legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,orange_line,green_line],
-          labels = ["Monte Carlo w. Girsanov","Perturbative Prediction","Gaussian Prediction"],
+legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,
+                                                          orange_line,
+                                                          green_line,
+                                                          blue_patch],
+          labels = ["Monte Carlo w. Girsanov",
+                    "Perturbative Prediction",
+                    "Gaussian Prediction",
+                    "Assigned Boundary Conditions"],
           fontsize = fontsizetitles,
           frameon = False,
-          handlelength = 1,
-          ncols = 3,
+          handlelength = 2,
+          ncols = 2,
           bbox_to_anchor=(0.75,0.2))
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(0.95,0.2))
+legend.set_bbox_to_anchor(bbox=(0.85,0.25))
 
 
 fileout = "ep_jointpdf_" +f"{fileid}"+".pdf"

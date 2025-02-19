@@ -86,7 +86,7 @@ legend = fig1.legend(handles=[blue_line,orange_line,green_line],
           #bbox_to_anchor=(0.75,0.2))
 
 #move the legend
-legend.set_bbox_to_anchor(bbox=(0.9,0.07))
+legend.set_bbox_to_anchor(bbox=(0.9,0.06))
 
 plt.subplots_adjust(hspace=0.2)
 

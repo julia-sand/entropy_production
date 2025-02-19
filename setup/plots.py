@@ -361,7 +361,7 @@ def joint_distributions_scatter(fig,gs,
   ax_pmarginal.tick_params(
       axis='x',          # changes apply to the x-axis
       which='both',      # both major and minor ticks are affected
-      bottom=False,      # ticks along the bottom edge are off
+      #bottom=False,      # ticks along the bottom edge are off
       top=False,         # ticks along the top edge are off
       labelbottom=False)
   ax_pmarginal.tick_params(
@@ -381,7 +381,7 @@ def joint_distributions_scatter(fig,gs,
       which='both',
       left=False,
       labelleft=False)
-  ax.tick_params(axis="x", which="both",pad=-3,rotation = 45,length=5)
+  ax.tick_params(axis="x", which="both",rotation = 45,length=5)
 
   #plt.setp(ax_qmarginal.get_xticklabels(),
   #    rotation=90, va="top", rotation_mode="anchor")
@@ -390,41 +390,47 @@ def joint_distributions_scatter(fig,gs,
   #add labels to outside and remove ticks from inside plots
   ax_qmarginal.set_yticklabels([])
   ax_pmarginal.set_xticklabels([])
-  ax.yaxis.set_label_position("right")
+  #ax.yaxis.set_label_position("right")
   ax.yaxis.tick_right()
   ax_qmarginal.xaxis.set_label_position("top")
-  ax_qmarginal.set_xlabel(r"$\tilde{\rho}_t(q)$",fontsize = fontsizetitles,labelpad = 7)
+  ax_qmarginal.set_xlabel(r"$\tilde{f}_t(q)$",fontsize = fontsizetitles,labelpad = 7)
 
-  if x_ind !=0:
-    ax.set_xlabel(r"$p$",fontsize = fontsizetitles)
+  #if x_ind !=0:
+  ax.set_xlabel(r"$p$",fontsize = fontsizetitles,labelpad=-20)
 
-  ax_pmarginal.set_ylabel(r"$\tilde{\rho}_t(p)$",fontsize = fontsizetitles)
+  ax_pmarginal.set_ylabel(r"$\tilde{f}_t(p)$",fontsize = fontsizetitles)
 
-  if y_ind == 2:
-    #make label and add text
-    ax.set_ylabel(r"$q$",fontsize = fontsizetitles)
-    ax.yaxis.set_label_position("right")
+  #if y_ind == 2:
+  #make label and add text
+  ax.set_ylabel(r"$q$",fontsize = fontsizetitles,labelpad=-10)
+  ax.yaxis.set_label_position("right")
 
   #add contour plots of the boundary conditions
   if plot_index ==0:
     #[X, Y] = np.meshgrid(q_axis(0), q_axis(0))
 
     # Creating 2-D grid of features
-    Z = ud_pinitial(Q,P)
+    #Z = ud_pinitial(Q,P)
 
     # plots contour lines
-    ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
+    #ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
+    
     ax.set_title(f"$t = 0$", loc = "center", fontsize=fontsizetitles)
+    ax_pmarginal.fill_between(q_axis,np.exp(-(q_axis**2)/2)/np.sqrt(np.pi*2),color=c2)
+    ax_qmarginal.fill_between(p_initial(q_axis),q_axis,color=c2)
+
 
   if plot_index == 5:
 
     # Creating 2-D grid of features
     #[X, Y] = np.meshgrid(q_axis(0), q_axis(0))
-    Z = ud_pfinal(Q,P)
+    #Z = ud_pfinal(Q,P)
 
     # plots contour lines
-    ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
+    #ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
     ax.set_title(f"$t = t_f$", loc = "center", fontsize=fontsizetitles)
+    ax_pmarginal.fill_between(q_axis,np.exp(-(q_axis**2)/2)/np.sqrt(np.pi*2),color=c2)
+    ax_qmarginal.fill_between(p_final(q_axis),q_axis,color=c2)
 
   if (0 <plot_index < 5):
     ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center", fontsize=fontsizetitles)
@@ -432,7 +438,7 @@ def joint_distributions_scatter(fig,gs,
   plt.setp(ax_qmarginal.xaxis.get_majorticklabels(), ha="right")
   ax_qmarginal.invert_xaxis()
   #ax.set_aspect('equal', adjustable='box')
-  plt.setp(ax.xaxis.get_majorticklabels(), ha="left")
+  #plt.setp(ax.xaxis.get_majorticklabels(), ha="left")
 
 
 
