@@ -1,4 +1,7 @@
 # entropy_production
+A (hopefully) easy-to-follow guide of the procedure can be found in the Minimal Work Protocols notebook. This is an overview of the steps. 
+
+To get better results, use the scripts as follows:
 
 To compute the overdamped problem (an optimal transport problem)
 ```
@@ -15,7 +18,10 @@ To compute the corrections for the underdamped distributions and drift, use
 run python entropy_production/distributionanddrift.py --args**
 ```
 
-The overdamped data is fetched in the datafetch.py script based on the input file name. The new underdamped columns are appended to the "results" csv. This behaviour can be customised by changing the output file for at the end of the distributionanddrift.py file. Similarly, use plotdrift.py to get the plot of the drifts.
+The overdamped data is fetched in the datafetch.py script based on the input file name. The new underdamped columns are appended to the "results" csv. This behaviour can be customised by changing the output file for at the end of the distributionanddrift.py file. 
+
+Plots can be made by running scripts (eg to get the cumulants use cumulantsplot.py) 
+
 
 
 
