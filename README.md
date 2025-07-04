@@ -23,8 +23,12 @@ run python entropy_production/distributionanddrift.py --args**
 
 The overdamped data is fetched in the datafetch.py script based on the input file name. The new underdamped columns are appended to the "results" csv. This behaviour can be customised by changing the output file for at the end of the distributionanddrift.py file. 
 
-Plots can be made by running scripts (eg to get the cumulants use cumulantsplot.py) 
-
-
+Plots can be made by running the following scripts 
+- For the cumulants use cumulantsplot.py
+- For drift and distribution: distributionanddrift.py
+- For plots of the joint distribution: first girsanovjoint.py (to compute and save the values); plot with girsanovplot.py
+- Sample histograms of the final distribution: histograms.py
+- Momentum variance at different g: momvarplot.py
+- Entropy Production at different times totalcosts.py (to compute and save values); plot with totalcostplot.py
 
 
