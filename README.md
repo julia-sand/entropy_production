@@ -15,7 +15,7 @@ For all parsable parameters, info can be found using help option.
 
 Outputs: the csv containing the results of the overdamped calculation and a text file containing the metaparameters of the run
 
-To compute the corrections for the underdamped distributions and drift, use
+To compute the corrections for the underdamped distributions and drift from the overdamped solution, use
 
 ```
 run python entropy_production/distributionanddrift.py --args**
