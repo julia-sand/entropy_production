@@ -1,5 +1,8 @@
 # entropy_production
-A (hopefully) easy-to-follow guide of the procedure can be found in the Minimal Work Protocols notebook. This is an overview of the steps. 
+
+Accompanying code for [Minimal work protocols for inertial particles in nonharmonic traps](https://doi.org/10.1103/PhysRevE.111.034127)
+
+A user guide of the procedure can be found in the Minimal Work Protocols notebook. This is an overview of the steps. 
 
 To get better results, use the scripts as follows:
 
