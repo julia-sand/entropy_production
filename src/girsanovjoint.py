@@ -4,13 +4,11 @@ Compute the joint distribution using the perturbative drift and girsanov's theor
 save to csv
 """
 
+import csv
 
 import src.utils.functions as functions
 from src.utils.params import *
 from src.utils.datafetch import *
-
-#import sys
-import csv
 
 #mc_samples = int(sys.argv[5]) #number of sample trajectories
 

@@ -1,15 +1,9 @@
+import csv
 
 import ot
 from sklearn.neighbors import KernelDensity
 
-
-
-import csv
-
-#get the parameters
 from src.utils.params import *
-
-#number of samples for the optimal transport problem
 
 # Create some large histograms from initial and final data
 xs = npr.choice(np.linspace(-10,10,n), size = n, p = p_initial(np.linspace(-10,10,n))/ sum(p_initial(np.linspace(-10,10,n))))
@@ -23,16 +17,13 @@ G0_data = ot.emd2_1d(xs.reshape((n, 1)), xt.reshape((n, 1)),log=True)
 w2_dist = G0_data[0]
 idx = np.argmax(G0_data[1]["G"],axis=1)
 
-
-#print("OT done")
-
-#find lagrangian trajectories and burgers velocities
-#@jit(nopython=True)
 def get_rho_lambda(i,idx,xt):
-
-  '''input:
+  '''
+  Computes lagrangian trajectories and burgers velocities for a mat
+  args:
   - i: index of the initial coordinate
-  - t: time of evaluation
+  - idx: index of the matched endpoint found using ot
+  - xt: sampled histogram of final assigned distribution
 
   returns:
   - l_map: approximation of the dynamic lagrangian map between the two distributions as a function of time
@@ -53,12 +44,13 @@ def get_rho_lambda(i,idx,xt):
 
   return l_map,dsigma_x
 
+#preallocate array
 results = np.zeros((n,2,t_steps))
 
 for x in enumerate(xs):
   lmap,dsig = get_rho_lambda(x[0],idx,xt)
 
-  #put into numpy array
+  #save into numpy array
   results[x[0],0,:] = lmap.reshape((1,1,t_steps))
   results[x[0],1,:] = dsig.reshape((1,1,t_steps))
 
@@ -110,8 +102,7 @@ for t2 in enumerate(t2_vec):
 #save the dataframe as a csv
 #df.to_csv("results.csv",index=False)
 
-#write out the parameters
-#filename = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+#save parameters to txt file
 # open a file in write mode
 with open(filename+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+'.txt', 'w') as file:
     # write variables using repr() function

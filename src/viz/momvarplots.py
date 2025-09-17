@@ -34,7 +34,7 @@ format_axes(ax1,"Momentum Mean")
 ax1.set_xlim(-0.05,2.05)
 #ax.set_ylim(0.97,1.155)
 ax1.text(0.02,0.92,"(a)",  transform=ax1.transAxes,fontsize=fontsizetitles)
-plt.xlabel(r"$\mathrm{t}$",fontsize=fontsizetitles)
+#plt.xlabel(r"$\mathrm{t}$",fontsize=fontsizetitles)
 
 
 plt.subplot(122)
@@ -63,4 +63,4 @@ plt.savefig("ep_land_mom_cumulants.png",bbox_inches = "tight")
 #plt.savefig("ep_land_mom_cumulants.pdf")
 #plt.savefig("ep_land_mom_cumulants.eps")
 
-plt.close();
+plt.close()

@@ -16,7 +16,6 @@ gs = gridspec.GridSpec(2, 1, height_ratios=[1,1],hspace=0.2)
 gs0 = gridspec.GridSpecFromSubplotSpec(2, 4, height_ratios=[1,2], subplot_spec=gs[0], hspace=0.07, wspace=0.5)
 gs1 = gridspec.GridSpecFromSubplotSpec(2, 4, height_ratios=[1,2], subplot_spec=gs[1], hspace=0.07, wspace=0.5)
 
-
 #get elements of the array
 #idx = np.round(np.linspace(0, t_steps - 1, 10)).astype(int)
 idx = np.array([0,0.5,0.75,1,1.25,1.5,1.75,2])

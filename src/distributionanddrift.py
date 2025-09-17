@@ -5,15 +5,10 @@ import src.utils.functions as functions
 from src.utils.params import *
 from src.utils.datafetch import *
 
-#add t0 col
-#df["t0"] = np.round(df.t2/(epsilon**2) ,dps)
-
 #fill infs with zeros
 df.replace([np.inf,-np.inf,np.nan], 0, inplace=True)
 
-
 #add two new columns
-
 df["UDpdf"] = np.ones(len(df))
 df["UDdrift"] = np.ones(len(df)) 
 

@@ -69,28 +69,37 @@ def linear_position_cumulant(t0,g):
   return term1 - coeff2*(int1 - int2)
 
 
-##compute cumulants at different g and save
-df_ep_cumulants = pd.DataFrame(data =np.ones((len(gs)*len(times_t0),7)),columns = ["g","t0","pos_var","mom_var","mom_mean","pos_mean","xcorr"])
+def compute_and_save_predicted_cumulants():
+  """
+  Computes cumulants based on perturbative predictions and saves to csv for plotting
+  """
 
-for g_ind in enumerate(gs):
-  df_ep_cumulants.loc[(g_ind[0])*len(times_t0):(g_ind[0]+1)*len(times_t0),"g"] = g_ind[1]
+  ##compute cumulants at different g and save
+  df_ep_cumulants = pd.DataFrame(data =np.ones((len(gs)*len(times_t0),7)),columns = ["g","t0","pos_var","mom_var","mom_mean","pos_mean","xcorr"])
 
-for gi in gs:
-  pos_var_temp = [position_variance_g(t0,gi) for t0 in times_t0]
-  x_corr_temp = [cross_correlation(t0,gi) for t0 in times_t0]
-  mom_var_temp = [momentum_variance(t0,gi) for t0 in times_t0]
-  mom_mean_temp = [mom_mean(t0,gi) for t0 in times_t0]
-  pos_mean_temp = [linear_position_cumulant(t0,gi) for t0 in times_t0]
+  for g_ind in enumerate(gs):
+    df_ep_cumulants.loc[(g_ind[0])*len(times_t0):(g_ind[0]+1)*len(times_t0),"g"] = g_ind[1]
 
-  df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"t0"] = times_t0
-  df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"pos_var"] = pos_var_temp
-  df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"mom_var"] = mom_var_temp
-  df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"mom_mean"] = mom_mean_temp
-  df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"pos_mean"] = pos_mean_temp
-  df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"xcorr"] = x_corr_temp
+  for gi in gs:
+    pos_var_temp = [position_variance_g(t0,gi) for t0 in times_t0]
+    x_corr_temp = [cross_correlation(t0,gi) for t0 in times_t0]
+    mom_var_temp = [momentum_variance(t0,gi) for t0 in times_t0]
+    mom_mean_temp = [mom_mean(t0,gi) for t0 in times_t0]
+    pos_mean_temp = [linear_position_cumulant(t0,gi) for t0 in times_t0]
+
+    df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"t0"] = times_t0
+    df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"pos_var"] = pos_var_temp
+    df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"mom_var"] = mom_var_temp
+    df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"mom_mean"] = mom_mean_temp
+    df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"pos_mean"] = pos_mean_temp
+    df_ep_cumulants.loc[df_ep_cumulants[df_ep_cumulants.g==gi].index,"xcorr"] = x_corr_temp
 
 
-#save the cumulants
-filename_temp = "cumulants_" +f"{fileid}"+".csv"
+  #save the cumulants
+  filename_temp = "cumulants_" +f"{fileid}"+".csv"
 
-df_ep_cumulants.to_csv(filename_temp, index=False)
+  df_ep_cumulants.to_csv(filename_temp, index=False)
+  
+
+if __name__=="__main__":
+  compute_and_save_predicted_cumulants()
