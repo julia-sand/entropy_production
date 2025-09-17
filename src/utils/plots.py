@@ -30,6 +30,7 @@ def update_mpl():
   mpl.rcParams['ytick.labelsize'] = 18
   mpl.rcParams['font.size'] = 22
   mpl.rcParams['axes.labelsize'] = 22
+  mpl.rcParams['legend.fontsize'] = 22
 
 fontsize=22
 fontsizetitles=22
