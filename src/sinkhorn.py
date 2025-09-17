@@ -7,7 +7,7 @@ from sklearn.neighbors import KernelDensity
 import csv
 
 #get the parameters
-from src.utils.main import *
+from src.utils.params import *
 
 #number of samples for the optimal transport problem
 

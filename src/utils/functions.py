@@ -5,12 +5,11 @@ used for the evolution of girsanov theorem and histogram plots
 
 """
 
-
 from scipy.ndimage import generic_filter
 import scipy.ndimage as sc
 import scipy.interpolate as sci
 
-from src.utils.main import *  
+from src.utils.params import *  
 from src.utils.datafetch import *
 
 

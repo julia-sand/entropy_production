@@ -6,7 +6,7 @@ save to csv
 
 
 import src.utils.functions as functions
-from src.utils.main import *
+from src.utils.params import *
 from src.utils.datafetch import *
 
 #import sys

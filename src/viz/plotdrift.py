@@ -1,4 +1,4 @@
-from src.utils.main import *
+from src.utils.params import *
 from src.utils.plots import *
 
 import matplotlib.pyplot as plt

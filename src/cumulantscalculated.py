@@ -1,5 +1,5 @@
 
-from src.utils.main import *
+from src.utils.params import *
 import src.utils.functions as functions
 
 gs = np.logspace(-1,-4,4)

@@ -1,11 +1,10 @@
-#from main import *
 #import functions
+import string
+
 from scipy.signal import find_peaks
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import matplotlib.gridspec as gridspec
-import string
-
 
 from src.utils.plots import *
 

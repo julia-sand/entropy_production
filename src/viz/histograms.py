@@ -9,7 +9,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
 
-from src.utils.main import *
+from src.utils.params import *
 import src.utils.functions as functions
 from src.utils.plots import *
 

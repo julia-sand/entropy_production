@@ -13,7 +13,7 @@ import matplotlib.ticker as ticker
 from sklearn.neighbors import KernelDensity
 import scipy.stats as stats
 
-from src.utils.main import *
+from src.utils.params import *
 import src.utils.functions as functions
 
 
@@ -31,6 +31,9 @@ def update_mpl():
   mpl.rcParams['font.size'] = 22
   mpl.rcParams['axes.labelsize'] = 22
 
+fontsize=22
+fontsizetitles=22
+fontsizeticks=18
 
 #update matplotlib parameters when file is imported#
 update_mpl()
@@ -56,7 +59,7 @@ def format_axes(ax,ylabel_text):
   ax.set_xlim((0,T))
   ax.set_xlabel(r"$\mathrm{t}$")
   ax.set_ylabel(ylabel_text)
-  
+
   return ax
 
 def format_drift(ax):

@@ -1,5 +1,5 @@
 from src.utils.plots import *
-from src.utils.main import *
+from src.utils.params import *
 import pandas as pd
 
 #gridspec

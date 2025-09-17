@@ -3,7 +3,7 @@ import matplotlib.gridspec as gridspec
 from matplotlib.cm import ScalarMappable
 import matplotlib.patches as mpatches
 
-from src.utils.main import *
+from src.utils.params import *
 from src.utils.datafetch import *
 from src.utils.plots import *
 

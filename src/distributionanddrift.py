@@ -2,7 +2,7 @@ import scipy.interpolate as sci
 from sklearn.neighbors import KernelDensity
 
 import src.utils.functions as functions
-from src.utils.main import *
+from src.utils.params import *
 from src.utils.datafetch import *
 
 #add t0 col
