@@ -7,7 +7,7 @@ import matplotlib.gridspec as gridspec
 import string
 
 
-from setup.plots import *
+from utils.plots import *
 
 #format axes
 def format_axes(ax):

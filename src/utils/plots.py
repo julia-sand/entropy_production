@@ -12,8 +12,8 @@ import matplotlib.ticker as ticker
 import string
 
 
-from setup.main import *
-import setup.functions as functions
+from utils.main import *
+import utils.functions as functions
 
 
 #fontsizes

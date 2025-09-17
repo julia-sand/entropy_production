@@ -1,9 +1,9 @@
 import scipy.interpolate as sci
 from sklearn.neighbors import KernelDensity
 
-import setup.functions as functions
-from setup.main import *
-from setup.datafetch import *
+import utils.functions as functions
+from utils.main import *
+from utils.datafetch import *
 
 #add t0 col
 #df["t0"] = np.round(df.t2/(epsilon**2) ,dps)

@@ -12,8 +12,8 @@ from scipy.ndimage import generic_filter
 import scipy.ndimage as sc
 import scipy.interpolate as sci
 
-from setup.main import *  
-from setup.datafetch import *
+from utils.main import *  
+from utils.datafetch import *
 
 
 def omega_fun(g):

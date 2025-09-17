@@ -1,6 +1,6 @@
 
-from setup.main import *
-import setup.functions as functions
+from utils.main import *
+import utils.functions as functions
 
 gs = np.logspace(-1,-4,4)
 

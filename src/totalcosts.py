@@ -1,7 +1,7 @@
 
-import setup.functions as functions
-from setup.main import *
-from setup.datafetch import *
+import utils.functions as functions
+from utils.main import *
+from utils.datafetch import *
 
 columns = ["g","Tf","Firstterm","EPcost","ODBound"]
 
