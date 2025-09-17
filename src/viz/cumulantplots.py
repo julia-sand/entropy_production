@@ -5,8 +5,8 @@ import matplotlib.gridspec as gridspec
 import matplotlib.ticker as ticker
 
 #formatting options
-from utils.plots import *
-import utils.functions as functions
+from src.utils.plots import *
+import src.utils.functions as functions
 
 def plot_cumulants(simulated_cumulants_csv,cumulants_perturbative_csv):
     
@@ -35,13 +35,12 @@ def plot_cumulants(simulated_cumulants_csv,cumulants_perturbative_csv):
 
     # position mean
     plt.subplot(gs_cumulants[0, 0:2])
-    plt.plot(times_t0,  cumulants_perturbative[cumulants_perturbative.g==g].pos_mean,lw=lw,color=c1)
+    plt.plot(times_t0,  cumulants_perturbative[cumulants_perturbative.g==g].pos_mean,color=c1)
     plt.plot(times_t0,odmeans,lw=lw,color="orange")
-    plt.plot(cumulant_plot_times,  df_ep_cumulants[df_ep_cumulants.g==g].pos_mean,lw=lw,color=c2)
-    plt.title('(a)',fontsize = fontsizetitles,pad = titlepad,x = titlex, y =titley,zorder = 1000000)
-    ax = format_axes(plt.gca(),fontsize)
+    plt.plot(cumulant_plot_times,  df_ep_cumulants[df_ep_cumulants.g==g].pos_mean,color=c2)
+    plt.title('(a)',pad = titlepad,x = titlex, y =titley,zorder = 1000000)
+    ax = format_axes(plt.gca(),'Position Mean')
     ax.set_ylim((-0.05,1.2))
-    ax.set_ylabel('Position Mean',fontsize = fontsizetitles)
     ax.set_xlim((-0.01,2.01))
 
     # position variance
@@ -50,8 +49,7 @@ def plot_cumulants(simulated_cumulants_csv,cumulants_perturbative_csv):
     plt.plot(times_t0, [functions.var_t0(t0) for t0 in times_t0]-(odmeans**2),lw=lw,color="orange")
     plt.plot(cumulant_plot_times, df_ep_cumulants[df_ep_cumulants.g==g].pos_var,lw=lw,color=c2)
     plt.title('(b)',fontsize = fontsizetitles,pad = titlepad,x = titlex, y =titley,zorder = 1000000)
-    ax = format_axes(plt.gca(),fontsize)
-    ax.set_ylabel('Position Variance',fontsize = fontsizetitles)
+    ax = format_axes(plt.gca(),'Position Variance')
     ax.set_xlim((-0.01,2.01))
 
     # cross corr
@@ -59,8 +57,7 @@ def plot_cumulants(simulated_cumulants_csv,cumulants_perturbative_csv):
     plt.plot(times_t0,  cumulants_perturbative[cumulants_perturbative.g==g].xcorr,lw=lw,color=c1)
     plt.plot(cumulant_plot_times, df_ep_cumulants[df_ep_cumulants.g==g].xcorr,lw=lw,color=c2)
     plt.title('(c)',fontsize = fontsizetitles,pad = titlepad,x = titlex, y =titley,zorder = 1000000)
-    ax = format_axes(plt.gca(),fontsize)
-    ax.set_ylabel('Cross Correlation',fontsize = fontsizetitles)
+    ax = format_axes(plt.gca(),'Cross Correlation')
     ax.set_xlim((-0.01,2.01))
 
     # momentum mean
@@ -69,8 +66,7 @@ def plot_cumulants(simulated_cumulants_csv,cumulants_perturbative_csv):
     plt.plot(cumulant_plot_times, df_ep_cumulants[df_ep_cumulants.g==g].mom_mean,lw=lw,color=c2)
     #plt.plot(times_t0, [mom_mean_alt(t0) for t0 in times_t0],lw=lw)
     plt.title('(d)',fontsize = fontsizetitles,pad = titlepad,x = titlex*(2/3), y =titley,zorder = 1000000)
-    ax = format_axes(plt.gca(),fontsize)
-    ax.set_ylabel('Momentum Mean',fontsize = fontsizetitles)
+    ax = format_axes(plt.gca(),'Momentum Mean')
     ax.xaxis.set_major_locator(ticker.MultipleLocator(0.5))
     ax.set_xlim((-0.01,2.01))
 
@@ -79,8 +75,7 @@ def plot_cumulants(simulated_cumulants_csv,cumulants_perturbative_csv):
     plt.plot(times_t0,  cumulants_perturbative[cumulants_perturbative.g==g].mom_var,lw=lw,color=c1)
     plt.plot(cumulant_plot_times,  df_ep_cumulants[df_ep_cumulants.g==g].mom_var,lw=lw,color=c2)
     plt.title('(e)',fontsize = fontsizetitles,pad = titlepad,x = titlex*(2/3), y =titley,zorder = 1000000)
-    ax = format_axes(plt.gca(),fontsize)
-    ax.set_ylabel('Momentum Variance',fontsize = fontsizetitles)
+    ax = format_axes(plt.gca(),'Momentum Variance')
     ax.xaxis.set_major_locator(ticker.MultipleLocator(0.5))
     ax.set_xlim((-0.01,2.01))
 

@@ -1,5 +1,5 @@
-from utils.main import *
-from utils.plots import *
+from src.utils.main import *
+from src.utils.plots import *
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec

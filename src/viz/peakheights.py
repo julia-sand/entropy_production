@@ -7,18 +7,7 @@ import matplotlib.gridspec as gridspec
 import string
 
 
-from utils.plots import *
-
-#format axes
-def format_axes(ax):
-  #ax.set_xscale('log')
-  #ax.invert_xaxis()
-  #ax.set_ylim((4.6,5.3))
-  #ax.set_xlim((0.11,(8e-7)))
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
-  ax.tick_params(axis='x', labelsize=fontsizeticks)
-  ax.set_xlim((-0.01,2.01))
-  #ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
+from src.utils.plots import *
 
 f1 = "results_SYM.csv"
 f2 = "results.csv"
@@ -114,9 +103,8 @@ for peaks in enumerate([f1,f2,f3]):
   ax.plot(times_t0_temp,ODheight_b,lw=lw,color = "orange")
   #plt.ylim((0.25,0.45))
 
-  #plots.format_axes(ax,fontsizeticks)
   ax.set_ylabel("Peak Height",fontsize=fontsizetitles,labelpad = 20)
-  format_axes(ax)
+  ax.set_xlim((-0.01,2.01))
   ax.set_ylim((0.48,0.58))
 
   ax2 = fig1.add_subplot(gs1[plot_idx,1])#(gs1[peaks[0],1])#
@@ -125,7 +113,7 @@ for peaks in enumerate([f1,f2,f3]):
   ax2.scatter(times_t0_temp,loc_b,lw=lw,color=c1)
   ax2.scatter(times_t0_temp,ODloc_a,lw=lw,color = "orange",label = "Overdamped")
   ax2.scatter(times_t0_temp,ODloc_b,lw=lw,color = "orange")
-  format_axes(ax2)
+  ax2.set_xlim((-0.01,2.01))
   ax2.set_ylim((-1.8,1.8))
   ax2.set_ylabel("Peak Location",fontsize=fontsizetitles)
   ax2.text(0.03,0.9,"("+string.ascii_lowercase[letter_idx+1]+")"

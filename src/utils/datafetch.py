@@ -1,5 +1,5 @@
 import pandas as pd
-from utils.main import *
+from src.utils.main import *
 
 try:
     df = pd.read_csv(filename+".csv", sep=" ", header = 0)

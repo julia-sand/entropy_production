@@ -9,9 +9,9 @@ import matplotlib.gridspec as gridspec
 import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
 
-from utils.main import *
-import utils.functions as functions
-from utils.plots import *
+from src.utils.main import *
+import src.utils.functions as functions
+from src.utils.plots import *
 
 # Plotting the distributions
 fig_distributions = plt.figure(figsize=(15,10))

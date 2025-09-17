@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from utils.plots import *
+from src.utils.plots import *
 
 ##momentum mean and var only
 
@@ -28,9 +28,7 @@ ax1.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.1].mom_mean,label=r"$g=10
 ax1.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.01].mom_mean,label=r"$g=10^{-2}$",lw=lw,c = c2)
 ax1.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.001].mom_mean,label=r"$g=10^{-3}$",lw=lw,c = c3)
 ax1.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.0001].mom_mean,label=r"$g=10^{-4}$",lw=lw,c = c4)
-format_axes(ax1,fontsizetitles)
-
-ax1.set_ylabel("Momentum Mean",fontsize=fontsizetitles)
+format_axes(ax1,"Momentum Mean")
 
 
 ax1.set_xlim(-0.05,2.05)
@@ -45,12 +43,11 @@ plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.1].mom_var,lw=lw,c = c1)
 plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.01].mom_var,lw=lw,c = c2)
 plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.001].mom_var,lw=lw,c = c3)
 plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.0001].mom_var,lw=lw,c = c4)
-plt.ylabel("Momentum Variance",fontsize=fontsizetitles)
 ax = plt.gca()
 plt.text(0.02,0.92,"(b)", transform=ax.transAxes,fontsize=fontsizetitles)
 
 
-format_axes(ax,fontsizetitles)
+format_axes(ax,"Momentum Variance")
 ax.set_xlim(-0.05,2.05)
 
 

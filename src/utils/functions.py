@@ -1,5 +1,4 @@
 """
-
 This file stores all the functions for the calculation 
 of the distribution and drift, and the interpolation functions 
 used for the evolution of girsanov theorem and histogram plots
@@ -7,29 +6,29 @@ used for the evolution of girsanov theorem and histogram plots
 """
 
 
-
 from scipy.ndimage import generic_filter
 import scipy.ndimage as sc
 import scipy.interpolate as sci
 
-from utils.main import *  
-from utils.datafetch import *
+from src.utils.main import *  
+from src.utils.datafetch import *
 
 
 def omega_fun(g):
   return np.sqrt((1+g)/g)
 
-omega = omega_fun(g)
 
 #constants
 def B_fun(T,g):
+
+  omega = omega_fun(g)
   return -((1+g)/T)*np.tanh(omega*T/2)*(omega*np.tanh(T) - 2*np.tanh(omega*T/2))/(omega*np.tanh(omega*T/2) - 2*np.tanh(T))
 
 def A_fun(T,g):
   return (1+g)*(1 - (((((1+g)/g) - 4)*(np.tanh(omega_fun(g)*T/2)*np.tanh(T)))/(omega_fun(g)*T*(omega_fun(g)*np.tanh(omega_fun(g)*T/2)-2*np.tanh(T)))))
 
-A = A_fun(T,g)
-B = B_fun(T,g)
+#A = A_fun(T,g)
+#B = B_fun(T,g)
 
 #clips values close to zero to prevent errors in logarithms
 def zchop(a,tol):
@@ -59,7 +58,6 @@ def get_rhomask(t0,tol=tol):
 
 def od_bound(T,g):
   return (1/(1+g))*(w2_dist/(T*(epsilon**2)))
-
 
 #derivative functions
 def dsigma(t0 ):
@@ -338,8 +336,6 @@ def optimal_drift(t0 ):
   #t2 = round(t0*(epsilon**2),dps)
   drift_temp = df[df.t0 ==t0].UDdrift.to_numpy()
   return drift_temp
-
-
 
 
 

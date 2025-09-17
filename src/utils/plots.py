@@ -2,27 +2,38 @@
 This file stores all the plotting functions
 
 """
+import string
+
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as mlines
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+import matplotlib.ticker as ticker
+
 from sklearn.neighbors import KernelDensity
 import scipy.stats as stats
-import matplotlib.ticker as ticker
-import string
+
+from src.utils.main import *
+import src.utils.functions as functions
 
 
-from utils.main import *
-import utils.functions as functions
+def update_mpl():
+  """
+  Sets default parameters for any matplotlib plotting formatting
+  """
+
+  mpl.use('Agg')  # Use the 'Agg' backend for non-GUI rendering
+
+  #update matplotlib config
+  mpl.rcParams['lines.linewidth'] = 3
+  mpl.rcParams['xtick.labelsize'] = 18
+  mpl.rcParams['ytick.labelsize'] = 18
+  mpl.rcParams['font.size'] = 22
+  mpl.rcParams['axes.labelsize'] = 22
 
 
-#fontsizes
-fontsize = 22
-fontsizeticks = 18
-fontsizetitles = 22
-
-#linewidth
-lw = 3
+#update matplotlib parameters when file is imported#
+update_mpl()
 
 #colors
 c2 = "#a6cee3" #lightblue
@@ -40,14 +51,12 @@ disttitley = 0.52
 #c1 = "#1f78b4" #darkblue
 #c4 = "#b2df8a" #light green
 
-def format_axes(ax,fontsize):
+def format_axes(ax,ylabel_text):
 
   ax.set_xlim((0,T))
-  ax.set_xlabel(r"$\mathrm{t}$",fontsize = fontsizetitles)
-
-  #ax.set_xticklabels(labels = [0,1,2,3,4,5],fontsize=10)
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
-  ax.tick_params(axis='x', labelsize=fontsizeticks)
+  ax.set_xlabel(r"$\mathrm{t}$")
+  ax.set_ylabel(ylabel_text)
+  
   return ax
 
 def format_drift(ax):
