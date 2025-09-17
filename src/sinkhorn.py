@@ -1,9 +1,9 @@
 
 import ot
 from sklearn.neighbors import KernelDensity
-#from geomloss import SamplesLoss # See also ImagesLoss, VolumesLoss
 
-#from numba import jit
+
+
 import csv
 
 #get the parameters
