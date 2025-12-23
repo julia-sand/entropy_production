@@ -7,10 +7,6 @@ gs = np.logspace(-1,-4,4)
 ##
 def mom_mean(t0,g):
 
-  #Ag = A_fun(T,g)
-  #Bg = B_fun(T,g)
-  #return epsilon*(a_minus_b2(t0))*kappa(t0)/(Ag-Bg)
-
   A_minus_B = (1+g)*(1-((2/(functions.omega_fun(g)*T))*(np.tanh(functions.omega_fun(g)*T/2))))
   return epsilon*(functions.a_minus_b2(t0,g))*functions.kappa(t0)/A_minus_B
 

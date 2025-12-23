@@ -23,8 +23,6 @@ q_init = np.linspace(-3,3,q_samples)
 #make a mesh grid
 P,Q = np.meshgrid(p_init,q_init)
 
-#df_girspdf_ep = pd.DataFrame()
-
 ###BACKWARDS EVOLUTIONS
 
 #reset plot index

@@ -32,9 +32,9 @@ def update_mpl():
   mpl.rcParams['axes.labelsize'] = 22
   mpl.rcParams['legend.fontsize'] = 22
 
-fontsize=22
-fontsizetitles=22
-fontsizeticks=18
+#fontsize=22
+#fontsizetitles=22
+#fontsizeticks=18
 
 #update matplotlib parameters when file is imported#
 update_mpl()
@@ -105,7 +105,7 @@ def format_log_axes(ax):
   ax.invert_xaxis()
   #ax.set_ylim((4.6,5.3))
   ax.set_xlim((0.13,(8e-7)))
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
+  #ax.tick_params(axis='y', labelsize=fontsizeticks)
   #ax.tick_params(axis='x', labelsize=fontsizeticks)
   #ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
 
