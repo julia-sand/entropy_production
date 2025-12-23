@@ -32,10 +32,6 @@ def update_mpl():
   mpl.rcParams['axes.labelsize'] = 22
   mpl.rcParams['legend.fontsize'] = 22
 
-#fontsize=22
-#fontsizetitles=22
-#fontsizeticks=18
-
 #update matplotlib parameters when file is imported#
 update_mpl()
 
@@ -65,38 +61,21 @@ def format_axes(ax,ylabel_text):
 
 def format_drift(ax):
 
-  #ax.yaxis.tick_right()
-  ax.tick_params(axis='both', labelsize=fontsizeticks)
-  #ax.tick_params(axis='y', labelsize=fontsizeticks)
-
-  #ax.set_ylim((-30,30))
   ax.set_xlim((-3,3))
-  ax.set_xlabel(r"$q$",fontsize= fontsize,labelpad=7)
+  ax.set_xlabel(r"$q$",labelpad=7)
 
 ##plot set-up
 def format_dist_axes(ax):
 
-  #ax.patch.set_alpha(0)
-  #ax.yaxis.tick_right()
-  ax.tick_params(axis='x', labelsize=fontsizeticks)
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
-  #ax.tick_params(labeltop='off', labelright='off')
-
   ax.set_ylim((-0.01,0.6))
   ax.set_xlim((-3,3))
   ax.spines['bottom'].set_zorder(1000)
-
-  #ax.set_xticks([])
-  #ax.set_xticklabels([])
-  #ax.set_xlabel(r"$\mathrm{q}$",fontsize= fontsize)
 
 ##plot set-up
 def format_scatter_axes(ax):
 
   ax.set_xlim((-4,3))
   ax.set_ylim((-3,3))
-
-  ax.tick_params(axis='both', labelsize=fontsizeticks)
 
 
 #format axes
@@ -105,10 +84,7 @@ def format_log_axes(ax):
   ax.invert_xaxis()
   #ax.set_ylim((4.6,5.3))
   ax.set_xlim((0.13,(8e-7)))
-  #ax.tick_params(axis='y', labelsize=fontsizeticks)
-  #ax.tick_params(axis='x', labelsize=fontsizeticks)
-  #ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
-
+ 
 #####-----DRIFT AND DISTRIBUTION PLOTS-----#####
 
 # Plotting the graphs)
@@ -143,7 +119,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
   from scipy.ndimage import median_filter,generic_filter
   import scipy.ndimage as sc  # t0 distribution
   plt.subplot(gs[0,locy])
-  plt.title(title, loc = "center", fontsize=fontsizetitles)
+  plt.title(title, loc = "center")
 
   plt.plot(q_axis,functions.rho(tcurr),color=c3,lw=4)
   plt.plot(q_axis,functions.distribution(tcurr),color=c1,lw=3)
@@ -152,10 +128,9 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
   ax = plt.gca()
   format_dist_axes(ax)
-  ax.text(s = labels[0],fontsize = fontsizetitles,x = disttitlex, y =disttitley,zorder = 1000)
+  ax.text(s = labels[0],x = disttitlex, y =disttitley,zorder = 1000)
 
   ax.set_xticklabels([])
-  #ax.tick_params(axis='y', labelsize=fontsizeticks)
 
   ax0 = plt.subplot(gs[1, locy])
   plot_data = cleaner(functions.optimal_drift(tcurr),tcurr)
@@ -168,7 +143,7 @@ def plot_pair(tcurr,title,labels,gs,locy):
 
   #ax0 = plt.gca()
   format_drift(ax0)
-  ax0.text(s = labels[1],fontsize = fontsizetitles,x = 0.05, y =-0.25, zorder = 1000,transform=ax.transAxes)
+  ax0.text(s = labels[1],x = 0.05, y =-0.25, zorder = 1000,transform=ax.transAxes)
 
   series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
   series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
@@ -181,9 +156,8 @@ def plot_pair(tcurr,title,labels,gs,locy):
   #  ax0.set_ylim((-20,260))
 
   if locy ==0:
-    #ax.set_ylabel(r'$\rho_{t}(q)$',fontsize = fontsizetitles,labelpad= 7)
-    ax.set_ylabel(r'$f_{t}(q)$',fontsize = fontsizetitles,labelpad= 7)
-    ax0.set_ylabel(r'$-\partial U_{t}(q)$',fontsize = fontsizetitles,labelpad= 5)
+    ax.set_ylabel(r'$f_{t}(q)$',labelpad= 7)
+    ax0.set_ylabel(r'$-\partial U_{t}(q)$',labelpad= 5)
     if tcurr == 0: #gs == gs0:
       #for edges
       ax0.set_ylim((-270,30))
@@ -228,14 +202,14 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
 
 
   if tcurr ==0:
-    ax.set_title("$t=0$",loc ="center", fontsize=fontsizetitles)
+    ax.set_title("$t=0$",loc ="center")
     ax.fill_between(q_axis,p_initial(q_axis))
   elif tcurr ==T:
-    ax.set_title("$t=t_f$",loc ="center", fontsize=fontsizetitles)
+    ax.set_title("$t=t_f$",loc ="center")
     ax.fill_between(q_axis,p_final(q_axis))
   else:
-    ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center", fontsize=fontsizetitles)
-  ax.text(-2.4,0.54,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles)
+    ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center")
+  ax.text(-2.4,0.54,"("+string.ascii_lowercase[plot_index]+")")
 
 
   #plot the histograms
@@ -263,12 +237,11 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   ax.set_ylim((-0.01,0.6))
   ax.set_xlim((-2.5,2.5))
 
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
   if x_ind !=0:
-    ax.set_xlabel(r"$q$",fontsize = fontsizetitles)
+    ax.set_xlabel(r"$q$")
 
   if y_ind == 0:
-    ax.set_ylabel(r"$\tilde{\rho}_t(q)$",fontsize = fontsizetitles)
+    ax.set_ylabel(r"$\tilde{\rho}_t(q)$")
 
 
 ##########--------------##################
@@ -323,7 +296,7 @@ def joint_distributions_scatter(fig,gs,
   ax_pmarginal = ax.inset_axes([0, 1.05, 1, 0.6])
   ax_qmarginal = ax.inset_axes([-0.65, 0, 0.6, 1])
 
-  ax_pmarginal.text(-9,0.4,"("+string.ascii_lowercase[plot_index]+")",fontsize = fontsizetitles,zorder = 200)
+  ax_pmarginal.text(-9,0.4,"("+string.ascii_lowercase[plot_index]+")",zorder = 200)
 
   #compute joint distribution and set nans to zero
   joint_out[np.isnan(joint_out)] = 0
@@ -377,16 +350,17 @@ def joint_distributions_scatter(fig,gs,
       #bottom=False,      # ticks along the bottom edge are off
       top=False,         # ticks along the top edge are off
       labelbottom=False)
-  ax_pmarginal.tick_params(
-      axis='y',
-      which='both',
-      labelsize = fontsizeticks)
+  #ax_pmarginal.tick_params(
+  #    axis='y',
+  #    which='both',
+  #    labelsize = fontsizeticks)
       #rotation = 70, pad=-5,
       #length =2 )
   ax_qmarginal.tick_params(
       axis='x',          # changes apply to the x-axis
       which='both',
-      labelsize = fontsizeticks, pad=-3,rotation = 45,
+      pad=-3,
+      rotation = 45,
       length =5,
       labelleft=False)
   ax_qmarginal.tick_params(
@@ -398,7 +372,6 @@ def joint_distributions_scatter(fig,gs,
 
   #plt.setp(ax_qmarginal.get_xticklabels(),
   #    rotation=90, va="top", rotation_mode="anchor")
-  ax.tick_params(axis='both', labelsize=fontsizeticks)
 
   #add labels to outside and remove ticks from inside plots
   ax_qmarginal.set_yticklabels([])
@@ -406,16 +379,16 @@ def joint_distributions_scatter(fig,gs,
   #ax.yaxis.set_label_position("right")
   ax.yaxis.tick_right()
   ax_qmarginal.xaxis.set_label_position("top")
-  ax_qmarginal.set_xlabel(r"$\tilde{f}_t(q)$",fontsize = fontsizetitles,labelpad = 7)
+  ax_qmarginal.set_xlabel(r"$\tilde{f}_t(q)$",labelpad = 7)
 
   #if x_ind !=0:
-  ax.set_xlabel(r"$p$",fontsize = fontsizetitles,labelpad=-20)
+  ax.set_xlabel(r"$p$",labelpad=-20)
 
-  ax_pmarginal.set_ylabel(r"$\tilde{f}_t(p)$",fontsize = fontsizetitles)
+  ax_pmarginal.set_ylabel(r"$\tilde{f}_t(p)$")
 
   #if y_ind == 2:
   #make label and add text
-  ax.set_ylabel(r"$q$",fontsize = fontsizetitles,labelpad=-10)
+  ax.set_ylabel(r"$q$",labelpad=-10)
   ax.yaxis.set_label_position("right")
 
   #add contour plots of the boundary conditions
@@ -428,7 +401,7 @@ def joint_distributions_scatter(fig,gs,
     # plots contour lines
     #ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
     
-    ax.set_title(f"$t = 0$", loc = "center", fontsize=fontsizetitles)
+    ax.set_title(f"$t = 0$", loc = "center")
     ax_pmarginal.fill_between(q_axis,np.exp(-(q_axis**2)/2)/np.sqrt(np.pi*2),color=c2)
     ax_qmarginal.fill_between(p_initial(q_axis),q_axis,color=c2)
 
@@ -441,12 +414,12 @@ def joint_distributions_scatter(fig,gs,
 
     # plots contour lines
     #ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
-    ax.set_title(f"$t = t_f$", loc = "center", fontsize=fontsizetitles)
+    ax.set_title(f"$t = t_f$", loc = "center")
     ax_pmarginal.fill_between(q_axis,np.exp(-(q_axis**2)/2)/np.sqrt(np.pi*2),color=c2)
     ax_qmarginal.fill_between(p_final(q_axis),q_axis,color=c2)
 
   if (0 <plot_index < 5):
-    ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center", fontsize=fontsizetitles)
+    ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center")
 
   plt.setp(ax_qmarginal.xaxis.get_majorticklabels(), ha="right")
   ax_qmarginal.invert_xaxis()
@@ -471,7 +444,7 @@ def plot_pdf_nucleation(tcurr,title,labels,loc):
 
   # t0 distribution
   plt.subplot(loc)
-  plt.title(title, loc = "center", fontsize=fontsizetitles)
+  plt.title(title, loc = "center")
 
   plt.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw,  label =r"$T=5$",zorder = 10000)
   plt.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
@@ -480,4 +453,3 @@ def plot_pdf_nucleation(tcurr,title,labels,loc):
   format_dist_axes(ax)
 
   #ax.set_xticklabels([])
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
