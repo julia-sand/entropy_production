@@ -8,6 +8,7 @@ import matplotlib.patches as mpatches
 import matplotlib.lines as mlines
 import string
 
+update_mpl()
 
 #set up the gridspec
 fig = plt.figure(figsize = (15,24)) #figsize = (width,height)

@@ -7,6 +7,7 @@ import matplotlib.lines as mlines
 import matplotlib.gridspec as gridspec
 
 from src.utils.plots import *
+update_mpl()
 
 f1 = "results_SYM.csv"
 f2 = "results.csv"

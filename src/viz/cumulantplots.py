@@ -8,6 +8,8 @@ from src.utils.plots import *
 import src.utils.functions as functions
 from src.utils.params import *
 
+update_mpl()
+
 def plot_cumulants(simulated_cumulants_csv,cumulants_perturbative_csv):
     
     df_ep_cumulants = pd.read_csv(simulated_cumulants_csv,header=0)

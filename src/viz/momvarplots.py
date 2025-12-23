@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from src.utils.plots import *
 
 ##momentum mean and var only
+update_mpl()
 
 df_ep_cumulants = pd.read_csv("cumulantscalculated.csv")#pd.read_csv("ep_cumulants_g2.csv",index_col=0)
 

@@ -1,6 +1,7 @@
 from src.utils.plots import *
 from src.utils.params import *
 import pandas as pd
+update_mpl()
 
 #gridspec
 gs_costs = gridspec.GridSpec(3, 1, width_ratios=[1], height_ratios=[1.3, 1, 1])

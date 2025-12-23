@@ -12,6 +12,7 @@ from src.utils.plots import *
 
 #plot_titles = [f"$t = {plot_times[j]}$" for j in range(0,len(plot_times))]
 #plot_titles = np.flip(plot_titles)
+update_mpl()
 
 
 filename_temp = "ep_girsanovjoint" +f"{fileid}"+".csv"
