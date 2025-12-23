@@ -93,7 +93,6 @@ for peaks in enumerate([f1,f2,f3]):
   #plt.title("Height of peaks")
   letter_idx = int(2*plot_idx)
   ax.text(0.03,0.9,"("+string.ascii_lowercase[letter_idx]+")",
-      fontsize = fontsizetitles,
        transform=ax.transAxes)
 
   ax.plot(times_t0_temp,height_a,lw=lw,color=c1,label = "Underdamped")
@@ -102,7 +101,7 @@ for peaks in enumerate([f1,f2,f3]):
   ax.plot(times_t0_temp,ODheight_b,lw=lw,color = "orange")
   #plt.ylim((0.25,0.45))
 
-  ax.set_ylabel("Peak Height",fontsize=fontsizetitles,labelpad = 20)
+  ax.set_ylabel("Peak Height",labelpad = 20)
   ax.set_xlim((-0.01,2.01))
   ax.set_ylim((0.48,0.58))
 
@@ -114,18 +113,18 @@ for peaks in enumerate([f1,f2,f3]):
   ax2.scatter(times_t0_temp,ODloc_b,lw=lw,color = "orange")
   ax2.set_xlim((-0.01,2.01))
   ax2.set_ylim((-1.8,1.8))
-  ax2.set_ylabel("Peak Location",fontsize=fontsizetitles)
+  ax2.set_ylabel("Peak Location")
   ax2.text(0.03,0.9,"("+string.ascii_lowercase[letter_idx+1]+")"
-        ,fontsize = fontsizetitles,transform=ax2.transAxes)
+        ,transform=ax2.transAxes)
   ax3 = ax2.twinx()
   ax3.set_yticks([])
   peak_center = round(loc_a[0])
-  ax3.set_ylabel(f"Center = {peak_center}",rotation=270, fontsize=fontsizetitles,labelpad = 30)
+  ax3.set_ylabel(f"Center = {peak_center}",rotation=270,labelpad = 30)
 
   #
   
-  ax.set_xlabel(r"$t$",fontsize=fontsizetitles)
-  ax2.set_xlabel(r"$t$",fontsize=fontsizetitles)
+  ax.set_xlabel(r"$t$")
+  ax2.set_xlabel(r"$t$")
   #  ax.set_xticklabels([])
   #  ax2.set_xticklabels([])
   #  ax.tick_params('both', length=10, which='both')
@@ -138,7 +137,6 @@ blue_line = mlines.Line2D([], [],color=c1,lw=lw)
 
 legend = fig1.legend(handles=[blue_line,orange_line],
           labels=["Underdamped","Overdamped"],
-          fontsize = fontsizetitles,
           frameon = False,
           handlelength = 1,
           ncols = 3)

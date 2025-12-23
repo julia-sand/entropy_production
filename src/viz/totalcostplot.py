@@ -14,10 +14,7 @@ def format_log_axes(ax):
   ax.invert_xaxis()
   #ax.set_ylim((4.6,5.3))
   ax.set_xlim((0.11,(8e-7)))
-  ax.tick_params(axis='y', labelsize=fontsizeticks)
-  ax.tick_params(axis='x', labelsize=fontsizeticks)
-  #ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
-
+  
 fig1 = plt.figure(figsize = (15,10))
 
 plt.subplot(gs_costs[0])
@@ -26,11 +23,10 @@ plt.plot(df_ep_cost_all[df_ep_cost_all.Tf==2].g,df_ep_cost_all[df_ep_cost_all.Tf
 plt.plot(df_ep_cost_all[df_ep_cost_all.Tf==2].g,(1+df_ep_cost_all[df_ep_cost_all.Tf==2].g)*df_ep_cost_all[df_ep_cost_all.Tf==2].ODBound,linestyle="dashed",lw=lw,label=r"$\mathcal{W}_2$-distance")#,yerr=0.04,ecolor="black",capsize=4,elinewidth=1,label=r"EP cost $\pm 0.04$")
 ax = plt.gca()
 format_log_axes(ax)
-#ax.set_xticklabels([]) #remove x axis lables
-#ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
+
 ax.minorticks_off()
 ax2 = ax.twinx()
-ax2.set_ylabel(r"$\mathrm{t}_f=2$",rotation=270,fontsize = fontsizetitles,labelpad = 30)
+ax2.set_ylabel(r"$\mathrm{t}_f=2$",rotation=270 ,labelpad = 30)
 ax2.set_yticks([])
 
 plt.subplot(gs_costs[1])
@@ -41,11 +37,10 @@ format_log_axes(plt.gca())
 ax = plt.gca()
 ax.set_ylim((4.8,5.8))
 #ax.set_xticklabels([]) #remove x axis lables
-ax.set_ylabel(r"Mean Entropy Production",fontsize = fontsizetitles,labelpad =35)
-#ax.set_ylabel(r"$\mathcal{E}$", fontsize=fontsizetitles)
+ax.set_ylabel(r"Mean Entropy Production",labelpad =35)
 ax.minorticks_off()
 ax2 = ax.twinx()
-ax2.set_ylabel(r"$\mathrm{t}_f=5$",rotation=270, fontsize=fontsizetitles,labelpad = 30)
+ax2.set_ylabel(r"$\mathrm{t}_f=5$",rotation=270,labelpad = 30)
 ax2.set_yticks([])
 
 #####
@@ -55,13 +50,11 @@ plt.plot(df_ep_cost_all[df_ep_cost_all.Tf==50].g,df_ep_cost_all[df_ep_cost_all.T
 plt.plot(df_ep_cost_all[df_ep_cost_all.Tf==50].g,(1+df_ep_cost_all[df_ep_cost_all.Tf==50].g)*df_ep_cost_all[df_ep_cost_all.Tf==50].ODBound,linestyle="dashed",lw=lw,label=r"Squared $\mathcal{W}_2$-distance")#,yerr=0.04,ecolor="black",capsize=4,elinewidth=1,label=r"EP cost $\pm 0.04$")
 ax = plt.gca()
 format_log_axes(ax)
-ax.set_xlabel(r"$g$",fontsize = fontsizetitles)
+ax.set_xlabel(r"$g$")
 ax.set_ylim((0.5,0.585))
-#ax.set_ylabel(r"$\mathcal{E}$",fontsize = fontsizetitles)
-ax.tick_params(axis='x', labelsize=fontsizeticks)
 ax.minorticks_off()
 ax2 = ax.twinx()
-ax2.set_ylabel(r"$\mathrm{t}_f=50$",rotation=270, fontsize=fontsizetitles,labelpad = 30)
+ax2.set_ylabel(r"$\mathrm{t}_f=50$",rotation=270,labelpad = 30)
 ax2.set_yticks([])
 
 #plt.subplots_adjust(left  = 0.2 , # the left side of the subplots of the figure
@@ -79,7 +72,6 @@ green_line = mlines.Line2D([], [],color="green",lw=lw,linestyle="dashed")
 
 legend = fig1.legend(handles=[blue_line,orange_line,green_line],
           labels=["Total Entropy Production","Overdamped Bound",r"$\mathcal{W}_2$-distance"],
-          fontsize = fontsizetitles,
           frameon = False,
           handlelength = 1,
           ncols = 3)

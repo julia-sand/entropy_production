@@ -60,8 +60,7 @@ cb = fig_joint_distributions_meshgrid.colorbar(sm,
                                           cax=cbar_ax,
                                           orientation="horizontal")
 
-cb.ax.tick_params(labelsize=fontsizeticks)
-cb.ax.set_xlabel("Joint Distribution",fontsize=fontsizetitles)
+cb.ax.set_xlabel("Joint Distribution")
 
 #get legend
 blue_line = mlines.Line2D([], [],color=c1,lw=lw)
@@ -77,7 +76,6 @@ legend = fig_joint_distributions_meshgrid.legend(handles=[blue_line,
                     "Perturbative Prediction",
                     "Gaussian Prediction",
                     "Assigned Boundary Conditions"],
-          fontsize = fontsizetitles,
           frameon = False,
           handlelength = 2,
           ncols = 2,

@@ -33,8 +33,7 @@ format_axes(ax1,"Momentum Mean")
 
 ax1.set_xlim(-0.05,2.05)
 #ax.set_ylim(0.97,1.155)
-ax1.text(0.02,0.92,"(a)",  transform=ax1.transAxes,fontsize=fontsizetitles)
-#plt.xlabel(r"$\mathrm{t}$",fontsize=fontsizetitles)
+ax1.text(0.02,0.92,"(a)",  transform=ax1.transAxes)
 
 
 plt.subplot(122)
@@ -44,7 +43,7 @@ plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.01].mom_var,lw=lw,c = c2)
 plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.001].mom_var,lw=lw,c = c3)
 plt.plot(times_t0,df_ep_cumulants[df_ep_cumulants.g==0.0001].mom_var,lw=lw,c = c4)
 ax = plt.gca()
-plt.text(0.02,0.92,"(b)", transform=ax.transAxes,fontsize=fontsizetitles)
+plt.text(0.02,0.92,"(b)", transform=ax.transAxes)
 
 
 format_axes(ax,"Momentum Variance")
@@ -53,7 +52,6 @@ ax.set_xlim(-0.05,2.05)
 
 
 fig.legend(bbox_to_anchor=(0.85, 0.05),
-            prop = {"size": fontsizetitles},
             frameon=False, ncol=4,handlelength=1)
 
 

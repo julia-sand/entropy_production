@@ -40,7 +40,6 @@ p0 = mpatches.Patch(color = c2, alpha=1)
 
 
 plt.legend([l0,l1,p0],["Underdamped","Overdamped","Assigned Boundary Conditions"],
-              prop = {"size": fontsizetitles},
               ncol = 3,
               bbox_to_anchor=(1.25, -0.15),
               frameon = False)
