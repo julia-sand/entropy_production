@@ -1,18 +1,11 @@
+"""Compute total entropy production costs for different values of T"""
+
+import numpy as np
+import pandas as pd 
 
 import src.utils.functions as functions
 from src.utils.params import *
-from src.utils.datafetch import *
-
-columns = ["g","Tf","Firstterm","EPcost","ODBound"]
-
-####
-#read csv if it exists, otherwise create a new dataframe. 
-try:
-    df_costs = pd.read_csv("ep_costs.csv")
-except:
-    df_costs = pd.DataFrame(columns = columns)
-
-
+from src.utils.datafetch import open_df
 
 ##These are the temporary functions until we need to use more T
 def entropy_production_cost(T,g):
@@ -67,14 +60,28 @@ def od_bound(T,g):
   return (1/(1+g))*(w2_dist/(T*(epsilon**2)))
 
 
-gs_temp = np.logspace(-9,-1,9)
-first_term1 = [first_term(T,gs) for gs in gs_temp]
-entropy_production_cost1 = [entropy_production_cost(T,gs) for gs in gs_temp]
-overdamped_bound = [od_bound(T,gs) for gs in gs_temp]
+if __name__=="__main__":
+  #open dataframe
+  df = open_df()
 
-data = [gs_temp,np.ones(len(gs_temp))*T,first_term1,entropy_production_cost1,overdamped_bound]
+  columns = ["g","Tf","Firstterm","EPcost","ODBound"]
 
-df_costs = pd.concat([df_costs,pd.DataFrame(dict(zip(columns, data)))])
+  ####
+  #read csv if it exists, otherwise create a new dataframe. 
+  try:
+      df_costs = pd.read_csv("ep_costs.csv")
+  except:
+      df_costs = pd.DataFrame(columns = columns)
 
-#append to csv
-df_costs.to_csv("ep_costs.csv", index=False)
+
+  gs_temp = np.logspace(-9,-1,9)
+  first_term1 = [first_term(T,gs) for gs in gs_temp]
+  entropy_production_cost1 = [entropy_production_cost(T,gs) for gs in gs_temp]
+  overdamped_bound = [od_bound(T,gs) for gs in gs_temp]
+
+  data = [gs_temp,np.ones(len(gs_temp))*T,first_term1,entropy_production_cost1,overdamped_bound]
+
+  df_costs = pd.concat([df_costs,pd.DataFrame(dict(zip(columns, data)))])
+
+  #append to csv
+  df_costs.to_csv("ep_costs.csv", index=False)

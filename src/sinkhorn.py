@@ -1,17 +1,17 @@
-"""Solves an optimal control problem corresponding to the overdamped 
-cell problem
+"""Solves an optimal transport problem
+ corresponding to the overdamped cell problem
 """
 
 import csv
 
+import numpy as np
 import ot
 from sklearn.neighbors import KernelDensity
 
 from src.utils.params import *
 
 def make_histograms(n):
-
-  # Generate some large histograms from initial and final data
+  """Generate histograms of size n of initial and final distributions"""
   xs = npr.choice(np.linspace(-10,10,n), size = n, p = p_initial(np.linspace(-10,10,n))/ sum(p_initial(np.linspace(-10,10,n))))
   xt = npr.choice(np.linspace(-10,10,n), size = n, p = p_final(np.linspace(-10,10,n))/ sum(p_final(np.linspace(-10,10,n))))
 
@@ -33,7 +33,7 @@ def solve_sinkhorn(xs,xt):
 
 def get_rho_lambda(i,idx,xs,xt):
   '''
-  Computes lagrangian trajectories and burgers velocities for a mat
+  Compute lagrangian trajectories and burgers velocities for a mat
   args:
     i : int
       index of the initial coordinate

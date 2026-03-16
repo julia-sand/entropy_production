@@ -4,6 +4,9 @@ This file stores all the plotting functions
 """
 import string
 
+import numpy as np
+import pandas as pd
+
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.lines as mlines
@@ -34,22 +37,6 @@ def update_mpl():
 
 #update matplotlib parameters when file is imported#
 update_mpl()
-
-#colors
-c2 = "#a6cee3" #lightblue
-c3 = "#33a02c" #dark green
-c1 = "#1f78b4" #darkblue
-c4 = "#b2df8a" #light green
-
-#dist title location
-disttitlex = -2.8
-disttitley = 0.52
-
-#COLORS
-#c2 = "#a6cee3" #lightblue
-#c3 = "orange" #"#33a02c" #dark green
-#c1 = "#1f78b4" #darkblue
-#c4 = "#b2df8a" #light green
 
 def format_axes(ax,ylabel_text):
 
@@ -87,24 +74,9 @@ def format_log_axes(ax):
  
 #####-----DRIFT AND DISTRIBUTION PLOTS-----#####
 
-# Plotting the graphs)
-#COLORS
-c2 = "#a6cee3" #lightblue
-c3 = "orange" #"#33a02c" #dark green
-c1 = "#1f78b4" #darkblue
-c4 = "#b2df8a" #light green
-
-
-xtitle = 0.07
-ytitle = 0.88
-
-
 
 def cleaner(arr,t0):
-
-  #masks nans and infs and returns a pair for plotting
-  #copy q axis
-  #plotq = np.copy(q_axis)
+  """mask nans and infs and return data that can be used for plotting"""
 
   masknan = functions.get_rhomask(t0,1e-4)
 
@@ -121,14 +93,12 @@ def plot_pair(tcurr,title,labels,gs,locy):
   plt.subplot(gs[0,locy])
   plt.title(title, loc = "center")
 
-  plt.plot(q_axis,functions.rho(tcurr),color=c3,lw=4)
-  plt.plot(q_axis,functions.distribution(tcurr),color=c1,lw=3)
-  #plt.plot(q_axis,generic_filter(functions.distribution(tcurr),sc.median,size=150,mode="constant"),color=c1,lw=3, label =r"$\mathrm{t} = 0$",zorder = 10000)
-
+  plt.plot(q_axis,functions.rho(tcurr),color="#33a02c",lw=4)
+  plt.plot(q_axis,functions.distribution(tcurr),color="#1f78b4")
 
   ax = plt.gca()
   format_dist_axes(ax)
-  ax.text(s = labels[0],x = disttitlex, y =disttitley,zorder = 1000)
+  ax.text(s = labels[0],x = -2.8, y =0.52,zorder = 1000)
 
   ax.set_xticklabels([])
 
@@ -145,8 +115,8 @@ def plot_pair(tcurr,title,labels,gs,locy):
   format_drift(ax0)
   ax0.text(s = labels[1],x = 0.05, y =-0.25, zorder = 1000,transform=ax.transAxes)
 
-  series1a, = ax0.plot(qseries,yseries,color = c1,lw=lw,label = r"Underdamped",zorder = 100)
-  series1b, = ax0.plot(qseries,sigmaseries,color = c3,lw=lw,label = r"Overdamped")
+  series1a, = ax0.plot(qseries,yseries,color = "#1f78b4",label = r"Underdamped",zorder = 100)
+  series1b, = ax0.plot(qseries,sigmaseries,color = "#33a02c",label = r"Overdamped")
 
   ax0.set_ylim((-50,35))
   #if gs == gs0:
@@ -161,14 +131,14 @@ def plot_pair(tcurr,title,labels,gs,locy):
     if tcurr == 0: #gs == gs0:
       #for edges
       ax0.set_ylim((-270,30))
-      ax.fill_between(q_axis,p_initial(q_axis),color = c2)
+      ax.fill_between(q_axis,p_initial(q_axis),color = "#a6cee3")
   #else:
   #   ax0.set_ylim((-45,30))
   #  ax0.set_yticklabels([])
   #  ax.set_yticklabels([])
 
   if tcurr == T: #locy ==-1 and gs == gs1:
-    ax.fill_between(q_axis,p_final(q_axis),color = c2)
+    ax.fill_between(q_axis,p_final(q_axis),color = "#a6cee3")
     ax0.set_ylim((-50,270))
   if tcurr ==1.9:
     ax0.set_ylim((-40,270))
@@ -213,7 +183,6 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
 
 
   #plot the histograms
-  #ax.hist(underdamped_data, range=(-3,3), color = c1,bins = 60,density = True,alpha=0.6)
 
   #fit kde of the samples
   underdamped_data = underdamped_data[~np.isnan(underdamped_data)]
@@ -225,11 +194,9 @@ def plot_distributions_ep(fig,gs,plot_index,underdamped_data,overdamped_data,tcu
   kde_estimate = np.exp(kde.score_samples(q_axis.reshape(-1, 1)))
   kde_estimate_overdamped = np.exp(kde_overdamped.score_samples(q_axis.reshape(-1, 1)))
 
-  #ax.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
-  ax.plot(q_axis,kde_estimate_overdamped,color="orange",lw=lw)
-  ax.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw)
-  #color="midnightblue",lw=lw,  label =r"$T=2$")
-  ax.plot(q_axis,kde_estimate,color=c2,lw=lw)
+  ax.plot(q_axis,kde_estimate_overdamped,color="orange")
+  ax.plot(q_axis,functions.distribution(tcurr),color="#1f78b4")
+  ax.plot(q_axis,kde_estimate,color="#a6cee3")
 
   #format the axes
   format_dist_axes(ax)
@@ -311,7 +278,7 @@ def joint_distributions_scatter(fig,gs,
 
 
   ax_pmarginal.plot(P[0],pmarginal/pnorm
-                    ,color=c1,lw=lw)
+                    ,color="#1f78b4")
 
 
   qmarginal = np.nansum(joint_out.reshape((P.shape[1],P.shape[0])),axis=1)#[np.nansum(joint_out[i::samples]) for i in range(0,samples)]
@@ -319,9 +286,9 @@ def joint_distributions_scatter(fig,gs,
   qnorm = np.trapz(qmarginal,Q.T[0])
 
   ax_qmarginal.plot(functions.distribution(time),q_axis,
-                    color="orange",lw=lw)
+                    color="orange")
   ax_qmarginal.plot(qmarginal/qnorm
-                    ,Q.T[0],color=c1,lw=lw)
+                    ,Q.T[0],color="#1f78b4")
 
   format_dist_axes(ax_pmarginal)
 
@@ -402,8 +369,8 @@ def joint_distributions_scatter(fig,gs,
     #ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
     
     ax.set_title(f"$t = 0$", loc = "center")
-    ax_pmarginal.fill_between(q_axis,np.exp(-(q_axis**2)/2)/np.sqrt(np.pi*2),color=c2)
-    ax_qmarginal.fill_between(p_initial(q_axis),q_axis,color=c2)
+    ax_pmarginal.fill_between(q_axis,np.exp(-(q_axis**2)/2)/np.sqrt(np.pi*2),color="#a6cee3")
+    ax_qmarginal.fill_between(p_initial(q_axis),q_axis,color="#a6cee3")
 
 
   if plot_index == 5:
@@ -415,8 +382,8 @@ def joint_distributions_scatter(fig,gs,
     # plots contour lines
     #ax.contour(Q,P, Z,zorder =10000,cmap="viridis",vmax=vmax)
     ax.set_title(f"$t = t_f$", loc = "center")
-    ax_pmarginal.fill_between(q_axis,np.exp(-(q_axis**2)/2)/np.sqrt(np.pi*2),color=c2)
-    ax_qmarginal.fill_between(p_final(q_axis),q_axis,color=c2)
+    ax_pmarginal.fill_between(q_axis,np.exp(-(q_axis**2)/2)/np.sqrt(np.pi*2),color="#a6cee3")
+    ax_qmarginal.fill_between(p_final(q_axis),q_axis,color="#a6cee3")
 
   if (0 <plot_index < 5):
     ax.set_title(f"$t = {plot_title_value}\ t_f$", loc = "center")
@@ -446,8 +413,8 @@ def plot_pdf_nucleation(tcurr,title,labels,loc):
   plt.subplot(loc)
   plt.title(title, loc = "center")
 
-  plt.plot(q_axis,functions.distribution(tcurr),color=c1,lw=lw,  label =r"$T=5$",zorder = 10000)
-  plt.plot(q_axis,functions.rho(tcurr),color="orange",lw=lw)
+  plt.plot(q_axis,functions.distribution(tcurr),color="#1f78b4",label =r"$T=5$",zorder = 10000)
+  plt.plot(q_axis,functions.rho(tcurr),color="orange")
 
   ax = plt.gca()
   format_dist_axes(ax)

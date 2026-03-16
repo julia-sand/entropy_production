@@ -6,6 +6,8 @@ Note: the number of trajectories is ALSO called mc_samples, as in the Girsanov j
 
 The default is 10000 samples. 
 """
+import numpy as np
+import pandas as pd
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -15,7 +17,6 @@ import matplotlib.patches as mpatches
 from src.utils.params import *
 import src.utils.functions as functions
 from src.utils.plots import *
-update_mpl()
 
 def make_legend():
   """
@@ -135,4 +136,5 @@ def plot_histograms():
 
 
 if __name__=="__main__":
+  update_mpl()
   plot_histograms()

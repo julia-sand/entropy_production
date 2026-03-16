@@ -1,10 +1,10 @@
+"""Compute cumulants predicted by perturbation theory"""
+import numpy as np
+import pandas as pd
 
 from src.utils.params import *
 import src.utils.functions as functions
 
-gs = np.logspace(-1,-4,4)
-
-##
 def mom_mean(t0,g):
 
   A_minus_B = (1+g)*(1-((2/(functions.omega_fun(g)*T))*(np.tanh(functions.omega_fun(g)*T/2))))
@@ -65,7 +65,7 @@ def linear_position_cumulant(t0,g):
   return term1 - coeff2*(int1 - int2)
 
 
-def compute_and_save_predicted_cumulants():
+def compute_and_save_predicted_cumulants(gs):
   """
   Computes cumulants based on perturbative predictions and saves to csv for plotting
   """
@@ -98,4 +98,7 @@ def compute_and_save_predicted_cumulants():
   
 
 if __name__=="__main__":
-  compute_and_save_predicted_cumulants()
+  
+  gs = np.logspace(-1,-4,4)
+
+  compute_and_save_predicted_cumulants(gs)

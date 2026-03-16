@@ -4,18 +4,20 @@ of the distribution and drift, and the interpolation functions
 used for the evolution of girsanov theorem and histogram plots
 
 """
+import numpy as np
 
 from scipy.ndimage import generic_filter
 import scipy.ndimage as sc
 import scipy.interpolate as sci
 
 from src.utils.params import *  
-from src.utils.datafetch import *
+from src.utils.datafetch import open_df
 
+#open dataframe
+df = open_df()
 
 def omega_fun(g):
   return np.sqrt((1+g)/g)
-
 
 #constants
 def B_fun(T,g):
@@ -26,57 +28,45 @@ def B_fun(T,g):
 def A_fun(T,g):
   return (1+g)*(1 - (((((1+g)/g) - 4)*(np.tanh(omega_fun(g)*T/2)*np.tanh(T)))/(omega_fun(g)*T*(omega_fun(g)*np.tanh(omega_fun(g)*T/2)-2*np.tanh(T)))))
 
-#A = A_fun(T,g)
-#B = B_fun(T,g)
 
-#clips values close to zero to prevent errors in logarithms
 def zchop(a,tol):
   """
+  Clip values close to zero to prevent errors in logarithms
+
   input: vector a
   output: vector with values close to zero clipped.
   """
   a[np.abs(a) < tol] = 0.0
   return a
 
-#get qaxis
-#def q_axis(t0):
-  #t2 = round(t0*(epsilon**2),dps)
-#  return df[df.t0 == t0].x.to_numpy()
 
-#function to get rho at time t0.
 def rho(t0):
-  #t2 = round(t0*(epsilon**2),dps)
-  #rho_temp = df[df.t0==t0].ptx.to_numpy()
+  """Get rho at time t0"""
   return df[df.t0==t0].ptx.to_numpy()#zchop(rho_temp,tol)
 
 
-#get all xcoords where there is probability mass
 def get_rhomask(t0,tol=tol):
-  
+  """Return index of xcoords with probability mass greater than tol"""
   return np.where(zchop(rho(t0),tol)>0)
 
 def od_bound(T,g):
+  """Compute overdamped bound"""
   return (1/(1+g))*(w2_dist/(T*(epsilon**2)))
 
-#derivative functions
 def dsigma(t0 ):
-
-  #t2 = round(t0*(epsilon**2),dps)
+  """Compute derivative of sigma"""
   sigtemp = df[df.t0==t0].dsigma.to_numpy()
-
   return -sigtemp
 
 
-#used to compute cumulants and other functions
 def kappa(t0): #mu dot 1
+  """Compute kappa at t0, used to compute cumulants and other functions"""
+
   integral = rho(t0) * dsigma(t0)
   return -np.trapz(integral,q_axis)
 
-
-
-#function to get underdamped distribution
 def distribution(t0 ):
-  #t2 = round(t0*(epsilon**2),dps)
+  """Return underdamped distribution"""
   dist = df[df.t0==t0].UDpdf.to_numpy()
   return dist
 
@@ -353,8 +343,6 @@ def dsigma_interp(t0,q,tol=1e-5):
 
 #function for interpolated DU
 def underdamped_drift_interp_function(t0,g,tol=1e-5):
-
-  #q_temp = q_axis
 
   mask = get_rhomask(t0,tol)
   w_temp = distribution(t0)
