@@ -3,7 +3,7 @@ import pandas as pd
 
 from src.utils.params import *
 
-def open_df():
+def open_df(filename):
     try:
         df = pd.read_csv(filename+".csv", sep=" ", header = 0)
 
@@ -12,7 +12,8 @@ def open_df():
         return df
     except: 
         print("The requested results file could not be found. Please first solve the overdamped problem (sinkhorn.py) \n or check that you have entered the filename correctly.")
-        raise BaseException
+        solve_cell(n,filename)
+        #raise BaseException
 
 if __name__=="__main__":
-    open_df()
+    open_df(filename)

@@ -1,5 +1,5 @@
 """
-This file stores all the plotting functions
+This file stores all auxillary plotting functions
 
 """
 import string
@@ -85,7 +85,6 @@ def cleaner(arr,t0):
   #plotq = q_axis[np.min(masknan)+500:np.max(masknan)-300]
   return q_axis[masknan] , arr[masknan]
 
-
 def plot_pair(tcurr,title,labels,gs,locy):
 
   from scipy.ndimage import median_filter,generic_filter
@@ -142,10 +141,6 @@ def plot_pair(tcurr,title,labels,gs,locy):
     ax0.set_ylim((-50,270))
   if tcurr ==1.9:
     ax0.set_ylim((-40,270))
-
-
-
-
 
 ##########-------HISTOGRAMS PLOTS-------##################
 

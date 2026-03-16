@@ -14,9 +14,7 @@ import matplotlib.lines as mlines
 from src.utils.params import *
 from src.utils.plots import *
 
-if __name__=="__main__":
-
-   update_mpl()
+def make_and_save_drift_plot():
 
    #set up the gridspec
    fig = plt.figure(figsize = (15,24)) #figsize = (width,height)
@@ -40,7 +38,6 @@ if __name__=="__main__":
       plot_pair(i[1],title_panel,["("+string.ascii_lowercase[(i[0]//8)+i[0]]+")","("+string.ascii_lowercase[(i[0]//8)+i[0]+8]+")"],
                      (gs0 if (i[0]<4) else gs1),i[0]%4)
 
-
    #make legend
    l0 = mlines.Line2D([], [], color=c1)
    l1 = mlines.Line2D([], [], color=c3)
@@ -55,3 +52,9 @@ if __name__=="__main__":
    plt.savefig("ep_land_drift_v2.pdf")
    plt.savefig("ep_land_drift_v2.png")
    plt.close()
+
+
+if __name__=="__main__":
+
+   update_mpl()
+   make_and_save_drift_plot()

@@ -14,7 +14,7 @@ from src.utils.params import *
 from src.utils.datafetch import open_df
 
 #open dataframe
-df = open_df()
+df = open_df(filename)
 
 def omega_fun(g):
   return np.sqrt((1+g)/g)
@@ -311,8 +311,6 @@ def calculate_distribution(t0,g):
   #norm_factor = np.trapz(np.abs(rvals),q_axis(t0))
 
   return rvals #/ norm_factor
-
-
 
 #function to get underdamped distribution
 def distribution(t0 ):

@@ -1,13 +1,12 @@
 """
-This file holds all the shared parameters
+This file defines the shared parameters and boundary conditions
 """
+import datetime
+import argparse,sys
 
 import pandas as pd
 import numpy as np
 import numpy.random as npr
-import datetime
-
-import argparse,sys
 
 #add the arguments to the parser
 parser = argparse.ArgumentParser()
