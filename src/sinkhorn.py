@@ -143,7 +143,7 @@ def solve_cell(n,filename):
   save_params(w2_dist,filename)
 
   results = compute_results(idx,xs,xt)
-  save_results_to_csv(results)
+  save_results_to_csv(results,filename)
 
 if __name__=="__main__":
   n = 1000
