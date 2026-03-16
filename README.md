@@ -1,4 +1,4 @@
-# entropy_production
+# Minimal work protocols for inertial particles in nonharmonic traps
 
 Accompanying code for [Minimal work protocols for inertial particles in nonharmonic traps](https://doi.org/10.1103/PhysRevE.111.034127)
 
