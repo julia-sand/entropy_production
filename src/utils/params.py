@@ -28,8 +28,6 @@ parser.add_argument("--fileid", default="V1", help="This can be used to add a ve
 args = parser.parse_args()
 
 #get params
-epsilon = float(args.epsilon)
-T = float(args.Tf)
 h0_step = float(args.hstep)
 g = float(args.g)
 n = int(args.n)
@@ -42,15 +40,22 @@ peak_center = float(args.peaklocation)
 w2_dist = float(args.w2dist)
 fileid = args.fileid
 
-### params
-Tf = (epsilon**2)*T  #final time for t2
+def make_t2_vec(h0_step):
 
-#decimal places for the time lookup.
-h_step = h0_step*(epsilon**2)
-dps =  int(np.ceil(-np.log10(h_step))+1)
-t_steps = int(T/h0_step) + 1 #number of timesteps
-times_t0 = np.round(np.linspace(0,T,t_steps,endpoint = True),dps)
-t2_vec = np.round(times_t0*(epsilon**2),dps)
+  T = float(args.Tf)
+  epsilon = float(args.epsilon)
+  
+  ### params
+  Tf = (epsilon**2)*T  #final time for t2
+  
+  #decimal places for the time lookup.
+  h_step = h0_step*(epsilon**2)
+  dps =  int(np.ceil(-np.log10(h_step))+1)
+  t_steps = int(T/h0_step) + 1 #number of timesteps
+  times_t0 = np.round(np.linspace(0,T,t_steps,endpoint = True),dps)
+  t2_vec = np.round(times_t0*(epsilon**2),dps)
+
+  return t2_vec
 
 
 alpha = 0
@@ -66,47 +71,3 @@ tol = 1e-100
 
 #size of smoothing filter
 filter_delta = 500
-
-#set up the boundary conditions
-#peak_center = 1
-#denom = 1
-
-
-#q = np.linspace(xmin,xmax,n) #fixed axes of points
-#qnorm = np.linspace(-15,15,50000) #used for computing the normalisation
-#qchoice = np.linspace(xmin,xmax,n*100) #points to choose from for histograms
-
-
-#exact boundary conditions
-def p_initial_unnormalised(q):
-  return np.exp(-(q-peak_center)**4/denom)
-def p_final_unnormalised(q):
-  return np.exp(-(((q**2 -1**2)**2)/denom))
-
-#compute normalisation constacomputents
-pi_norm = np.abs(np.trapz(p_initial_unnormalised(np.linspace(-8,8,10000)),np.linspace(-8,8,10000)))
-pf_norm = np.abs(np.trapz(p_final_unnormalised(np.linspace(-8,8,10000)),np.linspace(-8,8,10000)))
-
-#normalised boundary conds
-def p_initial(q):
-  return p_initial_unnormalised(q)/pi_norm
-def p_final(q):
-  return p_final_unnormalised(q)/pf_norm
-
-
-#underdamped boundary conditions
-def ud_pinitial(p_samples,q_samples):
-  """this is the initial distribution in the underdamped case
-  p_samples = momenta
-  q_samples = positions
-  """
-
-  return p_initial(q_samples)*np.exp(-(p_samples**2)/2)/np.sqrt(2*np.pi)
-
-def ud_pfinal(p_samples,q_samples):
-  """this is the final distribution in the underdamped case
-  p_samples = momenta
-  q_samples = positions
-  """
-  return p_final(q_samples)*np.exp(-(p_samples**2)/2)/np.sqrt(2*np.pi)
-  #np.exp(-(((q_samples**2-1)**2)/4 + 0.5*p_samples**2))/(pf_norm*np.sqrt(2*np.pi))
