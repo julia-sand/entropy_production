@@ -8,8 +8,8 @@ def fetch_results_folder_from_cmd():
     # Instantiate the parser
     parser6 = argparse.ArgumentParser()
     
-    parser6.add_argument('-folder','--folder', type=str, default="results2",
-                        help='Folder where to run the plots.')
+    parser.add_argument('-filename','--filename', type=str, default="results",
+                        help='name of csv for results')
 
     args6 = parser6.parse_known_args()
 
@@ -39,8 +39,6 @@ def config_argparser():
     parser.add_argument('-bridgetype','--bridgetype', type=str, default="full",
                         help='bridge type')
     
-    parser.add_argument('-filename','--filename', type=str, default="results",
-                        help='name of csv for results')
   
     parser.add_argument('-g','--g', default=0.01,
                         help='coupling constant')
