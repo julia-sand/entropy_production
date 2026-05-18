@@ -8,12 +8,13 @@ import numpy as np
 import ot
 from sklearn.neighbors import KernelDensity
 
-from src.utils.params import *
+from src.utils.params import make_t2_vec
+from src.utils.boundary import Boundary
 
-def make_histograms(n):
+def make_histograms(boundary,n):
   """Generate histograms of size n of initial and final distributions"""
-  xs = npr.choice(np.linspace(-10,10,n), size = n, p = p_initial(np.linspace(-10,10,n))/ sum(p_initial(np.linspace(-10,10,n))))
-  xt = npr.choice(np.linspace(-10,10,n), size = n, p = p_final(np.linspace(-10,10,n))/ sum(p_final(np.linspace(-10,10,n))))
+  xs = npr.choice(np.linspace(-10,10,n), size = n, p = boundary.p_initial(np.linspace(-10,10,n))/ sum(boundary.p_initial(np.linspace(-10,10,n))))
+  xt = npr.choice(np.linspace(-10,10,n), size = n, p = boundary.p_final(np.linspace(-10,10,n))/ sum(boundary.p_final(np.linspace(-10,10,n))))
 
   return xs,xt
 
@@ -31,7 +32,7 @@ def solve_sinkhorn(xs,xt):
 
   return w2_dist, idx
 
-def get_rho_lambda(i,idx,xs,xt):
+def get_rho_lambda(i,idx,xs,xt,t2_vec):
   '''
   Compute lagrangian trajectories and burgers velocities for a mat
   args:
@@ -57,31 +58,39 @@ def get_rho_lambda(i,idx,xs,xt):
   xinit = xs[i]
   xfinal = xt[idx_j]
 
+  Tf = t2_vec[-1]
+ 
   #make (discrete) lagrangian maps
   l_map = np.fromiter((((Tf - tcurr)/Tf)*xinit + (tcurr/Tf)*xfinal for tcurr in t2_vec), float)
 
   #get burgers velocity (dsigma)
-  dsigma_x = np.ones(t_steps)*(1/Tf)*(xfinal - xinit)
+  dsigma_x = np.ones_like(t2_vec)*(1/Tf)*(xfinal - xinit)
 
   return l_map,dsigma_x
 
 
-def compute_results(idx,xs,xt):
+def compute_results(idx,xs,xt,t2_vec):
 
   #preallocate array
-  results = np.zeros((n,2,t_steps))
+  results = np.zeros((xs.shape[0],2,len(t2_vec)))
 
   for x in enumerate(xs):
-    lmap,dsig = get_rho_lambda(x[0],idx,xs,xt)
+    lmap,dsig = get_rho_lambda(x[0],idx,xs,xt,t2_vec)
 
     #save into numpy array
-    results[x[0],0,:] = lmap.reshape((1,1,t_steps))
-    results[x[0],1,:] = dsig.reshape((1,1,t_steps))
+    results[x[0],0,:] = lmap.reshape((1,1,len(t2_vec))
+    results[x[0],1,:] = dsig.reshape((1,1,len(t2_vec)))
   
   return results
   
-def save_results_to_csv(results,filename):
-
+def save_results_to_csv(results,filename,t2_vec):
+  
+  #xaxis for calculations
+  N = 50000
+  xmin = -3
+  xmax = 3
+  q_axis = np.linspace(xmin,xmax,N)
+ 
   #add header 
   header=["t0","t2","x","dsigma","logptx","ptx"]
   
@@ -120,32 +129,44 @@ def save_results_to_csv(results,filename):
   
   return 
 
-def save_params(w2_dist,filename):
+def save_params(params,filename):
+    params = make_params_dict(w2_dist)
+   # Create timestamped filename
+    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    full_filename = f"{filename}{timestamp}.yaml"
 
-  #save parameters to txt file
-  # open a file in write mode
-  with open(filename+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+'.txt', 'w') as file:
-      # write variables using repr() function
-      file.write("epsilon = " + repr(epsilon) + '\n')
-      file.write("T = " + repr(T) + '\n')
-      file.write("g = " + repr(g) + '\n')
-      file.write("h_step = " + repr(h_step) + '\n')
-      file.write("w2_dist = " + repr(w2_dist) + '\n')
+    # Save dictionary as YAML
+    with open(full_filename, "w") as file:
+        yaml.dump(params, file, default_flow_style=False)
 
-  return 
+def make_params_dict(w2_dist):
+  params = {
+     "T": T,
+     "g": g,
+     "w2_dist": w2_dist}
+  return params
 
 def solve_cell(n,filename):
 
-  xs,xt = make_histograms(n)
+  boundary = Boundary() #parse cmd line boundary conditions
+
+  cell_args = cell_argparser()
+  n = cell_args["n"]
+  hstep = cell_args["hstep"]
+  t2_vec = make_t2_vec(hstep)
+ 
+  xs,xt = make_histograms(boundary,n)
 
   w2_dist, idx = solve_sinkhorn(xs,xt)
 
   save_params(w2_dist,filename)
 
-  results = compute_results(idx,xs,xt)
-  save_results_to_csv(results,filename)
+  results = compute_results(idx,xs,xt,t2_vec)
+  save_results_to_csv(results,filename,t2_vec)
 
 if __name__=="__main__":
-  n = 1000
-  filename = "test"
+  from src.utils.parser import fetch_folder_from_cmd
+
+ 
+  filename = fetch_folder_from_cmd()
   solve_cell(n,filename)
