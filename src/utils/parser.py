@@ -13,7 +13,7 @@ def fetch_results_folder_from_cmd():
 
     args6 = parser6.parse_known_args()
 
-    return args6[0].folder
+    return args6[0].filename
 
 def cell_argparser():
     """Parse arguments for solving the cell problem"""
