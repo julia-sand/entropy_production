@@ -8,12 +8,41 @@ def fetch_results_folder_from_cmd():
     # Instantiate the parser
     parser6 = argparse.ArgumentParser()
     
-    parser.add_argument('-filename','--filename', type=str, default="results",
+    parser6.add_argument('-filename','--filename', type=str, default="results",
                         help='name of csv for results')
 
     args6 = parser6.parse_known_args()
 
     return args6[0].filename
+
+def fetch_paramfile_from_cmd():
+    # Instantiate the parser
+    parser6 = argparse.ArgumentParser()
+    
+    parser6.add_argument('-paramfile','--paramfile', type=str, default="results",
+                        help='name of yaml file for params')
+
+    args6 = parser6.parse_known_args()
+
+    return args6[0].filename
+
+
+def pert_argparser():
+    """Parse arguments for perturbation"""
+    
+  # Instantiate the parser
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-Tf','--Tf', default=2,
+                        help='final time')
+    
+    parser.add_argument('-epsilon','--epsilon', type=int, default=0.2,
+                        help='epsilon')
+    
+    args = parser.parse_known_args()
+
+    return vars(args[0])
+
 
 def cell_argparser():
     """Parse arguments for solving the cell problem"""

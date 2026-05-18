@@ -8,9 +8,8 @@ import matplotlib.gridspec as gridspec
 import matplotlib.ticker as ticker
 
 #formatting options
-from src.utils.plots import *
+from ep.utils.plots import *
 import src.utils.functions as functions
-from src.utils.params import *
 
 def plot_cumulants(simulated_cumulants_csv,cumulants_perturbative_csv):
     

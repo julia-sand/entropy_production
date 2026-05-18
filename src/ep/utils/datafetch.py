@@ -1,8 +1,7 @@
 """fetch the dataframe containing results"""
 import pandas as pd
 
-from src.utils.params import *
-from src.utils.parser import fetch_results_folder_from_cmd
+from ep.utils.parser import fetch_results_folder_from_cmd
 
 def open_df(filename):
     filename = fetch_results_folder_from_cmd()
@@ -16,7 +15,7 @@ def open_df(filename):
         return df
     except: 
         print("The requested results file could not be found. Please first solve the overdamped problem (sinkhorn.py) \n or check that you have entered the filename correctly.")
-        solve_cell(n,filename)
+        #solve_cell(n,filename)
         #raise BaseException
 
 if __name__=="__main__":

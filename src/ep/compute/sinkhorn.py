@@ -8,13 +8,15 @@ import numpy as np
 import ot
 from sklearn.neighbors import KernelDensity
 
-from src.utils.params import make_t2_vec
-from src.utils.boundary import Boundary
+from ep.utils.params import make_t2_vec
+from ep.utils.parser import cell_argparser,pert_argparser
+from ep.utils.boundary import Boundary
+from ep.utils.misc import *
 
 def make_histograms(boundary,n):
   """Generate histograms of size n of initial and final distributions"""
-  xs = npr.choice(np.linspace(-10,10,n), size = n, p = boundary.p_initial(np.linspace(-10,10,n))/ sum(boundary.p_initial(np.linspace(-10,10,n))))
-  xt = npr.choice(np.linspace(-10,10,n), size = n, p = boundary.p_final(np.linspace(-10,10,n))/ sum(boundary.p_final(np.linspace(-10,10,n))))
+  xs = np.random.choice(np.linspace(-10,10,n), size = n, p = boundary.p_initial(np.linspace(-10,10,n))/ sum(boundary.p_initial(np.linspace(-10,10,n))))
+  xt = np.random.choice(np.linspace(-10,10,n), size = n, p = boundary.p_final(np.linspace(-10,10,n))/ sum(boundary.p_final(np.linspace(-10,10,n))))
 
   return xs,xt
 
@@ -78,15 +80,15 @@ def compute_results(idx,xs,xt,t2_vec):
     lmap,dsig = get_rho_lambda(x[0],idx,xs,xt,t2_vec)
 
     #save into numpy array
-    results[x[0],0,:] = lmap.reshape((1,1,len(t2_vec))
+    results[x[0],0,:] = lmap.reshape((1,1,len(t2_vec)))
     results[x[0],1,:] = dsig.reshape((1,1,len(t2_vec)))
   
   return results
   
-def save_results_to_csv(results,filename,t2_vec):
+def save_results_to_csv(results,filename,t2_vec,times_t0):
   
   #xaxis for calculations
-  N = 50000
+  N = 500
   xmin = -3
   xmax = 3
   q_axis = np.linspace(xmin,xmax,N)
@@ -114,9 +116,6 @@ def save_results_to_csv(results,filename,t2_vec):
     logrho_temp = kde.score_samples(q_axis.reshape(-1, 1))
     dens = np.exp(logrho_temp)
 
-    #interpolation of sigma
-    #interp_dsigma = sci.interp1d(xz_sort,dsigmax[sort_idx], kind='cubic', bounds_error=False, fill_value=(dsigmax[0], dsigmax[-1]), assume_sorted=True)
-
     #make new array with these
     data = np.column_stack((np.full(N,times_t0[t2[0]]),np.full(N,t2[1]), q_axis, 
                             np.interp(q_axis,xz_sort,dsigmax[sort_idx]),#interp_dsigma(x_axis), 
@@ -129,44 +128,39 @@ def save_results_to_csv(results,filename,t2_vec):
   
   return 
 
-def save_params(params,filename):
-    params = make_params_dict(w2_dist)
-   # Create timestamped filename
-    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    full_filename = f"{filename}{timestamp}.yaml"
-
-    # Save dictionary as YAML
-    with open(full_filename, "w") as file:
-        yaml.dump(params, file, default_flow_style=False)
-
-def make_params_dict(w2_dist):
-  params = {
-     "T": T,
-     "g": g,
-     "w2_dist": w2_dist}
-  return params
-
-def solve_cell(n,filename):
+def solve_cell(filename):
 
   boundary = Boundary() #parse cmd line boundary conditions
 
   cell_args = cell_argparser()
   n = cell_args["n"]
-  hstep = cell_args["hstep"]
-  t2_vec = make_t2_vec(hstep)
- 
+  h2step = cell_args["hstep"]
+  time_params = pert_argparser()
+
+  params = {}
+  append_to_dict(params,"n",n)
+  append_to_dict(params,"hstep",h2step)
+  append_to_dict(params,"peak",boundary.peak_center)
+  append_to_dict(params,"height",boundary.denom)
+  append_to_dict(params,"Tf2",time_params["Tf"])
+  append_to_dict(params,"epsilon",time_params["epsilon"])
+
+  t2_vec = make_t2_vec(h2step,time_params["epsilon"],time_params["Tf"])
+  times_t0 = np.round(t2_vec/(time_params["epsilon"]**2),5)
+
   xs,xt = make_histograms(boundary,n)
 
   w2_dist, idx = solve_sinkhorn(xs,xt)
+  append_to_dict(params,"w2",w2_dist)
 
-  save_params(w2_dist,filename)
+  save_params(params,filename)
 
   results = compute_results(idx,xs,xt,t2_vec)
-  save_results_to_csv(results,filename,t2_vec)
+  save_results_to_csv(results,filename,t2_vec,times_t0)
 
 if __name__=="__main__":
-  from src.utils.parser import fetch_folder_from_cmd
+  from ep.utils.parser import fetch_results_folder_from_cmd
 
  
-  filename = fetch_folder_from_cmd()
-  solve_cell(n,filename)
+  filename = fetch_results_folder_from_cmd()
+  solve_cell(filename)

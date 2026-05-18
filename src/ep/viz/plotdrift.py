@@ -11,8 +11,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.patches as mpatches
 import matplotlib.lines as mlines
 
-from src.utils.params import *
-from src.utils.plots import *
+from ep.utils.plots import *
 
 def make_and_save_drift_plot():
 

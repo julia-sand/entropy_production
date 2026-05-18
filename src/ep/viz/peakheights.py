@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import matplotlib.gridspec as gridspec
 
-from src.utils.plots import *
+from ep.utils.plots import *
 
 if __name__=="__main__":
 
@@ -131,11 +131,7 @@ if __name__=="__main__":
     
     ax.set_xlabel(r"$t$")
     ax2.set_xlabel(r"$t$")
-    #  ax.set_xticklabels([])
-    #  ax2.set_xticklabels([])
-    #  ax.tick_params('both', length=10, which='both')
-    #  ax2.tick_params('both', length=10, which='both')
-
+ 
   #get legend
   orange_line = mlines.Line2D([], [],color="orange",lw=lw)
   blue_line = mlines.Line2D([], [],color=c1,lw=lw)

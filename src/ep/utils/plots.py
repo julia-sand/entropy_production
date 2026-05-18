@@ -16,7 +16,6 @@ import matplotlib.ticker as ticker
 from sklearn.neighbors import KernelDensity
 import scipy.stats as stats
 
-from src.utils.params import *
 import src.utils.functions as functions
 
 

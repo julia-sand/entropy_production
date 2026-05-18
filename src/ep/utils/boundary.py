@@ -1,12 +1,13 @@
 """controls boundary data"""
+import numpy as np 
 
-from src.utils.parser import boundary_parser
+from ep.utils.parser import boundary_params
 
 class Boundary():
   def __init__(self,):
     """loads initial and final boundary conditions"""
   
-    self.params = boundary_parser()
+    self.params = boundary_params()
     
     #set up the boundary conditions
     self.peak_center = self.params["peaklocation"]
@@ -18,7 +19,8 @@ class Boundary():
   #exact boundary conditions
   def p_initial_unnormalised(self,q):
     return np.exp(-(q-self.peak_center)**4/self.denom)
-  def p_final_unnormalised(q):
+  
+  def p_final_unnormalised(self,q):
     return np.exp(-(((q**2 -self.peak_center**2)**2)/self.denom))
   
   #compute normalisation constants

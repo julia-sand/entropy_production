@@ -9,9 +9,8 @@ import matplotlib.gridspec as gridspec
 from matplotlib.cm import ScalarMappable
 import matplotlib.patches as mpatches
 
-from src.utils.params import *
-from src.utils.datafetch import *
-from src.utils.plots import *
+from ep.utils.datafetch import *
+from ep.utils.plots import *
 
 
 if __name__=="__main__":

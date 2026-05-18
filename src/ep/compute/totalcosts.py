@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd 
 
 import src.utils.functions as functions
-from src.utils.params import *
-from src.utils.datafetch import open_df
+from ep.utils.datafetch import open_df
 
 ##These are the temporary functions until we need to use more T
 def entropy_production_cost(T,g):

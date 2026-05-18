@@ -3,8 +3,7 @@ and wasserstein-2 distance bound """
 
 import pandas as pd
 
-from src.utils.plots import *
-from src.utils.params import *
+from ep.utils.plots import *
 
 #format axes
 def format_log_axes(ax):

@@ -3,7 +3,7 @@ g, coupling constant """
 
 import pandas as pd
 import matplotlib.pyplot as plt
-from src.utils.plots import *
+from ep.utils.plots import *
 
 if __name__=="__main__":
 
