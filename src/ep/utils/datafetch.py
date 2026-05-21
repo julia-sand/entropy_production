@@ -4,7 +4,7 @@ import pandas as pd
 from ep.utils.parser import fetch_results_folder_from_cmd
 
 def open_df(filename):
-    filename = fetch_results_folder_from_cmd()
+    folder = fetch_results_folder_from_cmd()+"/results.csv"
     
     try:
         df = pd.read_csv(filename+".csv", sep=" ", header = 0)

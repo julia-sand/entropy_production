@@ -8,12 +8,12 @@ def fetch_results_folder_from_cmd():
     # Instantiate the parser
     parser6 = argparse.ArgumentParser()
     
-    parser6.add_argument('-filename','--filename', type=str, default="results",
+    parser6.add_argument('-folder','--folder', type=str, default="results",
                         help='name of csv for results')
 
     args6 = parser6.parse_known_args()
 
-    return args6[0].filename
+    return args6[0].folder
 
 def fetch_paramfile_from_cmd():
     # Instantiate the parser
@@ -24,7 +24,7 @@ def fetch_paramfile_from_cmd():
 
     args6 = parser6.parse_known_args()
 
-    return args6[0].filename
+    return args6[0].paramfile
 
 
 def pert_argparser():

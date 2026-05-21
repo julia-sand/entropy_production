@@ -159,8 +159,9 @@ def solve_cell(filename):
   save_results_to_csv(results,filename,t2_vec,times_t0)
 
 if __name__=="__main__":
-  from ep.utils.parser import fetch_results_folder_from_cmd
-
+  from ep.utils.misc import make_results_dir
  
-  filename = fetch_results_folder_from_cmd()
-  solve_cell(filename)
+  folder = make_results_dir()
+
+
+  solve_cell(folder+"/results")
