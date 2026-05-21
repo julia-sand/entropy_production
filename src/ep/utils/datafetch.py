@@ -1,25 +1,21 @@
 """fetch the dataframe containing results"""
-import pandas as pd
+import numpy as np
 
 from ep.utils.parser import fetch_results_folder_from_cmd
 
-def open_array(filename):
-    folder = fetch_results_folder_from_cmd()+"/results.csv"
+
+def open_array():
     
-    try:
-        df = pd.read_csv(filename+".csv", sep=" ", header = 0)
+    try: 
 
-        #round the t0 and t2 columns
-        dps = 5
-        df = df.round({'t0': dps, 't2': dps})
-        return df
-    except: 
-        print("The requested results file could not be found. Please first solve the overdamped problem (sinkhorn.py) \n or check that you have entered the filename correctly.")
-        #solve_cell(n,filename)
-        #raise BaseException
+        filename = fetch_results_folder_from_cmd()+"/results_corrected.csv"
+    
+        return np.genfromtxt(filename, delimiter=" ", names=True, dtype=float, encoding="utf-8")
 
-def open_array(filename):
-      return np.genfromtxt(filename, delimiter=",", names=True, dtype=None, encoding="utf-8")
+    except FileNotFoundError:
+        filename = fetch_results_folder_from_cmd()+"/results.csv"
+
+        return np.genfromtxt(filename, delimiter=" ", names=True, dtype=float, encoding="utf-8")
 
 if __name__=="__main__":
     open_array(filename)

@@ -36,6 +36,16 @@ def load_params(paramfile):
 
     return params
 
+def append_param(filename, key, value):
+    """Load an existing params YAML, add or update a key, and save it back."""
+    full_filename = f"{filename}.yaml"
+    params = load_params(full_filename)
+    params[key] = value
+    with open(full_filename, "w") as file:
+        yaml.dump(params, file, default_flow_style=False)
+ 
+
+
 def make_results_dir():
 
     #check if there is a results folder to use 

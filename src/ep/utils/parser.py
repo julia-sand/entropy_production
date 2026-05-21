@@ -15,16 +15,6 @@ def fetch_results_folder_from_cmd():
 
     return args6[0].folder
 
-def fetch_paramfile_from_cmd():
-    # Instantiate the parser
-    parser6 = argparse.ArgumentParser()
-    
-    parser6.add_argument('-paramfile','--paramfile', type=str, default="results",
-                        help='name of yaml file for params')
-
-    args6 = parser6.parse_known_args()
-
-    return args6[0].paramfile
 
 
 def pert_argparser():
@@ -53,7 +43,7 @@ def cell_argparser():
     parser.add_argument('-n','--n', type=int, default=1000,
                         help='how many x samples to use in the OT problem')
     
-    parser.add_argument('-hstep','--hstep', type=int, default=0.05,
+    parser.add_argument('-hstep','--hstep', type=float, default=0.05,
                         help='size of timestep')
     
     args = parser.parse_known_args()
