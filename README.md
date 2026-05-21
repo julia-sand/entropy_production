@@ -2,33 +2,110 @@
 
 Accompanying code for [Minimal work protocols for inertial particles in nonharmonic traps](https://doi.org/10.1103/PhysRevE.111.034127)
 
-A user guide of the procedure can be found in the Minimal Work Protocols notebook. This is an overview of the steps performed. 
+This package computes numerically optimal (minimal-work) driving protocols for a Brownian particle in a nonharmonic trap, using perturbative corrections for underdamped (inertial) dynamics parameterised by a small inertia parameter `ε`.
 
-To get better results, the scripts should be run directly:
+A user guide of the procedure can be found in the [`Minimal_Work_Protocols.ipynb`](Minimal_Work_Protocols.ipynb). 
+
+---
+ 
+## Installation
+ 
+Clone the repository and install dependencies:
+ 
+```bash
+git clone https://github.com/julia-sand/entropy_production.git
+cd entropy_production
+pip install -r requirements.txt
+pip install -e .
+```
+ 
+### Requirements
+ 
+| Package | Version |
+|---|---|
+| POT | 0.9.5 |
+| numpy | 1.26.4 |
+| scipy | 1.13.0 |
+| scikit-learn | 1.4.2 |
+| matplotlib | 3.8.4 |
+| pandas | 2.2.2 |
+ 
+---
 
 To compute the overdamped problem (an optimal transport problem)
 ```
 run python entropy_production/sinkhorn.py --args**
 ```
 
-For all parsable parameters, info can be found using help option. 
-
-Outputs: the csv containing the results of the overdamped calculation and a text file containing the metaparameters of the run
-
-To compute the corrections for the underdamped distributions and drift from the overdamped solution, use
-
+## Usage
+ 
+### Step 1: Solve the overdamped problem
+ 
+```bash
+python src/ep/sinkhorn.py --help   # list all available options
+python src/ep/sinkhorn.py --args
 ```
-run python entropy_production/distributionanddrift.py --args**
+ 
+**Output:** a CSV file containing the overdamped results, and a text file recording the run parameters.
+ 
+### Step 2: Compute underdamped corrections
+ 
+```bash
+python src/ep/perturbation/distributionanddrift.py --args
 ```
-
-The overdamped data is fetched in the datafetch.py script based on the input file name. The new underdamped columns are appended to the "results" csv. This behaviour can be customised by changing the output file for at the end of the distributionanddrift.py file. 
-
-Plots can be made by running the following scripts 
-- For the cumulants use cumulantsplot.py
-- For drift and distribution: distributionanddrift.py
-- For plots of the joint distribution: first girsanovjoint.py (to compute and save the values); plot with girsanovplot.py
-- Sample histograms of the final distribution: histograms.py
-- Momentum variance at different g: momvarplot.py
-- Entropy Production at different times totalcosts.py (to compute and save values); plot with totalcostplot.py
-
+ 
+This reads the overdamped CSV produced in Step 1 (via `ep.utils.datafetch`) and appends new columns for the underdamped distribution and drift. Output behaviour can be customised at the bottom of `distributionanddrift.py`.
+ 
+### Step 3: Visualise results
+ 
+| Plot | Script |
+|---|---|
+| Cumulants | `cumulantsplot.py` |
+| Drift and distribution | `distributionanddrift.py` |
+| Joint distribution (Girsanov) | `girsanovjoint.py` then `girsanovplot.py` |
+| Final distribution histograms | `histograms.py` |
+| Momentum variance vs `g` | `momvarplot.py` |
+| Entropy production vs time | `totalcosts.py` then `totalcostplot.py` |
+ 
+---
+ 
+## Repository Structure
+ 
+```
+entropy_production/
+├── src/ep/
+│   ├── perturbation/
+│   │   └── functions.py          # Perturbation class: distributions, drifts, cumulants
+│   └── utils/
+│       ├── datafetch.py          # CSV loading utilities
+│       ├── parser.py             # Command-line argument parsing
+│       └── misc.py               # Parameter file loading
+├── Minimal_Work_Protocols.ipynb  # End-to-end worked example
+├── requirements.txt
+├── LICENSE.txt                   # GPL-3.0
+└── README.md
+```
+---
+ 
+## Citation
+ 
+If you use this code, please cite:
+ 
+```bibtex
+@article{PhysRevE.111.034127,
+  title   = {Minimal work protocols for inertial particles in nonharmonic traps},
+  journal = {Physical Review E},
+  volume  = {111},
+  pages   = {034127},
+  year    = {2025},
+  doi     = {10.1103/PhysRevE.111.034127}
+}
+```
+ 
+---
+ 
+## License
+ 
+[GPL-3.0](LICENSE.txt)
+ 
 
