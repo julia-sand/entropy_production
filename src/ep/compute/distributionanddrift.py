@@ -6,7 +6,7 @@ from sklearn.neighbors import KernelDensity
 
 
 import src.utils.functions as functions
-from ep.utils.datafetch import open_df
+from ep.utils.datafetch import open_array,open_array
 
 def compute_corrections(df):
   
@@ -33,5 +33,5 @@ def compute_corrections(df):
 if __name__=="__main__":
 
   #open dataframe
-  df = open_df(filename)
+  df = open_array(filename)
   compute_corrections(df)

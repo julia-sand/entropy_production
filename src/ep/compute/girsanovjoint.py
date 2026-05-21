@@ -12,13 +12,13 @@ import csv
 import numpy as np
 
 import src.utils.functions as functions
-from ep.utils.datafetch import open_df
+from ep.utils.datafetch import open_array
 
 
 if __name__=="__main__":
   
   #open dataframe
-  df = open_df(filename)
+  df = open_array(filename)
 
   #mc_samples = int(sys.argv[5]) #number of sample trajectories
 

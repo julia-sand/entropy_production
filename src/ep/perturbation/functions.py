@@ -1,386 +1,373 @@
 """
-This file stores all the functions for the calculation 
-of the distribution and drift, and the interpolation functions 
+This file stores all the functions for the calculation
+of the distribution and drift, and the interpolation functions
 used for the evolution of girsanov theorem and histogram plots
 
-"""
+Refactored to use NumPy structured arrays instead of pandas DataFrames.
+The CSV is loaded once via np.genfromtxt and columns are accessed by name.
+Smoothing uses scipy.signal.savgol_filter throughout (window_length, polyorder)
+instead of scipy.ndimage.generic_filter."""
+
 import numpy as np
 
-from scipy.ndimage import generic_filter
-import scipy.ndimage as sc
+from scipy.signal import savgol_filter
 import scipy.interpolate as sci
 
-from ep.utils.datafetch import open_df
+from ep.utils.datafetch import open_array   # replaces open_df; see note below
 from ep.utils.parser import fetch_paramfile_from_cmd, fetch_results_folder_from_cmd
 from ep.utils.misc import load_params
 
-class Perturbation():
-  def __init__(self,):
-  
-    filename = fetch_results_folder_from_cmd()
-    paramfile = fetch_paramfile_from_cmd()
-    
-    params = load_params(paramfile)
-    self.epsilon = params["epsilon"]
-    self.Tf2 = params["Tf"]
-    self.peakloc = params["alpha"]#peak loc 
 
-    #open dataframe
-    df = open_df(filename)
-    
-
-  def savgol_filter_(self,y,dx,deriv=0):
-      return savgol_filter(y, window_length=71, polyorder=3, deriv=deriv, delta=dx)
-
-  
-
-  def omega_fun(self,g):
-    return np.sqrt((1+g)/g)
-
-  #constants
-  def B_fun(self,T,g):
-
-    omega = omega_fun(g)
-    return -((1+g)/T)*np.tanh(omega*T/2)*(omega*np.tanh(T) - 2*np.tanh(omega*T/2))/(omega*np.tanh(omega*T/2) - 2*np.tanh(T))
-
-  def A_fun(self,T,g):
-    return (1+g)*(1 - (((((1+g)/g) - 4)*(np.tanh(omega_fun(g)*T/2)*np.tanh(T)))/(omega_fun(g)*T*(omega_fun(g)*np.tanh(omega_fun(g)*T/2)-2*np.tanh(T)))))
-
-
-  def zchop(self,a,tol):
-    """
-    Clip values close to zero to prevent errors in logarithms
-
-    input: vector a
-    output: vector with values close to zero clipped.
-    """
-    a[np.abs(a) < tol] = 0.0
-    return a
-
-
-  def rho(self,t0):
-    """Get rho at time t0"""
-    return df[df.t0==t0].ptx.to_numpy()#zchop(rho_temp,tol)
-
-
-  def get_rhomask(self,t0,tol=tol):
-    """Return index of xcoords with probability mass greater than tol"""
-    return np.where(zchop(rho(t0),tol)>0)
-
-  def od_bound(self,T,g):
-    """Compute overdamped bound"""
-    return (1/(1+g))*(self.w2_dist/(T*(epsilon**2)))
-
-  def dsigma(self,t0 ):
-    """Compute derivative of sigma"""
-    sigtemp = df[df.t0==t0].dsigma.to_numpy()
-    return -sigtemp
-
-
-  def kappa(self,t0): #mu dot 1
-    """Compute kappa at t0, used to compute cumulants and other functions"""
-
-    integral = rho(t0) * dsigma(t0)
-    return -np.trapz(integral,q_axis)
-
-  def distribution(self,t0 ):
-    """Return underdamped distribution"""
-    dist = df[df.t0==t0].UDpdf.to_numpy()
-    return dist
-
-  #function to get underdamped drift
-  def optimal_drift(self,t0 ):
-    #t2 = round(t0*(epsilon**2),dps)
-    drift_temp = df[df.t0 ==t0].UDdrift.to_numpy()
-    return drift_temp
-
-  def A_minus_B(self,T,g):
-    omega = omega_fun(g)
-
-    return (1+g)*(1-((2/(omega*T))*(np.tanh(omega*T/2))))
-
-  def b(self,t0,g):
-    omega = np.sqrt((1+g)/g)
-
-    denom1 =np.cosh(T)*np.sinh(omega*T) -(2*np.sinh(T)*np.cosh(omega*T)+2*np.sinh(T))/omega
-
-    num3 = np.sinh(omega*(T-t0))*np.exp(-T)
-    num4 = np.sinh(omega*t0)*np.exp(T) - np.sinh(omega*T)*np.exp(2*t0 - T)
-    return (1/denom1)*(num3+num4)
-
-  def a_minus_b2(self,t0,g):
-    omega = np.sqrt((1+g)/g)
-
-    return 1 -(np.cosh(omega*t0)+np.cosh(omega*(t0-T)))/(1+np.cosh(T*omega))
-
-  def a(self,t0,g):
-
-    return a_minus_b2(t0,g) + b(t0,g)
-
-  def b_dot(self,t0,g):
-    omega = np.sqrt((1+g)/g)
-
-    denom1 =np.cosh(T)*np.sinh(omega*T) -(2*np.sinh(T)*np.cosh(omega*T)+2*np.sinh(T))/omega
-
-    num3 = -omega*np.cosh(omega*(T-t0))*np.exp(-T)
-    num4 = omega*np.cosh(omega*t0)*np.exp(T) - 2*np.sinh(omega*T)*np.exp(2*t0 - T)
-    return (1/denom1)*(num3+num4)
-
-  def a_dot(self,t0,g):
-    omega = np.sqrt((1+g)/g)
-
-    term1 = -(np.sinh(omega*t0)+np.sinh(omega*(t0-T)))/(1+np.cosh(T*omega))
-
-    return b_dot(t0,g) + omega*term1
-
-  #mean and variances
-  def mean_t0(self,t0):
-
-    #t2 = round(t0*(epsilon**2),dps)
-    #get q-axis
-    #q = df[df.t0 == t0].x.to_numpy()
-    #get rho
-    rho_temp = df[df.t0 == t0].ptx.to_numpy()
-
-    return np.trapz(q_axis*rho_temp,q_axis)
-
-  def var_t0(self,t0):
-
-    #t2 = round(t0*(epsilon**2),dps)
-    #get q-axis
-    #q = df[df.t0 == t0].x.to_numpy()
-    #get rho
-    rho_temp = df[df.t0 == t0].ptx.to_numpy()
-    
-    return np.trapz((q_axis**2)*rho_temp,q_axis)
-
-
-  def dfun(self,vals,qs):
-    #finds numerical  using central differences and applies a small filter to reduce outliers
-
-    dfun = np.gradient(vals,qs,edge_order=2)
-
-    return generic_filter(dfun,sc.mean,filter_delta,mode = "nearest")
-
-  def dlogrho(self,t0 ):
-
-    #t2 = round(t0*(epsilon**2),dps)
-    logrho = df[df.t0 ==t0].logptx.to_numpy()
-
-    #get rid of nans
-    #interpolate only on non-zero vals of rho
-    idx = get_rhomask(t0)
-
-    #differentiate and filter without edges
-    dlogrho = np.gradient(logrho[idx],q_axis[idx],edge_order=2)
-
-    #put back into right place
-    dlogout = np.zeros_like(logrho)
-    dlogout[idx] = generic_filter(dlogrho,sc.mean,filter_delta,mode="nearest")
-
-    return dlogout
-
-  def drho(self,t0):
-
-    #interpolate only on non-zero vals of rho
-    idx = get_rhomask(t0)
-    rho_vals_temp = rho(t0)[idx]
-    #q_axis_temp = q_axis[idx]
-
-    drho = np.gradient(rho_vals_temp,q_axis[idx],edge_order=2)
-
-    #set values outside of range to zero to prevent extrapolation error
-    drho_vals = np.zeros_like(q_axis)
-    drho_vals[idx] = generic_filter(drho,sc.mean,filter_delta,mode="constant")
-
-    return drho_vals
-
-  def rho_dsigma_alpha_rho(self,t0):
-
-    rho_dsigma_alpha_rho = rho(t0)*dsigma(t0) + alpha*drho(t0)
-
-    #fill nan with zero
-    rho_dsigma_alpha_rho[np.isnan(rho_dsigma_alpha_rho)] = 0
-
-    return rho_dsigma_alpha_rho
-
-  def dsigma_alpha_rho(self,t0):
-
-    dsigma_alpha_rho = dsigma(t0) + alpha*dlogrho(t0)
-
-    #fill nan with zero
-    dsigma_alpha_rho[np.isnan(dsigma_alpha_rho)] = 0
-
-    return dsigma_alpha_rho
-
-  def rho_ddsigma_alpha_rho(self,t0):
-
-    #get drho
-    #drhotemp = dlogrho(t0)
-
-    #remove zeros first
-    idx = get_rhomask(t0)
-    ddlogrho = np.gradient(dlogrho(t0)[idx],q_axis[idx],edge_order=2)
-
-    #get ddsigma
-    ddsigtemp = np.gradient(dsigma(t0)[idx],q_axis[idx],edge_order=2)
-
-    temp_vals_out = np.zeros_like(q_axis)
-    temp_vals_out[idx] = alpha*generic_filter(ddlogrho,sc.mean,filter_delta,mode="nearest") + generic_filter(ddsigtemp,sc.mean,filter_delta,mode="nearest")
-
-    return temp_vals_out*rho(t0)
-    #output_vals#generic_filter(output_vals,sc.mean,size=filter_delta,mode="constant")
-
-  def script_k(self,t0):#varsigma dot/2
-    temp_vals = q_axis*rho_dsigma_alpha_rho(t0)
-    return -np.trapz(temp_vals,q_axis) - kappa(t0)*mean_t0(t0)
-
-  ##
-  def f11(self,t0,g):
-    Ag = A_fun(T,g)
-    Bg = A_fun(T,g)
-
-    rho_vals = rho(t0)
-
-    coeff1 = -a(t0,g)/Ag
-    num1 = rho_dsigma_alpha_rho(t0)
-
-    coeff2 = rho_vals *(Bg*a(t0,g) - Ag*b(t0,g))/(Ag*A_minus_B(T,g))
-
-    return coeff1*num1 + coeff2*kappa(t0)
-
-  ##
-  def calculate_df11(self,t0,g):
-    Ag = A_fun(T,g)
-    Bg = B_fun(T,g)
-
-    drho_vals = drho(t0)
-
-    coeff1 = -a(t0,g)/Ag
-    num1 = (drho_vals*dsigma_alpha_rho(t0)) + rho_ddsigma_alpha_rho(t0)
-
-    num1[np.isnan(num1)] = 0
-    num1[np.isinf(num1)] = 0
-
-    coeff2 = (Bg*a(t0,g) - Ag*b(t0,g))/(Ag*A_minus_B(T,g))
-
-    df11_out = coeff1*num1 + coeff2*(kappa(t0)*drho_vals)# - (rho(t0)**2)*dsigma(t0))
-
-    return df11_out
-
-
-  def coeff1_df11(self,g,t0,T):
-    Ag = A_fun(T,g)
-    coeff1 = -a(t0,g)/Ag
-    return coeff1
-
-
-  def coeff2_df11(self,g,t0,T):
-    Ag = A_fun(T,g)
-    Bg = B_fun(T,g)
-    coeff2 = (Bg*a(t0,g) - Ag*b(t0,g))/(Ag*A_minus_B(T,g))
-    return coeff2
-
-  def f02_new(self,t0,g,T):
-
-    #fetch the constants in t2
-    t2_term1 = drho(t0)*dsigma_alpha_rho(t0) + rho_ddsigma_alpha_rho(t0)
-    t2_termrho = drho(t0)*kappa(t0)
-
-    term1 = -g*(coeff1_df11(g,t0,T)*t2_term1 + coeff2_df11(g,t0,T)*t2_termrho)
-
-    int_limit = np.where(times_t0==t0)[0][0] + 1
-    coeff1_df11_temp = [coeff1_df11(g,t,T)*t2_term1 for t in times_t0]
-    coeff2_df11_temp = [coeff2_df11(g,t,T)*t2_termrho for t in times_t0]
-
-    coeff1_int1 = (t0/T)*np.trapz(coeff1_df11_temp,times_t0,axis=0)
-    coeff2_int1 = (t0/T)*np.trapz(coeff2_df11_temp,times_t0,axis=0)
-
-    coeff1_int2 = np.trapz(coeff1_df11_temp[0:int_limit],times_t0[0:int_limit],axis=0)
-    coeff2_int2 = np.trapz(coeff2_df11_temp[0:int_limit],times_t0[0:int_limit],axis=0)
-
-    return term1 + (1+g)*(coeff1_int1 + coeff2_int1 - (coeff1_int2 + coeff2_int2))
-
-
-  def calculate_optimal_drift(self,t0,g): #-DU
-    Ag = A_fun(T,g)
-    Bg = B_fun(T,g)
-
-    coeff1 = (a_dot(t0,g) + a(t0,g))/Ag
-
-    term1 = (alpha*coeff1 - 1)*dlogrho(t0)
-    term2 = coeff1*dsigma(t0)
-
-    coeff3 = kappa(t0)/(Ag*A_minus_B(T,g))
-    #kappa(t0)/(A*(A-B))
-    term3 = (Bg*a_dot(t0,g) - Ag*b_dot(t0,g)) + (Bg*a(t0,g) - Ag*b(t0,g))
-    opt_drift = term1 + term2 - coeff3*term3
-
-    opt_drift[np.isnan(opt_drift)] = 0
-    opt_drift[np.isinf(opt_drift)] = 0
-
-    return -opt_drift
-
-  def calculate_distribution(self,t0,g):
-    rvals = rho(t0)+ (epsilon**2)*f02_new(t0,g,T)
-
-    #find normalising factor
-    #norm_factor = np.trapz(np.abs(rvals),q_axis(t0))
-
-    return rvals #/ norm_factor
-
-  #function to get underdamped distribution
-  def distribution(self,t0 ):
-    #t2 = round(t0*(epsilon**2),dps)
-    dist = df[df.t0==t0].UDpdf.to_numpy()
-    return dist
-
-  #function to get underdamped drift
-  def optimal_drift(self,t0 ):
-    #t2 = round(t0*(epsilon**2),dps)
-    drift_temp = df[df.t0 ==t0].UDdrift.to_numpy()
-    return drift_temp
-
-
-
-  #function for interpolated dsigma
-  def dsigma_interp(self,t0,q,tol=1e-5):
-    #t2 = round(epsilon**2*t0,dps)
-    #q_temp = q_axis
-    
-    mask = get_rhomask(t0,tol)
-
-    dsig_temp = dsigma(t0) - dlogrho(t0)
-    w_temp = rho(t0)
-
-    interp_dsig = sci.splrep(q_axis[mask], dsig_temp[mask],w = w_temp[mask],k=3)
-    return sci.splev(q,interp_dsig)
-
-  #function for interpolated DU
-  def underdamped_drift_interp_function(self,t0,g,tol=1e-5):
-
-    mask = get_rhomask(t0,tol)
-    w_temp = distribution(t0)
-    dsig_temp_underdamped = optimal_drift(t0)
-    #dsigout = generic_filter(dsig_temp_underdamped,sc.mean,size=100)
-    interp_dsig_underdamped = sci.splrep(q_axis[mask],dsig_temp_underdamped[mask],w=w_temp[mask],k=5)
-    return interp_dsig_underdamped
-
-  def underdamped_drift_interp(self,t0,q,g,tol):
-    
-    #q_temp = q_axis
-
-    mask = get_rhomask(t0,tol)
-    w_temp = distribution(t0)
-    #this is DU
-    dsig_temp_underdamped = optimal_drift(t0)[mask]
-    #dsigout = generic_filter(dsig_temp_underdamped,sc.mean,size=100)
-    return -np.interp(q, q_axis[mask], dsig_temp_underdamped, left=np.abs(dsig_temp_underdamped[0]), right=-np.abs(dsig_temp_underdamped[-1]))
-
-
-  #function for derivative of interpolated DU, this is DDU
-  def d_underdamped_drift_interp(self,t0,q,g):
-
-    return sci.splev(q,underdamped_drift_interp_function(t0,g),der=1,ext=5)
-
-
+# ---------------------------------------------------------------------------
+# NOTE: replace open_df in ep/utils/datafetch.py with open_array, e.g.:
+#
+#   def open_array(filename):
+#       return np.genfromtxt(filename, delimiter=",", names=True, dtype=None,
+#                            encoding="utf-8")
+#
+# The structured array supports column access by name:  arr["t0"], arr["ptx"]
+# ---------------------------------------------------------------------------
+
+
+def _col(arr, t0, col):
+    """Return values of *col* from structured array *arr* where arr['t0']==t0."""
+    return arr[col][arr["t0"] == t0]
+
+
+class Perturbation:
+    def __init__(self):
+        folder = fetch_results_folder_from_cmd()
+        params = load_params_from_file(folder)
+
+        self.epsilon = params["epsilon"]
+        self.Tf2 = params["Tf"]
+        self.peakloc = params["alpha"]  # peak location (alpha)
+        self.w2_dist = params["w2"]
+ 
+        # Load data as a NumPy structured array instead of a DataFrame
+        self.data = open_array(filename)
+
+    # ------------------------------------------------------------------
+    # Internal helpers that mirror the old df-filter pattern
+    # ------------------------------------------------------------------
+
+    def _get(self, t0, col):
+        """Fetch a column at a given t0 from the structured array."""
+        return _col(self.data, t0, col)
+
+    # ------------------------------------------------------------------
+    # Filters / math utilities
+    # ------------------------------------------------------------------
+
+    def savgol_filter_(self, y, dx, deriv=0):
+        return savgol_filter(y, window_length=71, polyorder=3,
+                             deriv=deriv, delta=dx)
+
+    def zchop(self, a, tol):
+        """Clip values close to zero to prevent errors in logarithms."""
+        a[np.abs(a) < tol] = 0.0
+        return a
+
+    # ------------------------------------------------------------------
+    # Frequency / coefficient functions
+    # ------------------------------------------------------------------
+
+    def omega_fun(self, g):
+        return np.sqrt((1 + g) / g)
+
+    def B_fun(self, T, g):
+        omega = self.omega_fun(g)
+        return (
+            -((1 + g) / T)
+            * np.tanh(omega * T / 2)
+            * (omega * np.tanh(T) - 2 * np.tanh(omega * T / 2))
+            / (omega * np.tanh(omega * T / 2) - 2 * np.tanh(T))
+        )
+
+    def A_fun(self, T, g):
+        omega = self.omega_fun(g)
+        return (1 + g) * (
+            1
+            - (
+                (((1 + g) / g) - 4)
+                * (np.tanh(omega * T / 2) * np.tanh(T))
+            )
+            / (omega * T * (omega * np.tanh(omega * T / 2) - 2 * np.tanh(T)))
+        )
+
+    def A_minus_B(self, T, g):
+        omega = self.omega_fun(g)
+        return (1 + g) * (1 - (2 / (omega * T)) * np.tanh(omega * T / 2))
+
+    # ------------------------------------------------------------------
+    # Trajectory-space basis functions
+    # ------------------------------------------------------------------
+
+    def b(self, t0, g, T):
+        omega = np.sqrt((1 + g) / g)
+        denom1 = (
+            np.cosh(T) * np.sinh(omega * T)
+            - (2 * np.sinh(T) * np.cosh(omega * T) + 2 * np.sinh(T)) / omega
+        )
+        num3 = np.sinh(omega * (T - t0)) * np.exp(-T)
+        num4 = np.sinh(omega * t0) * np.exp(T) - np.sinh(omega * T) * np.exp(2 * t0 - T)
+        return (1 / denom1) * (num3 + num4)
+
+    def a_minus_b2(self, t0, g, T):
+        omega = np.sqrt((1 + g) / g)
+        return 1 - (np.cosh(omega * t0) + np.cosh(omega * (t0 - T))) / (
+            1 + np.cosh(T * omega)
+        )
+
+    def a(self, t0, g, T):
+        return self.a_minus_b2(t0, g, T) + self.b(t0, g, T)
+
+    def b_dot(self, t0, g, T):
+        omega = np.sqrt((1 + g) / g)
+        denom1 = (
+            np.cosh(T) * np.sinh(omega * T)
+            - (2 * np.sinh(T) * np.cosh(omega * T) + 2 * np.sinh(T)) / omega
+        )
+        num3 = -omega * np.cosh(omega * (T - t0)) * np.exp(-T)
+        num4 = (
+            omega * np.cosh(omega * t0) * np.exp(T)
+            - 2 * np.sinh(omega * T) * np.exp(2 * t0 - T)
+        )
+        return (1 / denom1) * (num3 + num4)
+
+    def a_dot(self, t0, g, T):
+        omega = np.sqrt((1 + g) / g)
+        term1 = -(np.sinh(omega * t0) + np.sinh(omega * (t0 - T))) / (
+            1 + np.cosh(T * omega)
+        )
+        return self.b_dot(t0, g, T) + omega * term1
+
+    # ------------------------------------------------------------------
+    # Data-access methods (previously relied on df[...].column.to_numpy())
+    # ------------------------------------------------------------------
+
+    def rho(self, t0):
+        """Get rho (overdamped PDF ptx) at time t0."""
+        return self._get(t0, "ptx")
+
+    def get_rhomask(self, t0, tol):
+        """Return index of x-coords with probability mass greater than tol."""
+        return np.where(self.zchop(self.rho(t0).copy(), tol) > 0)
+
+    def dsigma(self, t0):
+        """Compute derivative of sigma."""
+        return -self._get(t0, "dsigma")
+
+    def distribution(self, t0):
+        """Return underdamped distribution."""
+        return self._get(t0, "UDpdf")
+
+    def optimal_drift(self, t0):
+        """Return underdamped drift."""
+        return self._get(t0, "UDdrift")
+
+    # ------------------------------------------------------------------
+    # Moment / integral quantities
+    # ------------------------------------------------------------------
+
+    def kappa(self, t0, q_axis):
+        """Compute kappa at t0 (used in cumulants and other functions)."""
+        integral = self.rho(t0) * self.dsigma(t0)
+        return -np.trapz(integral, q_axis)
+
+    def mean_t0(self, t0, q_axis):
+        rho_temp = self.rho(t0)
+        return np.trapz(q_axis * rho_temp, q_axis)
+
+    def var_t0(self, t0, q_axis):
+        rho_temp = self.rho(t0)
+        return np.trapz((q_axis ** 2) * rho_temp, q_axis)
+
+    def od_bound(self, T):
+        """Compute overdamped bound."""
+        return (1 / (1 + self.epsilon)) * (self.w2_dist / (T * (self.epsilon ** 2)))
+
+    # ------------------------------------------------------------------
+    # Derivative / gradient utilities
+    # ------------------------------------------------------------------
+
+    def dfun(self, vals, qs, window_length, polyorder=3):
+        """Numerical derivative with Savitzky-Golay smoothing."""
+        d = np.gradient(vals, qs, edge_order=2)
+        return savgol_filter(d, window_length=window_length, polyorder=polyorder)
+
+    def dlogrho(self, t0, q_axis, window_length, polyorder=3, tol=1e-10):
+        logrho = self._get(t0, "logptx")
+        idx = self.get_rhomask(t0, tol)
+        dlogrho = np.gradient(logrho[idx], q_axis[idx], edge_order=2)
+        dlogout = np.zeros_like(logrho)
+        dlogout[idx] = savgol_filter(dlogrho, window_length=window_length, polyorder=polyorder)
+        return dlogout
+
+    def drho(self, t0, q_axis, window_length, polyorder=3, tol=1e-10):
+        idx = self.get_rhomask(t0, tol)
+        rho_vals_temp = self.rho(t0)[idx]
+        drho = np.gradient(rho_vals_temp, q_axis[idx], edge_order=2)
+        drho_vals = np.zeros_like(q_axis)
+        drho_vals[idx] = savgol_filter(drho, window_length=window_length, polyorder=polyorder)
+        return drho_vals
+
+    # ------------------------------------------------------------------
+    # Combined derivative expressions
+    # ------------------------------------------------------------------
+
+    def rho_dsigma_alpha_rho(self, t0, q_axis, window_length, polyorder=3, tol=1e-10, alpha=0):
+        result = self.rho(t0) * self.dsigma(t0) + alpha * self.drho(t0, q_axis, window_length, polyorder, tol)
+        result[np.isnan(result)] = 0
+        return result
+
+    def dsigma_alpha_rho(self, t0, q_axis, window_length, polyorder=3, tol=1e-10, alpha=0):
+        result = self.dsigma(t0) + alpha * self.dlogrho(t0, q_axis, window_length, polyorder, tol)
+        result[np.isnan(result)] = 0
+        return result
+
+    def rho_ddsigma_alpha_rho(self, t0, q_axis, window_length, polyorder=3, tol=1e-10, alpha=0):
+        idx = self.get_rhomask(t0, tol)
+        ddlogrho = np.gradient(
+            self.dlogrho(t0, q_axis, window_length, polyorder, tol)[idx], q_axis[idx], edge_order=2
+        )
+        ddsigtemp = np.gradient(self.dsigma(t0)[idx], q_axis[idx], edge_order=2)
+        temp_vals_out = np.zeros_like(q_axis)
+        temp_vals_out[idx] = (
+            alpha * savgol_filter(ddlogrho, window_length=window_length, polyorder=polyorder)
+            + savgol_filter(ddsigtemp, window_length=window_length, polyorder=polyorder)
+        )
+        return temp_vals_out * self.rho(t0)
+
+    def script_k(self, t0, q_axis, window_length, polyorder=3, tol=1e-10, alpha=0):
+        """Compute varsigma_dot / 2."""
+        temp_vals = q_axis * self.rho_dsigma_alpha_rho(t0, q_axis, window_length, polyorder, tol, alpha)
+        return (
+            -np.trapz(temp_vals, q_axis)
+            - self.kappa(t0, q_axis) * self.mean_t0(t0, q_axis)
+        )
+
+    # ------------------------------------------------------------------
+    # f11 and its derivative coefficients
+    # ------------------------------------------------------------------
+
+    def coeff1_df11(self, g, t0, T):
+        return -self.a(t0, g, T) / self.A_fun(T, g)
+
+    def coeff2_df11(self, g, t0, T):
+        Ag = self.A_fun(T, g)
+        Bg = self.B_fun(T, g)
+        return (Bg * self.a(t0, g, T) - Ag * self.b(t0, g, T)) / (
+            Ag * self.A_minus_B(T, g)
+        )
+
+    def f11(self, t0, g, T, q_axis, window_length, polyorder=3, tol=1e-10, alpha=0):
+        Ag = self.A_fun(T, g)
+        Bg = self.B_fun(T, g)
+        coeff1 = -self.a(t0, g, T) / Ag
+        coeff2 = self.rho(t0) * (
+            Bg * self.a(t0, g, T) - Ag * self.b(t0, g, T)
+        ) / (Ag * self.A_minus_B(T, g))
+        return (
+            coeff1 * self.rho_dsigma_alpha_rho(t0, q_axis, window_length, polyorder, tol, alpha)
+            + coeff2 * self.kappa(t0, q_axis)
+        )
+
+    def calculate_df11(self, t0, g, T, q_axis, window_length, polyorder=3, tol=1e-10, alpha=0):
+        drho_vals = self.drho(t0, q_axis, window_length, polyorder, tol)
+        coeff1 = self.coeff1_df11(g, t0, T)
+        num1 = (
+            drho_vals * self.dsigma_alpha_rho(t0, q_axis, window_length, polyorder, tol, alpha)
+            + self.rho_ddsigma_alpha_rho(t0, q_axis, window_length, polyorder, tol, alpha)
+        )
+        num1[np.isnan(num1)] = 0
+        num1[np.isinf(num1)] = 0
+        coeff2 = self.coeff2_df11(g, t0, T)
+        return coeff1 * num1 + coeff2 * (self.kappa(t0, q_axis) * drho_vals)
+
+    # ------------------------------------------------------------------
+    # f02 (second-order correction)
+    # ------------------------------------------------------------------
+
+    def f02_new(self, t0, g, T, times_t0, q_axis, window_length, polyorder=3, tol=1e-10, alpha=0):
+        t2_term1 = (
+            self.drho(t0, q_axis, window_length, polyorder, tol)
+            * self.dsigma_alpha_rho(t0, q_axis, window_length, polyorder, tol, alpha)
+            + self.rho_ddsigma_alpha_rho(t0, q_axis, window_length, polyorder, tol, alpha)
+        )
+        t2_termrho = self.drho(t0, q_axis, window_length, polyorder, tol) * self.kappa(t0, q_axis)
+
+        term1 = -g * (
+            self.coeff1_df11(g, t0, T) * t2_term1
+            + self.coeff2_df11(g, t0, T) * t2_termrho
+        )
+
+        int_limit = np.where(times_t0 == t0)[0][0] + 1
+        c1 = np.array([self.coeff1_df11(g, t, T) * t2_term1 for t in times_t0])
+        c2 = np.array([self.coeff2_df11(g, t, T) * t2_termrho for t in times_t0])
+
+        coeff1_int1 = (t0 / T) * np.trapz(c1, times_t0, axis=0)
+        coeff2_int1 = (t0 / T) * np.trapz(c2, times_t0, axis=0)
+        coeff1_int2 = np.trapz(c1[:int_limit], times_t0[:int_limit], axis=0)
+        coeff2_int2 = np.trapz(c2[:int_limit], times_t0[:int_limit], axis=0)
+
+        return term1 + (1 + g) * (
+            coeff1_int1 + coeff2_int1 - (coeff1_int2 + coeff2_int2)
+        )
+
+    # ------------------------------------------------------------------
+    # Optimal drift and distribution
+    # ------------------------------------------------------------------
+
+    def calculate_optimal_drift(self, t0, g, T, q_axis, window_length, polyorder=3, tol=1e-10, alpha=0):
+        Ag = self.A_fun(T, g)
+        Bg = self.B_fun(T, g)
+        coeff1 = (self.a_dot(t0, g, T) + self.a(t0, g, T)) / Ag
+        term1 = (alpha * coeff1 - 1) * self.dlogrho(t0, q_axis, window_length, polyorder, tol)
+        term2 = coeff1 * self.dsigma(t0)
+        coeff3 = self.kappa(t0, q_axis) / (Ag * self.A_minus_B(T, g))
+        term3 = (
+            Bg * self.a_dot(t0, g, T) - Ag * self.b_dot(t0, g, T)
+        ) + (Bg * self.a(t0, g, T) - Ag * self.b(t0, g, T))
+        opt_drift = term1 + term2 - coeff3 * term3
+        opt_drift[np.isnan(opt_drift)] = 0
+        opt_drift[np.isinf(opt_drift)] = 0
+        return -opt_drift
+
+    def calculate_distribution(self, t0, g, T, times_t0, q_axis, window_length, polyorder=3, tol=1e-10, alpha=0):
+        return self.rho(t0) + (self.epsilon ** 2) * self.f02_new(
+            t0, g, T, times_t0, q_axis, window_length, polyorder, tol, alpha
+        )
+
+    # ------------------------------------------------------------------
+    # Interpolation helpers
+    # ------------------------------------------------------------------
+
+    def dsigma_interp(self, t0, q, q_axis, window_length, polyorder=3, tol=1e-5, alpha=0):
+        mask = self.get_rhomask(t0, tol)
+        dsig_temp = self.dsigma(t0) - self.dlogrho(t0, q_axis, window_length, polyorder, tol)
+        w_temp = self.rho(t0)
+        interp_dsig = sci.splrep(q_axis[mask], dsig_temp[mask], w=w_temp[mask], k=3)
+        return sci.splev(q, interp_dsig)
+
+    def underdamped_drift_interp_function(self, t0, g, q_axis, tol=1e-5):
+        mask = self.get_rhomask(t0, tol)
+        w_temp = self.distribution(t0)
+        dsig_temp = self.optimal_drift(t0)
+        return sci.splrep(q_axis[mask], dsig_temp[mask], w=w_temp[mask], k=5)
+
+    def underdamped_drift_interp(self, t0, q, g, q_axis, tol):
+        mask = self.get_rhomask(t0, tol)
+        dsig_temp = self.optimal_drift(t0)[mask]
+        return -np.interp(
+            q,
+            q_axis[mask],
+            dsig_temp,
+            left=np.abs(dsig_temp[0]),
+            right=-np.abs(dsig_temp[-1]),
+        )
+
+    def d_underdamped_drift_interp(self, t0, q, g, q_axis, tol=1e-5):
+        return sci.splev(
+            q, self.underdamped_drift_interp_function(t0, g, q_axis, tol), der=1, ext=5
+        )

@@ -54,10 +54,11 @@ def make_results_dir():
     return newpath
 
 
-def init_params_from_file():
+def load_params_from_file(folder):
 
-    #check if there is a results folder to use 
-    folder = fetch_results_folder_from_cmd()
+    if folder is None:
+        #check if there is a results folder to use 
+        folder = fetch_results_folder_from_cmd()
 
     try:
         # Read YAML file
@@ -65,6 +66,6 @@ def init_params_from_file():
             data_loaded = yaml.safe_load(stream)
 
     except FileNotFoundError: #if no yaml file is provided, use the defaults
-        print("No parameter file found in the specified folder. The plots will be created using the default values. See -h for values.")
+        print("No parameter file found.")
 
     return data_loaded

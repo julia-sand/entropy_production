@@ -3,7 +3,7 @@ import pandas as pd
 
 from ep.utils.parser import fetch_results_folder_from_cmd
 
-def open_df(filename):
+def open_array(filename):
     folder = fetch_results_folder_from_cmd()+"/results.csv"
     
     try:
@@ -18,5 +18,8 @@ def open_df(filename):
         #solve_cell(n,filename)
         #raise BaseException
 
+def open_array(filename):
+      return np.genfromtxt(filename, delimiter=",", names=True, dtype=None, encoding="utf-8")
+
 if __name__=="__main__":
-    open_df(filename)
+    open_array(filename)

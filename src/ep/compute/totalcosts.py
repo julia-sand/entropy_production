@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd 
 
 import src.utils.functions as functions
-from ep.utils.datafetch import open_df
+from ep.utils.datafetch import open_array
 
 ##These are the temporary functions until we need to use more T
 def entropy_production_cost(T,g):
@@ -61,7 +61,7 @@ def od_bound(T,g):
 
 if __name__=="__main__":
   #open dataframe
-  df = open_df(filename)
+  df = open_array(filename)
 
   columns = ["g","Tf","Firstterm","EPcost","ODBound"]
 
